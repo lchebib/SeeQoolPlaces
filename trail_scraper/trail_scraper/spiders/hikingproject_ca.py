@@ -11,23 +11,35 @@ class HikingprojectSpider(scrapy.Spider):
 
     def parse(self, response):
         trails = response.xpath("//tr[@class='trail-row']")
+
+        print('****************************************************')
+        print('...............Parsing trails...............')
+
         for trail in trails:
             link = trail.xpath(".//td/a/@href").get()
             yield response.follow(url=link, callback=self.parse_trail)
         
-        num_trails = response.xpath("//span/div/h2[@class='dont-shrink']/text()[2]").get()
-        num_trails = self.parse_int(num_trails)
-        num_trails -= 10
+        total_trails = response.xpath("//span/div/h2[@class='dont-shrink']/text()[2]").get()
+        total_trails = self.parse_int(total_trails)
+        remaining_trails = total_trails - 10
 
         page_num = 1
-        # while num_trails > 0: # uncomment to scrape all trails
-        while page_num < 3: # uncomment to test on first 3 pages
+        while remaining_trails > 0: # uncomment to scrape all trails
+        # while page_num < 3: # uncomment to test on first 3 pages
+
+            print(f'...............Trails parsed: {total_trails - remaining_trails}...............')
+            print(f'...............Trails remaining: {remaining_trails}...............')
+
             next_page = f'https://www.hikingproject.com/ajax/area/8007121/trails?idx={page_num}'
             urls = self.parse_urls(next_page)
             for url in urls:
                 yield response.follow(url=url, callback=self.parse_trail)
-            num_trails -= 30
+            remaining_trails = remaining_trails - len(urls)
             page_num += 1
+            
+        print(f'...............Finished parsing...............')
+        print('****************************************************')
+        
 
 
         
@@ -37,7 +49,7 @@ class HikingprojectSpider(scrapy.Spider):
         breadcrumbs = response.xpath("//li[@class='breadcrumb-item']/a/span[2]/text()").getall()
         another_breadcrumb = response.xpath("(//li[@class='breadcrumb-item']/a/text())[3]").get()
         breadcrumbs.append(another_breadcrumb)
-        ', '.join(breadcrumbs)
+        ','.join(breadcrumbs)
         difficulty = response.xpath("//span[@class='difficulty-text text-white align-middle']/text()").get()
         rating = response.xpath("(//span[@class='title text-muted'])[1]/span[2]/text()").get()
         num_votes = response.xpath("(//span[@class='title text-muted'])[1]/span[3]/text()").get()
@@ -77,9 +89,6 @@ class HikingprojectSpider(scrapy.Spider):
         urls = [url.replace('\"', '') for url in urls]
         return urls
 
-        # data = response.xpath("//pre").get()
-        # # selector = scrapy.Selector(data['markup'])
-        # # urls = selector.xpath("//a/@href")
         
 
 
