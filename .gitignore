@@ -1,0 +1,13 @@
+# Ignore file containing API keys
+config.py
+
+# Ignore cache folder
+__pycache__
+/trail_scraper/trail_scraper/__pycache_
+/trail_scraper/trail_scraper/spiders/__pycache_
+
+# Ignore workspace settings
+.vscode
+
+# Ignore Mac system files
+.DS_store
