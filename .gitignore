@@ -1,7 +1,7 @@
 # Ignore file containing API keys
 config.py
 
-# Ignore cache folder
+# Ignore caches
 __pycache__
 /trail_scraper/trail_scraper/__pycache_
 /trail_scraper/trail_scraper/spiders/__pycache_
@@ -11,3 +11,6 @@ __pycache__
 
 # Ignore Mac system files
 .DS_store
+
+# Ignore .class extension files in OSM_parser
+/OSM_parser/*.class
