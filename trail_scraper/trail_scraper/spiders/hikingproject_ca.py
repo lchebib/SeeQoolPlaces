@@ -65,7 +65,7 @@ class HikingprojectSpider(scrapy.Spider):
             'location': breadcrumbs,
             'difficulty': difficulty,
             'rating': rating,
-            'num_rates': num_votes,
+            'num_votes': num_votes,
             'route_type': route_type,
             'length': length,
             'high': high,
