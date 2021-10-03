@@ -5,6 +5,9 @@ config.py
 __pycache__
 /trail_scraper/trail_scraper/__pycache_
 /trail_scraper/trail_scraper/spiders/__pycache_
+/trip_advisor_bc/trip_advisor_bc/__pycache_
+/trip_advisor_bc/trip_advisor_bc/spiders/__pycache_
+
 
 # Ignore workspace settings
 .vscode
