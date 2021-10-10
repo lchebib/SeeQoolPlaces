@@ -26,14 +26,20 @@ class AttractionsBcSpider(scrapy.Spider):
             #     yield response.follow(url=next_page, callback=self.parse)
             #     self.counter =+ 1
 
+    # not working: attraction rating, website_link, photo, about
     def parse_attraction(self, response):
         attraction_name = response.xpath("//h1[@class='WlYyy cPsXC GeSzT']/text()").get()
-        attraction_rating = response.xpath("(//div[@class='RTVWf o W f u w eeCyE'])[1]/text()").get()
+        # maybe fixed:
+        attraction_rating = response.xpath("//div[@class='WlYyy cPsXC fksET cMKSg']/text()").get()
         attraction_category = response.xpath("(//div[@class='WlYyy diXIH dDKKM'])[5]/text()").get()
         rank_in_city = response.xpath("(//div[@class='WlYyy diXIH dDKKM'])[4]/text()").get()
+        # TODO
         website_link = response.xpath("(//div/a[@class='bfQwA _G B- _S _T c G_ P0 ddFHE cnvzr bTBvn'])[1]/@href").get()
+        # TODO
+        # for photos it loos like there needs to be a function that clicks on the link for the photos and then saves the link from there
         photo = response.xpath("(//div[@class='eMVst _R w h GA'])[1]/@href").get()
-        about = response.xpath("(//div[@class='duhwe _T bOlcm'])[1]/text()").get()
+        # maybe fixed
+        about = response.xpath("(//div[@class='duhwe _T bOlcm dMbup'])[1]/text()").get()
         suggested_duration = response.xpath("//div[@class='cYygO _c']/text()").get()
             
         yield {
