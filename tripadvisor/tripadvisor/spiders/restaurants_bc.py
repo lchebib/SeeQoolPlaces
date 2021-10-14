@@ -1,4 +1,6 @@
 import scrapy
+import requests
+from bs4 import BeautifulSoup
 
 
 class RestaurantsBcSpider(scrapy.Spider):
@@ -61,7 +63,8 @@ class RestaurantsBcSpider(scrapy.Spider):
         tripadvisor_rating = [response.xpath("//a[@class='fhGHT']/span/b/span/text()").get(), response.xpath("//a[@class='fhGHT']/span/text()").get()]
         tags = response.xpath("//a[@class='drUyy']/text()").getall()
         cost = tags.pop(0)
-        website = response.xpath("(//a[@class='dOGcA Ci Wc _S C fhGHT'])[1]/@href").get()
+        website = self.parse_url(response.url)
+        # website = response.xpath("(//a[@class='dOGcA Ci Wc _S C fhGHT'])[1]").getall()
         # hours = response.xpath("//div[@class='cFfqI']/div/span/span/text()").get()
         # for x in range (7):
         #     if hours[1] == "PM":
@@ -72,7 +75,7 @@ class RestaurantsBcSpider(scrapy.Spider):
         # thurs = []
         # fri = []
         # sat = []
-        google_maps_link = response.xpath("(//a[@class='dOGcA Ci Wc _S C dkdrG'])[1]/@href").get()
+        # google_maps_link = response.xpath("(//a[@class='dOGcA Ci Wc _S C dkdrG'])[1]/@href").get()
 
         
         yield {
@@ -83,8 +86,8 @@ class RestaurantsBcSpider(scrapy.Spider):
             'tripadvisor_rating': tripadvisor_rating,
             'cost': cost,
             'tags': tags,
-            'website': website,
-            'google_maps_link': google_maps_link
+            # 'website': website,
+            # 'google_maps_link': google_maps_link
     
         }
 
@@ -97,13 +100,10 @@ class RestaurantsBcSpider(scrapy.Spider):
     #     digit = int(digit_string)
     #     return digit
         
-    # def parse_urls(self, page):
-    #     html = requests.get(page).text
-    #     soup = BeautifulSoup(html, 'html.parser')
-    #     tags = soup.find_all('a')
-    #     urls = [tag.get('href') for tag in tags]
-    #     urls = [url.replace('\\', '') for url in urls]
-    #     urls = [url.replace('\"', '') for url in urls]
-    #     return urls
+    def parse_url(self, page):
+        html = requests.get(page).text
+        soup = BeautifulSoup(html, 'html.parser')
+        link = soup.find(class_= 'dOGcA Ci Wc _S C fhGHT')
+        return link
 
         
