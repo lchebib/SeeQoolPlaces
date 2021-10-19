@@ -13,8 +13,33 @@ SPIDER_MODULES = ['tripadvisor.spiders']
 NEWSPIDER_MODULE = 'tripadvisor.spiders'
 
 
+NUMBER_OF_PROXIES_TO_FETCH = 5 # Controls how many proxies to use
+ROTATING_PROXY_LIST = [
+    # 'http://12.151.56.30:80', # DEAD
+    # 'http://140.227.211.47:8080', # DEAD
+	# 'http://52.183.8.192:3128', # DEAD
+	'http://64.124.38.141:8080',
+	# 'http://167.71.199.228:8080' # DEAD
+	# 'http://134.122.93.93:8080', # DEAD	
+	# 'http://136.228.141.154:80'
+	# 'http://184.82.128.211:8080'
+	# '161.81.204.86:1080',
+	# '184.82.128.211',
+	# 'http://134.122.93.93:8080',
+	# 'http://64.124.38.126:8080'
+
+]
+
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'tripadvisor (+http://www.yourdomain.com)'
+USER_AGENTS = [
+    ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'),
+    ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15'),
+    ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36'),
+	('Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36'),
+	('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36')
+]
+
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -25,7 +50,7 @@ ROBOTSTXT_OBEY = True
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+# DOWNLOAD_DELAY = 1
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
