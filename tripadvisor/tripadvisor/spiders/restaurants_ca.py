@@ -4,18 +4,20 @@ import scrapy
 class RestaurantsCaSpider(scrapy.Spider):
     name = 'restaurants_ca'
     allowed_domains = []
-    start_urls = ['http://www.tripadvisor.ca/Restaurants-g28926-California.html/']
-    counter = 0;
+    start_urls = [
+        'http://www.tripadvisor.ca/Restaurants-g28926-California.html/']
+    counter = 0
 
     """
     Scrapes the first page of regions within CA.
     Grabs and follows link to each region.
     """
+
     def parse(self, response):
-        
+
         print('****************************************************')
         print('...............Parsing regions (first page)...............')
-        
+
         region_links = response.xpath("//div[@class='geo_name']/a/@href")
 
         for region_link in region_links:
@@ -32,6 +34,7 @@ class RestaurantsCaSpider(scrapy.Spider):
     therefore we needed a seperate function to parse those pages.
     Grabs and follows link to each region.
     """
+
     def parse_regions(self, response):
         print('****************************************************')
         print('...............Parsing regions...............')
@@ -46,13 +49,15 @@ class RestaurantsCaSpider(scrapy.Spider):
         last_page = response.xpath("//span[@class='guiArw pageEndNext']")
 
         if ((last_page is not None) and (counter < 3)):
-            next_page = response.xpath("//a[@class='guiArw sprite-pageNext  pid0']/@href").get()
+            next_page = response.xpath(
+                "//a[@class='guiArw sprite-pageNext  pid0']/@href").get()
             yield response.follow(url=next_page, callback=self.parse_regions)
-            counter =+ 1
-        
+            counter = + 1
+
     """
     Scrapes and follows link to each restaurant.
     """
+
     def parse_all_restaurants(self, response):
 
         if (response.xpath("//div[@id='PAGE']/@class").get() == " non_hotels_like desktop scopedSearch"):
@@ -63,7 +68,8 @@ class RestaurantsCaSpider(scrapy.Spider):
         for link in rest_links:
             yield response.follow(url=link, callback=self.parse_restaurant)
 
-        next_page = response.xpath("//a[@class='nav next rndBtn ui_button primary taLnk']/@href").get()
+        next_page = response.xpath(
+            "//a[@class='nav next rndBtn ui_button primary taLnk']/@href").get()
 
         if ((next_page is not None) and (self.counter < 2)):
             yield response.follow(url=next_page, callback=self.parse_all_restaurants)
@@ -72,23 +78,25 @@ class RestaurantsCaSpider(scrapy.Spider):
     """
     Scrapes restaurant information from restaurant page.
     """
+
     def parse_restaurant(self, response):
         restaurant_name = response.xpath("//h1[@class='fHibz']/text()").get()
         # address = response.xpath("//a[@class='fhGHT']/text()").get()
-        rating = response.xpath("//a[@class='iPqaD _F G- ddFHE eKwUx']/*[local-name() = 'svg']/@title").get()
+        rating = response.xpath(
+            "//a[@class='iPqaD _F G- ddFHE eKwUx']/*[local-name() = 'svg']/@title").get()
         num_reviews = response.xpath("//span[@class='eBTWs']/text()").get()
-        tripadvisor_rating = [response.xpath("//a[@class='fhGHT']/span/b/span/text()").get(), response.xpath("//a[@class='fhGHT']/span/text()").get()]
+        rank_in_city = [response.xpath("//a[@class='fhGHT']/span/b/span/text()").get(
+        ), response.xpath("//a[@class='fhGHT']/span/text()").get()]
         tags = response.xpath("//a[@class='drUyy']/text()").getall()
         cost = tags.pop(0)
-        
+
         yield {
             'restaurant_name': restaurant_name,
             # 'address': address,
             'rating': rating,
             'num_reviews': num_reviews,
-            'tripadvisor_rating': tripadvisor_rating,
+            'rank_in_city': rank_in_city,
             'cost': cost,
-            'tags': tags,
-    
-        }
+            'categories': tags,
 
+        }

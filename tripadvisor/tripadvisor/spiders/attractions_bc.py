@@ -27,7 +27,7 @@ class AttractionsBcSpider(scrapy.Spider):
         # TODO WORKING ON THIS
         # last_page = response.xpath("")
 
-        while (self.results_parsed < self.num_results) and (self.counter < 3): # uncomment to scrape all trails
+        while (self.results_parsed < self.num_results): # uncomment to scrape all trails
 
             print(f'...............Attractions remaining: {self.num_results - self.results_parsed}...............')
 

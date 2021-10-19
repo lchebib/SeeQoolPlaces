@@ -4,12 +4,13 @@ import scrapy
 class AttractionsCaSpider(scrapy.Spider):
     name = 'attractions_ca'
     allowed_domains = []
-    start_urls = ['http://www.tripadvisor.ca/Attractions-g28926-Activities-a_allAttractions.true-California.html/']
+    start_urls = [
+        'http://www.tripadvisor.ca/Attractions-g28926-Activities-a_allAttractions.true-California.html/']
 
     counter = 0
-    num_results =  27408
+    num_results = 27408
     results_parsed = 30
-    
+
     def parse(self, response):
 
         print('****************************************************')
@@ -26,19 +27,20 @@ class AttractionsCaSpider(scrapy.Spider):
         # TODO WORKING ON THIS
         # last_page = response.xpath("")
 
-        while (self.results_parsed < self.num_results) and (self.counter < 3): # uncomment to scrape all trails
+        while (self.results_parsed < self.num_results):  # uncomment to scrape all trails
 
-            print(f'...............Attractions remaining: {self.num_results - self.results_parsed}...............')
+            print(
+                f'...............Attractions remaining: {self.num_results - self.results_parsed}...............')
             next_page = f'https://www.tripadvisor.ca/Attractions-g28926-Activities-oa{self.results_parsed}-California.html'
             yield response.follow(url=next_page, callback=self.parse)
             self.results_parsed += 30
             self.counter += 1
-            
+
         print(f'...............Finished parsing...............')
         print('****************************************************')
 
-
     # not working: attraction rating, website_link, photo, about
+
     def parse_attraction(self, response):
         attraction_name = response.xpath(
             "//h1[@class='WlYyy cPsXC GeSzT']/text()").get()
@@ -68,4 +70,3 @@ class AttractionsCaSpider(scrapy.Spider):
             'about': about,
             'suggested_duration': suggested_duration
         }
-

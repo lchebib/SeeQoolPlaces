@@ -13,31 +13,15 @@ SPIDER_MODULES = ['tripadvisor.spiders']
 NEWSPIDER_MODULE = 'tripadvisor.spiders'
 
 
-NUMBER_OF_PROXIES_TO_FETCH = 5 # Controls how many proxies to use
+NUMBER_OF_PROXIES_TO_FETCH = 5  # Controls how many proxies to use
 ROTATING_PROXY_LIST = [
-    # 'http://12.151.56.30:80', # DEAD
-    # 'http://140.227.211.47:8080', # DEAD
-	# 'http://52.183.8.192:3128', # DEAD
-	'http://64.124.38.141:8080',
-	# 'http://167.71.199.228:8080' # DEAD
-	# 'http://134.122.93.93:8080', # DEAD	
-	# 'http://136.228.141.154:80'
-	# 'http://184.82.128.211:8080'
-	# '161.81.204.86:1080',
-	# '184.82.128.211',
-	# 'http://134.122.93.93:8080',
-	# 'http://64.124.38.126:8080'
-
+    'http://64.124.38.141:8080'
 ]
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENTS = [
-    ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'),
-    ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15'),
-    ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36'),
-	('Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36'),
-	('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36')
+    ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15')
 ]
 
 
@@ -62,34 +46,34 @@ ROBOTSTXT_OBEY = True
 #TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
-#DEFAULT_REQUEST_HEADERS = {
+# DEFAULT_REQUEST_HEADERS = {
 #   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
 #   'Accept-Language': 'en',
-#}
+# }
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
+# SPIDER_MIDDLEWARES = {
 #    'tripadvisor.middlewares.TripadvisorSpiderMiddleware': 543,
-#}
+# }
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
+# DOWNLOADER_MIDDLEWARES = {
 #    'tripadvisor.middlewares.TripadvisorDownloaderMiddleware': 543,
-#}
+# }
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
-#EXTENSIONS = {
+# EXTENSIONS = {
 #    'scrapy.extensions.telnet.TelnetConsole': None,
-#}
+# }
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
+# ITEM_PIPELINES = {
 #    'tripadvisor.pipelines.TripadvisorPipeline': 300,
-#}
+# }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
