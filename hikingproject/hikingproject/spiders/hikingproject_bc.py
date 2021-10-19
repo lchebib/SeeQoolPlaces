@@ -1,13 +1,10 @@
 import scrapy
-import requests
-from bs4 import BeautifulSoup
 
 
-class HikingprojectCaSpider(scrapy.Spider):
-    name = 'hikingproject_ca'
+class HikingprojectBcSpider(scrapy.Spider):
+    name = 'hikingproject_bc'
     allowed_domains = []
-    start_urls = ['https://www.hikingproject.com/directory/8007121/california']
-
+    start_urls = ['http://www.hikingproject.com/directory/8006666/british-columbia/']
 
     def parse(self, response):
         trails = response.xpath("//tr[@class='trail-row']")

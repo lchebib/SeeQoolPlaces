@@ -1,4 +1,4 @@
-# Scrapy settings for trail_scraper project
+# Scrapy settings for hikingproject project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -7,29 +7,15 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'trail_scraper'
+BOT_NAME = 'hikingproject'
 
-SPIDER_MODULES = ['trail_scraper.spiders']
-NEWSPIDER_MODULE = 'trail_scraper.spiders'
-
-
+SPIDER_MODULES = ['hikingproject.spiders']
+NEWSPIDER_MODULE = 'hikingproject.spiders'
 
 
 NUMBER_OF_PROXIES_TO_FETCH = 5 # Controls how many proxies to use
 ROTATING_PROXY_LIST = [
-    # 'http://12.151.56.30:80', # DEAD
-    # 'http://140.227.211.47:8080', # DEAD
-	# 'http://52.183.8.192:3128', # DEAD
-	'http://64.124.38.141:8080',
-	# 'http://167.71.199.228:8080' # DEAD
-	# 'http://134.122.93.93:8080', # DEAD	
-	# 'http://136.228.141.154:80'
-	# 'http://184.82.128.211:8080'
-	# '161.81.204.86:1080',
-	# '184.82.128.211',
-	# 'http://134.122.93.93:8080',
-	# 'http://64.124.38.126:8080'
-
+	'http://64.124.38.141:8080'
 ]
 
 
@@ -42,7 +28,6 @@ USER_AGENTS = [
 	('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36')
 ]
 
-
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 
@@ -52,13 +37,13 @@ ROBOTSTXT_OBEY = True
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 1
+#DOWNLOAD_DELAY = 3
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
-# CONCURRENT_REQUESTS_PER_IP = 16
+#CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-COOKIES_ENABLED = False
+#COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
@@ -72,20 +57,14 @@ COOKIES_ENABLED = False
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'trail_scraper.middlewares.TrailScraperSpiderMiddleware': 543,
+#    'hikingproject.middlewares.HikingprojectSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'trail_scraper.middlewares.TrailScraperDownloaderMiddleware': 543,
+#    'hikingproject.middlewares.HikingprojectDownloaderMiddleware': 543,
 #}
-DOWNLOADER_MIDDLEWARES = {
-    'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
-    'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
-	'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
-	'scrapy_useragents.downloadermiddlewares.useragents.UserAgentsMiddleware': 500
-}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -96,7 +75,7 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 #ITEM_PIPELINES = {
-#    'trail_scraper.pipelines.TrailScraperPipeline': 300,
+#    'hikingproject.pipelines.HikingprojectPipeline': 300,
 #}
 
 # Enable and configure the AutoThrottle extension (disabled by default)

@@ -6,7 +6,7 @@
 import scrapy
 
 
-class TrailScraperItem(scrapy.Item):
+class HikingprojectItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     pass
