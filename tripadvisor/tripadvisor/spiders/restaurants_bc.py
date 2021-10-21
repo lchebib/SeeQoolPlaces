@@ -1,14 +1,10 @@
 import scrapy
-import requests
-from bs4 import BeautifulSoup
 
 
 class RestaurantsBcSpider(scrapy.Spider):
     name = 'restaurants_bc'
     allowed_domains = []
-    start_urls = [
-        'http://www.tripadvisor.ca/Restaurants-g154922-British_Columbia.html/']
-    counter = 0
+    start_urls = ['http://www.tripadvisor.ca/Restaurants-g154922-British_Columbia.html/']
 
     """
     Scrapes the first page of regions within BC.
@@ -24,11 +20,10 @@ class RestaurantsBcSpider(scrapy.Spider):
 
         for region_link in region_links:
             yield response.follow(url=region_link, callback=self.parse_all_restaurants)
-            break
 
-        # second_page = response.xpath("//a[@class='nav next rndBtn ui_button primary taLnk']/@href").get()
-        # if second_page is not None:
-        #     yield response.follow(url=second_page, callback=self.parse_regions)
+        second_page = response.xpath("//a[@class='nav next rndBtn ui_button primary taLnk']/@href").get()
+        if second_page is not None:
+            yield response.follow(url=second_page, callback=self.parse_regions)
 
     """
     Scrapes the second page onwards of regions within BC.
@@ -41,8 +36,6 @@ class RestaurantsBcSpider(scrapy.Spider):
         print('****************************************************')
         print('...............Parsing regions...............')
 
-        counter = 0
-
         region_links = response.xpath("//ul[@class='geoList']/li/a/@href")
 
         for region_link in region_links:
@@ -50,11 +43,9 @@ class RestaurantsBcSpider(scrapy.Spider):
 
         last_page = response.xpath("//span[@class='guiArw pageEndNext']")
 
-        if ((last_page is not None) and (counter < 3)):
-            next_page = response.xpath(
-                "//a[@class='guiArw sprite-pageNext  pid0']/@href").get()
+        if (last_page is not None):
+            next_page = response.xpath("//a[@class='guiArw sprite-pageNext  pid0']/@href").get()
             yield response.follow(url=next_page, callback=self.parse_regions)
-            counter = + 1
 
     """
     Scrapes and follows link to each restaurant.
@@ -70,12 +61,10 @@ class RestaurantsBcSpider(scrapy.Spider):
         for link in rest_links:
             yield response.follow(url=link, callback=self.parse_restaurant)
 
-        next_page = response.xpath(
-            "//a[@class='nav next rndBtn ui_button primary taLnk']/@href").get()
+        next_page = response.xpath("//a[@class='nav next rndBtn ui_button primary taLnk']/@href").get()
 
-        if ((next_page is not None) and (self.counter < 2)):
+        if (next_page is not None):
             yield response.follow(url=next_page, callback=self.parse_all_restaurants)
-            self.counter += 1
 
     """
     Scrapes restaurant information from restaurant page.
@@ -84,13 +73,14 @@ class RestaurantsBcSpider(scrapy.Spider):
     def parse_restaurant(self, response):
         restaurant_name = response.xpath("//h1[@class='fHibz']/text()").get()
         # address = response.xpath("//a[@class='fhGHT']/text()").get()
-        rating = response.xpath(
-            "//a[@class='iPqaD _F G- ddFHE eKwUx']/*[local-name() = 'svg']/@title").get()
+        rating = response.xpath("//a[@class='iPqaD _F G- ddFHE eKwUx']/*[local-name() = 'svg']/@title").get()
         num_reviews = response.xpath("//span[@class='eBTWs']/text()").get()
-        rank_in_city = [response.xpath("//a[@class='fhGHT']/span/b/span/text()").get(
-        ), response.xpath("//a[@class='fhGHT']/span/text()").get()]
+        rank_in_city = [response.xpath("//a[@class='fhGHT']/span/b/span/text()").get(), response.xpath("//a[@class='fhGHT']/span/text()").get()]
         tags = response.xpath("//a[@class='drUyy']/text()").getall()
-        cost = tags.pop(0)
+        cost = ""
+        if (tags):
+            if ("$" in tags[0]):
+                cost = tags.pop(0)
 
         yield {
             'restaurant_name': restaurant_name,
