@@ -50,13 +50,13 @@ class AttractionsCaSpider(scrapy.Spider):
         attraction_category = response.xpath(
             "(//div[@class='WlYyy diXIH dDKKM'])[5]/text()").get()
         num_reviews = response.xpath(
-            "(//span[@class='cfIVb'])[1]/text()").get()
+            "//div[1]/a/div/span/span/text()").get()
         rank_in_city = response.xpath(
             "(//div[@class='WlYyy diXIH dDKKM'])[4]/text()").get()
         photo = response.xpath(
             "(//div[@class='eMVst _R w h GA'])[1]/@style").get()
         about = response.xpath(
-            "(//div[@class='WlYyy diXIH dDKKM'])[14]").get()
+            "//div[1]/div[1]/span/div[2]/div/div[1]/div/text()").get()
         suggested_duration = response.xpath(
             "//div[@class='cYygO _c']/text()").get()
 
