@@ -10,7 +10,7 @@ const app = express();
 // Route 1 - register as GET 
 app.get('/hello', routes.hello)
 
-// Route 4 - register as GET 
+// Route 2 - register as GET 
 app.get('/random_city', routes.random)
 
 
