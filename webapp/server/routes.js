@@ -44,16 +44,17 @@ async function random(req, res) {
   // random city to use for query 
   const randomCity = randomCities[randomIndex];
 
-  // This is the case where page is defined.
-  // The SQL schema has the attribute OverallRating, but modify it to match spec! 
-  // TODO: query and return results here:
-
-
-  connection.query(`SELECT PlayerId, Name, Nationality, OverallRating AS Rating, Potential, Club, Value 
-        FROM Players 
-        ORDER BY Name
-        LIMIT ${limit} OFFSET ${offset}`, function (error, results, fields) {
-
+  // TODO: 
+  // Xulei -- this query is really just a placeholder! we need a query to use to test our DB
+  // once it it up and running
+  // right now this query will (I hope) return the attraction and photo from the attraction
+  // with the most reviews in the randomCity
+  connection.query(`SELECT AttractionName, Photo 
+        FROM Attractions 
+        WHERE city = ${randomCity} AND NumRevews >= ALL (SELECT NumReviews
+                    FROM Attractions
+                    WHERE city = ${randomCity})
+        LIMIT 1`, function (error, results, fields) {
     if (error) {
       console.log(error)
       res.json({ error: error })
@@ -61,8 +62,6 @@ async function random(req, res) {
       res.json({ results: results })
     }
   });
-
-
 }
 
 // Route 2 (handler) - return cached trips to view in sidebar
