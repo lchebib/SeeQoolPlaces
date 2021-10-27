@@ -71,16 +71,16 @@ async function all_trips(req, res) {
 
 
   connection.query(
-    `SELECT tid, tripName
+    `SELECT *
     FROM Trips`
     , function (error, results, fields) {
-    if (error) {
-      console.log(error)
-      res.json({ error: error })
-    } else if (results) {
-      res.json({ results: results })
-    }
-  });
+      if (error) {
+        console.log(error)
+        res.json({ error: error })
+      } else if (results) {
+        res.json({ results: results })
+      }
+    });
 }
 
 // ********************************************
