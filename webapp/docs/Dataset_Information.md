@@ -1,19 +1,19 @@
 # Dataset Information
 
-## Introduction
-
 ## Hiking Trails
+TODO: talk about how duration was calculated
+list attributes and describe what they mean and how they are used
 
 ## Tripadvisor Attractions
+TODO: talk about how duration was calculated (where missing)
+list attributes and describe what they mean and how they are used
 
 ## Tripadvisor Restaurants
+TODO: talk about how duration was calculated (where missing)
+list attributes and describe what they mean and how they are used
 
-### World Cities
-
-## Notes
-
-- alsdkjfalsd
-- alskdfja;lsdf
+## World Cities
+TODO: talk about where we got it and how we parsed it from OSM to CSV with java
 
 ## Sources
 
