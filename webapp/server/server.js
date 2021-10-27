@@ -13,6 +13,10 @@ app.get('/hello', routes.hello)
 // Route 2 - register as GET 
 app.get('/random_city', routes.random)
 
+// Route 3 - register as GET 
+app.get('/trips', routes.all_trips)
+
+
 
 // EXAMPLES FROM HW
 // // Route 2 - register as GET 

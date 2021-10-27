@@ -30,7 +30,7 @@ async function hello(req, res) {
 //             Landing Page Routes
 // ********************************************
 
-// Route 1 (handler) - return a random city, and a photo of an attraction or hike
+// Route 2 (handler) - return a random city, and a photo of an attraction or hike
 async function random(req, res) {
   // top 24 'random' cities that we we select from database to show on landing page
   // BC ideas from here: https://www.planetware.com/canada/best-cities-in-british-columbia-cdn-1-284.htm
@@ -64,8 +64,24 @@ async function random(req, res) {
   });
 }
 
-// Route 2 (handler) - return cached trips to view in sidebar
+// Route 3 (handler) - Return names of existing user-made trips to be displayed in sidebar
+// TODO: Placeholder. Update query once Trips schema is confirmed.
 
+async function all_trips(req, res) {
+
+
+  connection.query(
+    `SELECT tid, tripName
+    FROM Trips`
+    , function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      res.json({ results: results })
+    }
+  });
+}
 
 // ********************************************
 //             Save Trip Route
@@ -79,7 +95,8 @@ async function random(req, res) {
 
 module.exports = {
   hello,
-  random
+  random,
+  all_trips
 }
 
 
