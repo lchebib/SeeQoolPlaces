@@ -53,7 +53,7 @@ async function random(req, res) {
         FROM Attractions 
         WHERE city = ${randomCity} AND NumRevews >= ALL (SELECT NumReviews
                     FROM Attractions
-                    WHERE city = ${randomCity})
+                    WHERE city = ${randomCity} AND photo NOT NULL)
         LIMIT 1`, function (error, results, fields) {
     if (error) {
       console.log(error)
