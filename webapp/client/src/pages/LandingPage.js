@@ -1,16 +1,12 @@
 import React from 'react';
-import { Layout, Row, Col, Card, Image } from 'antd';
-
+import { Layout, Row, Col, Card, Button, Space, Divider } from 'antd';
 import SideBar from '../components/SideBar';
-// import PageLayout from '../components/Layout';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import { getRandomCity } from '../fetcher'
-
-import { tempGetRandomCity } from '../tempData'
-
-import '../images/RamenInstruction.png'
 import './LandingPage.less';
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content } = Layout;
 
 class LandingPage extends React.Component {
 
@@ -21,7 +17,7 @@ class LandingPage extends React.Component {
       randomCity: []
     }
 
-    this.randomCityOnChange = this.randomCityOnChange.bind(this)
+    this.onSurpriseMe = this.onSurpriseMe.bind(this)
     this.goToCreateTrip = this.goToCreateTrip.bind(this)
   }
 
@@ -30,63 +26,89 @@ class LandingPage extends React.Component {
     window.location = `/createtrip?cityId=${cityId}`
   }
 
-  // FIXME: Uncomment when data ready
-  randomCityOnChange() {
-    // getRandomCity().then(res => {
-    //   this.setState({ randomCity: res.results})
-    // })
-    this.setState({ randomCity: tempGetRandomCity()})
-    
+  onSurpriseMe() {
+    getRandomCity().then(res => {
+      this.setState({ randomCity: res.results })
+    })
   }
-  // FIXME: Uncomment when data ready
+
   componentDidMount() {
-    // getRandomCity().then(res => {
-    //   this.setState({ randomCity: res.results })
-    // })
-    this.setState({ randomCity: tempGetRandomCity()})
- 
+    getRandomCity().then(res => {
+      this.setState({ randomCity: res.results })
+    })
   }
 
 
   render() {
     return (
       <Layout>
-        <Sider className="sider">
-          <div className="logo" />
-          <SideBar />
-        </Sider>
-        <Layout className="site-layout">
-          <Header className="header">
-          </Header>
-          <Content className="content">
-            <div className="grid">
-              <Row >
-                <Col span={24}>
-                  <Card className="card">
-                    <Image width={200} src="../images/RamenInstruction.png" />
+        <SideBar />
+        <Layout className='layout' style={{ background: 'white', marginLeft: 200 }}>
+          <Header />
+
+          <Content style={{ margin: '24px 24px 0', overflow: 'initial' }}>
+            <div style={{ textAlign: 'center' }}>
+              <Row>
+                <Col span={24} style={{ background: 'white' }}>
+                  <Card style={{ border: '1px solid #000', margin: '10px' }}>
+                    <div style={{ fontFamily: 'Work Sans', fontSize: '4vh' }}>Plan the perfect trip.</div>
+                    <img src={(process.env.PUBLIC_URL + "/RamenInstruction.png")} style={{ maxWidth: '60vw', padding: '20px' }} />
                   </Card>
                 </Col >
               </Row>
-              <Row >
-                <Col span={12}>
-                  <Card className="card">
-                    <h3>Pick a City</h3>
+              <Row>
+                <Col span={12} >
+                  <Card style={{
+                    border: '1px solid #000',
+                    margin: '10px',
+                    backgroundImage: `url(${process.env.PUBLIC_URL + "/travel.jpg"})`,
+                    opacity: '0.8',
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    height: '50vh',
+                    position: 'relative',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                    <div>
+                      <div style={{ fontFamily: 'Work Sans', fontSize: '4vh' }}>Choose City</div>
+                      <Divider />
+                      <Button size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Get Started</Button>
+                    </div>
                   </Card>
                 </Col>
-                <Col span={12}>
-                  <Card className="card">
-                    <h3>{this.state.randomCity.name}</h3>
+                <Col span={12} >
+                  <Card style={{
+                    border: '1px solid #000',
+                    margin: '10px',
+                    backgroundImage: `url(${this.state.randomCity.photo})`,
+                    opacity: '0.8',
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    height: '50vh',
+                    position: 'relative',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                    <div style={{ opcaity: 'unset' }}>
+                      <div style={{ fontFamily: 'Work Sans', fontSize: '4vh' }}>{this.state.randomCity.name}</div>
+                      <Divider />
+                      <Button size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Surprise Me!</Button>
+                      <Button size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Go To City</Button>
+                    </div>
                   </Card>
                 </Col>
               </Row>
             </div>
           </Content>
-          <Footer className="footer">
-            <div>SeeQoolPlaces © 2021</div>
-            <div>Created by Emily Connor, Joel Lim, Xulei Qin, and Lana Chebib</div>
-          </Footer>
+
+          <Footer />
         </Layout>
-      </Layout>
+      </Layout >
     );
   }
 }

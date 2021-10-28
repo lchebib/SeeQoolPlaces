@@ -1,22 +1,22 @@
 
 // Temporary trips
 const myTrips = [
-{
-	tid: "1",
-	name: "San Francisco",
-},
-{
-	tid: "2",
-	name: "Malibu",
-},
-{
-	tid: "3",
-	name: "Victoria",
-}
+	{
+		tid: "1",
+		name: "San Francisco",
+	},
+	{
+		tid: "2",
+		name: "Malibu",
+	},
+	{
+		tid: "3",
+		name: "Victoria",
+	}
 ];
 
 
-// Temporary randomly generated city and photo
+// Temporary cities
 const randomCities = [
 	{
 		cid: "1",
@@ -33,13 +33,30 @@ const randomCities = [
 		name: "Big Sur",
 		photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/7b/35/5a/pfeiffer-big-sur-state.jpg?w=2200&h=-1&s=1"
 	}
-	];
+];
 
-
-
-	function tempGetRandomCity() {
-		const randomIndex = Math.floor(Math.random() * 4);
-		return randomCities[randomIndex]
+// Temporary users
+const users = [
+	{
+		username: "Admin",
+		loggedIn: true,
+	},
+	{
+		username: "Oprah",
+		loggedIn: false,
 	}
+];
 
-	export { myTrips, tempGetRandomCity };
+
+function tempGetRandomCity() {
+	const randomIndex = Math.floor(Math.random() * 3);
+	return randomCities[randomIndex]
+}
+
+
+function tempGetLoggedInUser() {
+	return users.find(user => user.loggedIn === true)
+
+}
+
+export { myTrips, tempGetRandomCity, tempGetLoggedInUser };

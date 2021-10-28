@@ -1,7 +1,6 @@
 import React from 'react';
 import { Menu } from 'antd';
-
-import { myTrips } from '../tempData.js'
+import { getAllTrips } from '../fetcher'
 
 const { SubMenu } = Menu;
 
@@ -15,39 +14,49 @@ class SideBar extends React.Component {
       myTrips: []
     }
 
-    this.handleMenuClick = this.handleMenuClick.bind(this)
+    this.onClick = this.onClick.bind(this)
   }
 
-  handleMenuClick(menuItem) {
+  onClick(menuItem) {
     console.log(menuItem.key)
 
-    if (isNaN(menuItem.key)){
+    if (isNaN(menuItem.key)) {
       window.location = `/${menuItem.key}`
     } else {
       window.location = `/trip?id=${menuItem.key}`
     }
   }
 
-  // FIXME: Uncomment when data ready
   componentDidMount() {
-    // getAllTrips().then(res => {
-    //   console.log(res.results)
-    //   this.setState({ myTrips: res.results })
-    this.setState({ myTrips: myTrips })
-    // })
+    getAllTrips().then(res => {
+      console.log(res.results)
+      this.setState({ myTrips: res.results })
+    })
 
   }
 
   render() {
     return (
+
       <Menu
         theme="light"
-        onClick={(menuItem, e) => this.handleMenuClick(menuItem, e)}
+        onClick={(menuItem, e) => this.onClick(menuItem, e)}
         defaultOpenKeys={['NewTrip', 'MyTrips']}
         mode="inline"
+        style={{
+          paddingTop: '15px',
+          overflow: 'auto',
+          position: 'fixed',
+          width: '200px',
+          height: '100vh',
+          borderRight: '1px solid #000',
+        }}
       >
+        <div>
+          <img src={`${process.env.PUBLIC_URL + "/logo-header.svg"}`} style={{ maxWidth: '100%', height: 'auto', padding: '10px', paddingTop: '15px', paddingBottom: '15px' }} />
+        </div>
         <SubMenu key="NewTrip" title="New Trip">
-          <Menu.Item key="CreateTrip">Create Trip</Menu.Item>
+          <Menu.Item key="CreateTrip">Choose City</Menu.Item>
           <Menu.Item key="PickActivities">Pick Activities</Menu.Item>
           <Menu.Item key="MakeSchedule">Make Schedule</Menu.Item>
         </SubMenu>
