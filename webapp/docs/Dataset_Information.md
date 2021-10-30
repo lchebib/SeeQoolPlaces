@@ -1,19 +1,69 @@
 # Dataset Information
 
 ## Hiking Trails
-TODO: talk about how duration was calculated
-list attributes and describe what they mean and how they are used
+We scraped data from Hiking Project to get top trails in British Columbia and Canada. We scraped data using the Python scrapy framework. We then cleaned and preprocessed the data with Pandas in Google Colab.
+- PID (each attraction has a unique ID that identifies it among all POI's)
+- trail_name
+- difficulty
+- rating (rated 1 to 5 on Hiking Project)
+- num_reviews
+- route_type (point to point / Loop)
+- length (in km)
+- high (highest point)
+- low (lowest point)
+- gmaps_link
+- description
+- photo
+- lat (latitude)
+- lon (longitude)
+- city
+- state
+- suggested duration (we estimated 3km per hour)
+- category (restaurants, attractions, trails)
 
 ## Tripadvisor Attractions
-TODO: talk about how duration was calculated (where missing)
-list attributes and describe what they mean and how they are used
+We scraped data from Tripadvisor to get top attractions in British Columbia and Canada. We scraped data using the Python scrapy framework. We then cleaned and preprocessed the data with Pandas in Google Colab.
+Here are the column headers:
+- PID (each attraction has a unique ID that identifies it among all POI's)
+- attraction_name (name of attraction)
+- attraction_rating (rated 1 to 5 on Tripadvisor)
+- tags (tags refer to anything that was listed after the subcategory)
+- num_reviews
+- about (description, null for some attractions)
+- suggested_duration (of of five possible durations, where null, we added a duration)
+- subcategory (we used the first item listed in "tags" for this)
+- photo (link to first photo shown on TA)
+- city
+- state (we use "state" to refer to province and state)
+- category (restaurants, attractions, trails)
 
 ## Tripadvisor Restaurants
-TODO: talk about how duration was calculated (where missing)
-list attributes and describe what they mean and how they are used
+We scraped data from Tripadvisor to get top attractions in British Columbia and Canada. We scraped data using the Python scrapy framework. We then cleaned and preprocessed the data with Pandas in Google Colab.
+Here are the column headers:
+- PID (each attraction has a unique ID that identifies it among all POI's)
+- name (of restaurant)
+- rating (rated 1 to 5 on Tripadvisor)
+- num_reviews
+- tags
+- subcategory
+- city
+- state
+- cost_low (extracted from the $$ range and made into separate column)
+- cost_high (extracted from the $$ range and made into separate column)
+- suggested_duration
+- category (restaurants, attractions, trails)
+
 
 ## World Cities
-TODO: talk about where we got it and how we parsed it from OSM to CSV with java
+See Sources below for link to site. Pre-processed data using Pandas in Google Colab.
+Here are the column headers:
+- CID (city ID)
+- city
+- lat
+- lon
+- country
+- state
+- population
 
 ## Sources
 
@@ -29,5 +79,4 @@ TODO: talk about where we got it and how we parsed it from OSM to CSV with java
 
 [Hiking Trails - CA](https://www.hikingproject.com/directory/8007121/california)  
 
-TODO:
-[World Cities](LINK GOES HERE)
+[World Cities](https://simplemaps.com/data/world-cities)
