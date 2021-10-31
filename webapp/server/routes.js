@@ -35,14 +35,16 @@ async function random(req, res) {
   // top 24 'random' cities that we we select from database to show on landing page
   // BC ideas from here: https://www.planetware.com/canada/best-cities-in-british-columbia-cdn-1-284.htm
   // CA ideas from here: https://travel.usnews.com/rankings/best-places-to-visit-in-california/ 
-  const randomCities = ['Vancouver', 'Victoria', 'Kelowna', 'Penticton', 'Whistler', 'Nanaimo', 'Squamish',
-    'Nelson', 'Revelstoke', 'Kamloops', 'Vernon', 'Yosemite Valley', 'San Francisco', 'San Diego', 'Big Sur',
-    'Three Rivers', 'Santa Monica', 'Los Angeles', 'Laguna Beach', 'Sonoma', 'Joshua Tree', 'Sausalito',
-    'Malibu', 'Mammoth Lakes'];
+  const randomCities = [['Vancouver', 'BC'], ['Victoria', 'BC'], ['Kelowna', 'BC'], ['Penticton', 'BC'], ['Whistler', 'BC'], ['Nanaimo', 'BC'], ['Squamish', 'BC'],
+  ['Nelson', 'BC'], ['Revelstoke', 'BC'], ['Kamloops', 'BC'], ['Vernon', 'BC'], ['Yosemite Valley', 'CA'], ['San Francisco', 'CA'], ['San Diego', 'CA'], ['Big Sur', 'CA'],
+  ['Three Rivers', 'CA'], ['Santa Monica', 'CA'], ['Los Angeles', 'CA'], ['Laguna Beach', 'CA'], ['Sonoma', 'CA'], ['Joshua Tree', 'CA'], ['Sausalito', 'CA'],
+  ['Malibu', 'CA'], ['Mammoth Lakes', 'CA']];
   // returns a random number 0-25
   const randomIndex = Math.floor(Math.random() * 25);
   // random city to use for query 
-  const randomCity = randomCities[randomIndex];
+  const randomCity = randomCities[randomIndex][0];
+  const randomState = randomCities[randomIndex][1];
+
 
   // TODO: 
   // Xulei -- this query is really just a placeholder! we need a query to use to test our DB
@@ -50,10 +52,10 @@ async function random(req, res) {
   // right now this query will (I hope) return the attraction and photo from the attraction
   // with the most reviews in the randomCity
   connection.query(`SELECT AttractionName, Photo 
-        FROM Attractions 
+        FROM POI p JOIN Attractions a ON p.city=a.city AND p.state=s.state
         WHERE city = ${randomCity} AND NumRevews >= ALL (SELECT NumReviews
                     FROM Attractions
-                    WHERE city = ${randomCity} AND photo NOT NULL)
+                    WHERE city = ${randomCity} AND state = ${randomState} AND photo NOT NULL)
         LIMIT 1`, function (error, results, fields) {
     if (error) {
       console.log(error)
