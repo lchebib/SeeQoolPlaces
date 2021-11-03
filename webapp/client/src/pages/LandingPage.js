@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Row, Col, Card, Button, Space, Divider } from 'antd';
+import { Layout, Row, Col, Card, Button, Divider, Space } from 'antd';
 import SideBar from '../components/SideBar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -18,12 +18,6 @@ class LandingPage extends React.Component {
     }
 
     this.onSurpriseMe = this.onSurpriseMe.bind(this)
-    this.goToCreateTrip = this.goToCreateTrip.bind(this)
-  }
-
-
-  goToCreateTrip(cityId) {
-    window.location = `/createtrip?cityId=${cityId}`
   }
 
   onSurpriseMe() {
@@ -31,6 +25,7 @@ class LandingPage extends React.Component {
       this.setState({ randomCity: res.results })
     })
   }
+
 
   componentDidMount() {
     getRandomCity().then(res => {
@@ -52,7 +47,7 @@ class LandingPage extends React.Component {
                 <Col span={24} style={{ background: 'white' }}>
                   <Card style={{ border: '1px solid #000', margin: '10px' }}>
                     <div style={{ fontFamily: 'Work Sans', fontSize: '4vh' }}>Plan the perfect trip.</div>
-                    <img src={(process.env.PUBLIC_URL + "/RamenInstruction.png")} style={{ maxWidth: '60vw', padding: '20px' }} />
+                    <img src={(process.env.PUBLIC_URL + "/instructions.png")} alt="" style={{ maxWidth: '60vw', padding: '20px' }} />
                   </Card>
                 </Col >
               </Row>
@@ -62,7 +57,7 @@ class LandingPage extends React.Component {
                     border: '1px solid #000',
                     margin: '10px',
                     backgroundImage: `url(${process.env.PUBLIC_URL + "/travel.jpg"})`,
-                    opacity: '0.8',
+                    opacity: '0.9',
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
@@ -75,7 +70,7 @@ class LandingPage extends React.Component {
                     <div>
                       <div style={{ fontFamily: 'Work Sans', fontSize: '4vh' }}>Choose City</div>
                       <Divider />
-                      <Button size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Get Started</Button>
+                      <Button href={"/createtrip"} size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Get Started</Button>
                     </div>
                   </Card>
                 </Col>
@@ -84,7 +79,7 @@ class LandingPage extends React.Component {
                     border: '1px solid #000',
                     margin: '10px',
                     backgroundImage: `url(${this.state.randomCity.photo})`,
-                    opacity: '0.8',
+                    opacity: '0.9',
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
@@ -94,18 +89,19 @@ class LandingPage extends React.Component {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                    <div style={{ opcaity: 'unset' }}>
-                      <div style={{ fontFamily: 'Work Sans', fontSize: '4vh' }}>{this.state.randomCity.name}</div>
+                    <div style={{ opacity: 'reset' }}>
+                      <div style={{ fontFamily: 'Work Sans', fontSize: '4vh' }}>{this.state.randomCity.city}</div>
                       <Divider />
-                      <Button size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Surprise Me!</Button>
-                      <Button size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Go To City</Button>
+                      <Space>
+                        <Button onClick={this.onSurpriseMe} size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Surprise Me!</Button>
+                        <Button href={`/city?id=${this.state.randomCity.id}`} size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Go To City</Button>
+                      </Space>
                     </div>
                   </Card>
                 </Col>
               </Row>
             </div>
           </Content>
-
           <Footer />
         </Layout>
       </Layout >

@@ -1,31 +1,30 @@
 import React from 'react';
-
-
+import { Layout, Row, Col, Card, Button, Divider } from 'antd';
 import SideBar from '../components/SideBar';
-import { } from '../fetcher'
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
+const { Content } = Layout;
 
 class SchedulePage extends React.Component {
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
- 
-    }
-
- 
-  }
 
 
-  render() {
+	render() {
+		return (
+			<Layout>
+				<SideBar />
+				<Layout className='layout' style={{ background: 'white', marginLeft: 200 }}>
+					<Header />
 
-    return (
-      null
-      
-    )
-  }
+					<Content style={{ margin: '24px 24px 0', overflow: 'initial' }}>
+					</Content>
 
+					<Footer />
+				</Layout>
+			</Layout >
+		);
+	}
 }
 
 export default SchedulePage

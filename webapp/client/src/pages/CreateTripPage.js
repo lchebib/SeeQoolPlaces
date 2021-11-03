@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 
 const { Content } = Layout;
 
-class ActivitiesPage extends React.Component {
+class CreateTripPage extends React.Component {
 
 
 
@@ -27,5 +27,5 @@ class ActivitiesPage extends React.Component {
 	}
 }
 
-export default ActivitiesPage
+export default CreateTripPage
 

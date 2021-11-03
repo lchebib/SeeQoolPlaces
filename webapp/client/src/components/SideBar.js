@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu } from 'antd';
+import { Divider, Menu, Space } from 'antd';
 import { getAllTrips } from '../fetcher'
 
 const { SubMenu } = Menu;
@@ -14,12 +14,10 @@ class SideBar extends React.Component {
       myTrips: []
     }
 
-    this.onClick = this.onClick.bind(this)
+    this.onMenuClick = this.onMenuClick.bind(this)
   }
 
-  onClick(menuItem) {
-    console.log(menuItem.key)
-
+  onMenuClick(menuItem) {
     if (isNaN(menuItem.key)) {
       window.location = `/${menuItem.key}`
     } else {
@@ -29,7 +27,6 @@ class SideBar extends React.Component {
 
   componentDidMount() {
     getAllTrips().then(res => {
-      console.log(res.results)
       this.setState({ myTrips: res.results })
     })
 
@@ -38,35 +35,36 @@ class SideBar extends React.Component {
   render() {
     return (
 
-      <Menu
-        theme="light"
-        onClick={(menuItem, e) => this.onClick(menuItem, e)}
-        defaultOpenKeys={['NewTrip', 'MyTrips']}
-        mode="inline"
-        style={{
-          paddingTop: '15px',
-          overflow: 'auto',
-          position: 'fixed',
-          width: '200px',
-          height: '100vh',
-          borderRight: '1px solid #000',
-        }}
-      >
-        <div>
-          <img src={`${process.env.PUBLIC_URL + "/logo-header.svg"}`} style={{ maxWidth: '100%', height: 'auto', padding: '10px', paddingTop: '15px', paddingBottom: '15px' }} />
-        </div>
-        <SubMenu key="NewTrip" title="New Trip">
-          <Menu.Item key="CreateTrip">Choose City</Menu.Item>
-          <Menu.Item key="PickActivities">Pick Activities</Menu.Item>
-          <Menu.Item key="MakeSchedule">Make Schedule</Menu.Item>
-        </SubMenu>
+      <div>
+        <Menu
+          theme="light"
+          onClick={(menuItem) => this.onMenuClick(menuItem)}
+          defaultOpenKeys={['NewTrip', 'MyTrips']}
+          mode="inline"
+          style={{
+            paddingTop: '15px',
+            overflow: 'auto',
+            position: 'fixed',
+            width: '200px',
+            height: '100vh',
+            borderRight: '1px solid #000',
+          }}
+        >
+          <a href="/">
+            <img src={`${process.env.PUBLIC_URL + "/logo-header.svg"}`} alt="" style={{ maxWidth: '100%', height: 'auto', padding: '10px', paddingTop: '15px', paddingBottom: '15px' }} />
+          </a>
+          <SubMenu key="NewTrip" title="New Trip">
+            <Menu.Item key="quiz">Trip Quiz</Menu.Item>
+            <Menu.Item key="createtrip">Create Trip</Menu.Item>
+          </SubMenu>
 
-        <SubMenu key="MyTrips" title="My Trips">
-          {this.state.myTrips.map((trip) =>
-            <Menu.Item key={trip.tid}>{trip.name}</Menu.Item>
-          )}
-        </SubMenu>
-      </Menu>
+          <SubMenu key="MyTrips" title="My Trips">
+            {this.state.myTrips.map((trip) =>
+              <Menu.Item key={trip.id}>{trip.name}</Menu.Item>
+            )}
+          </SubMenu>
+        </Menu>
+      </div>
     );
 
   }
