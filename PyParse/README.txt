@@ -8,7 +8,7 @@ A brief description of each tool follows.
 Allows user to select and reorder columns in a csv file. This is useful for csv files that are too big to open in Excel.
 A new file is written to disk containing only the selected columns in the specified order.
 
-2) Verify Keys
+2) Verify Key References
 This tool checks the keys in one table referenced by a foreign keys in another table. Only valid rows (i.e. where the foreign keys and keys are aligned) are kept.
 The cleaned dataset containing only valid rows is written to disk.
 
