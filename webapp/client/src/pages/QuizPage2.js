@@ -12,71 +12,264 @@ class QuizPage2 extends React.Component {
 
 
 
-	render() {
-		return (
-			<Layout>
-				<SideBar />
-				<Layout className='layout' style={{ background: 'white', marginLeft: 200 }}>
-					<Header />
+  render() {
+    return (
+      <Layout>
+        <SideBar />
+        <Layout className='layout' style={{ background: 'white', marginLeft: 200 }}>
+          <Header />
 
-					<Content style={{ margin: '24px 24px 0', overflow: 'initial' }}>
+          <Content style={{ margin: '24px 24px 0', overflow: 'initial' }}>
 
-						<BuzzFeedQuiz
-							title={"Choose one."}
-							description={"Your dream trip starts here."}
-							byline={true}
-							autoScroll={true}
-							onRestart={() => alert("This alert was triggered by the onRestart prop!")}
-							onResult={() => alert("The onResult prop triggered this alert!")}
-							questions={[
-								{
-									question: "Here's a default question",
-									answers: [
-										{
-											answer: "Answer one",
-											resultID: 0,
-										},
-										{
-											answer: "Answer two",
-											resultID: 1,
-										},
-										{
-											answer: "Answer three",
-											resultID: 2,
-										},
-									],
-								}
-							]}
-							results={[
-								{
-									title: "Your first result title goes here",
-									description: "Your first result description goes here",
-									// resultImageSrc: FirstResultImage,
-									imageAttribution: "Your photo attribution text goes here",
-									resultID: 0,
-								},
-								{
-									title: "Your second result title goes here",
-									description: "Your second result description goes here",
-									// resultImageSrc: SecondResultImage,
-									resultID: 1,
-								},
-								{
-									title: "Your third result title goes here",
-									description: "Result images and attributions are optional!",
-									resultID: 2,
-								},
-							]}
-						/>
-						);
+            <BuzzFeedQuiz
+              title={"What will you do in this Qool place?"}
+              description={"select the Qoolness of each possibility."}
+              byline={true}
+              autoScroll={true}
+              onRestart={() => alert("This alert was triggered by the onRestart prop!")}
+              onResult={() => alert("The onResult prop triggered this alert!")}
+              questions={[
+                {
+                  question: "Check out local breweries or drink the best coffee the city has to offer.",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 3,
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 2,
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 1,
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                    }
+                  ],
+                },
+                {
+                  question: "Shop for vintage clothing or visit record shops.",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 3,
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 2,
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 1,
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                    }
+                  ],
+                },
+                {
+                  question: "Enjoy nature and go on hikes.",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 3,
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 2,
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 1,
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                    }
+                  ],
+                },
+                {
+                  question: "Get dressed up and go out on the town.",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 3,
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 2,
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 1,
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                    }
+                  ],
+                },
+                {
+                  question: "Day drink on the beach or by a fancy hotel pool.",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 3,
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 2,
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 1,
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                    }
+                  ],
+                },
+                {
+                  question: "Make memories with my children.",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 3,
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 2,
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 1,
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                    }
+                  ],
+                },
+                {
+                  question: "Find activities the whole family will enjoy.",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 3,
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 2,
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 1,
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                    }
+                  ],
+                },
+                {
+                  question: "Going with the flow and finding the best local spots.",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 3,
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 2,
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 1,
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                    }
+                  ],
+                },
+                {
+                  question: "Steep in the history and culture of the city by visiting museums and landmarks",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 3,
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 2,
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 1,
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                    }
+                  ],
+                },
+                {
+                  question: "Occupy a cozy corner of a quiet cafe or bar with a good book.",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 3,
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 2,
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 1,
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                    }
+                  ],
+                },
+              ]}
+              results={[
+                {
+                  title: "Your first result title goes here",
+                  description: "Your first result description goes here",
+                  // resultImageSrc: FirstResultImage,
+                  imageAttribution: "Your photo attribution text goes here",
+                  resultID: 0,
+                },
+                {
+                  title: "Your second result title goes here",
+                  description: "Your second result description goes here",
+                  // resultImageSrc: SecondResultImage,
+                  resultID: 1,
+                },
+                {
+                  title: "Your third result title goes here",
+                  description: "Result images and attributions are optional!",
+                  resultID: 2,
+                },
+              ]}
+            />
+            );
 
-					</Content>
+          </Content>
 
-					<Footer />
-				</Layout>
-			</Layout >
-		);
-	}
+          <Footer />
+        </Layout>
+      </Layout >
+    );
+  }
 }
 
 export default QuizPage2

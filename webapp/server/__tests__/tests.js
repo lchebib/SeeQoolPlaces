@@ -10,40 +10,40 @@ const app = require('../server');
 
 
 test("GET /hello no parameters", async () => {
-    await supertest(app).get("/hello?")
-      .expect(200)
-      .then((response) => {
-        // Check text 
-        expect(response.text).toBe("Hello! Welcome to the FIFA server!")
-      });
+  await supertest(app).get("/hello?")
+    .expect(200)
+    .then((response) => {
+      // Check text 
+      expect(response.text).toBe("Hello! Welcome to the FIFA server!")
+    });
 });
 
 test("GET /hello with name", async () => {
-  
-    await supertest(app).get("/hello?name=Steve")
-      .expect(200)
-      .then((response) => {
-        // Check text 
-        expect(response.text).toBe("Hello, Steve! Welcome to the FIFA server!")
-      });
+
+  await supertest(app).get("/hello?name=Steve")
+    .expect(200)
+    .then((response) => {
+      // Check text 
+      expect(response.text).toBe("Hello, Steve! Welcome to the FIFA server!")
+    });
 });
 
 
 test("GET /jersey color without name", async () => {
-  
-    for (var i = 0; i < 5; i++) {
+
+  for (var i = 0; i < 5; i++) {
     await supertest(app).get("/jersey/color")
       .expect(200)
       .then((response) => {
         expect(response.body.message).toBe('Hello, player!')
         expect(response.body.jersey_color).not.toBe('white')
       });
-    }
+  }
 });
 
 test("GET /jersey color with name", async () => {
-  
-    for (var i = 0; i < 5; i++) {
+
+  for (var i = 0; i < 5; i++) {
     await supertest(app).get("/jersey/color?name=Lauder")
       .expect(200)
       .then((response) => {
@@ -51,7 +51,7 @@ test("GET /jersey color with name", async () => {
         expect(response.body.jersey_color).not.toBe('white')
         expect(response.body.jersey_color == 'red' || response.body.jersey_color == 'blue').toBeTruthy()
       });
-    }
+  }
 });
 
 test("GET /jersey number without name", async () => {
@@ -63,9 +63,9 @@ test("GET /jersey number without name", async () => {
         expect(isNaN(response.body.jersey_number)).toBe(false)
         expect(response.body.jersey_number).toBeGreaterThanOrEqual(1)
         expect(response.body.jersey_number).toBeLessThanOrEqual(20)
-        
+
       });
-    }
+  }
 });
 
 test("GET /jersey number with name", async () => {
@@ -78,15 +78,15 @@ test("GET /jersey number with name", async () => {
         expect(response.body.jersey_number).toBeGreaterThanOrEqual(1)
         expect(response.body.jersey_number).toBeLessThanOrEqual(20)
       });
-    }
+  }
 });
 
 test("GET /jersey other value with no name", async () => {
-    await supertest(app).get("/jersey/non")
-      .expect(200)
-      .then((response) => {
-        expect(response.body.message).toBe('Hello, player, we like your jersey!')
-      });
+  await supertest(app).get("/jersey/non")
+    .expect(200)
+    .then((response) => {
+      expect(response.body.message).toBe('Hello, player, we like your jersey!')
+    });
 });
 
 

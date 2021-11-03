@@ -45,14 +45,13 @@ async function random(req, res) {
   const randomCity = randomCities[randomIndex][0];
   const randomState = randomCities[randomIndex][1];
 
-
   // TODO: 
   // Xulei -- this query is really just a placeholder! we need a query to use to test our DB
   // once it it up and running
   // right now this query will (I hope) return the attraction and photo from the attraction
   // with the most reviews in the randomCity
-  connection.query(`SELECT AttractionName, Photo 
-        FROM POI p JOIN Attractions a ON p.city=a.city AND p.state=s.state
+  connection.query(`SELECT name, photo 
+        FROM POI p JOIN Attraction a ON p.PID=a.PID
         WHERE city = ${randomCity} AND NumRevews >= ALL (SELECT NumReviews
                     FROM Attractions
                     WHERE city = ${randomCity} AND state = ${randomState} AND photo NOT NULL)
@@ -68,10 +67,7 @@ async function random(req, res) {
 
 // Route 3 (handler) - Return names of existing user-made trips to be displayed in sidebar
 // TODO: Placeholder. Update query once Trips schema is confirmed.
-
 async function all_trips(req, res) {
-
-
   connection.query(
     `SELECT *
     FROM Trips`
@@ -84,6 +80,9 @@ async function all_trips(req, res) {
       }
     });
 }
+
+// Route 4 (handler) - This posts a city to the database in a temporary table
+// TODO: Placeholder. Update query once Trips schema is confirmed.
 
 // ********************************************
 //             Save Trip Route

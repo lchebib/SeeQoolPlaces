@@ -8,71 +8,72 @@ import "react-buzzfeed-quiz/lib/styles.css";
 
 const { Content } = Layout;
 
+
 class QuizPage0 extends React.Component {
 
 
-	render() {
-		return (
-			<Layout>
-				<SideBar />
-				<Layout className='layout' style={{ background: 'white', marginLeft: 200 }}>
-					<Header />
+  render() {
+    return (
+      <Layout>
+        <SideBar />
+        <Layout className='layout' style={{ background: 'white', marginLeft: 200 }}>
+          <Header />
 
-					<Content align='middle' justify='center' style={{ margin: '24px 24px 0', overflow: 'initial', textAlign: 'center' }}>
+          <Content align='middle' justify='center' style={{ margin: '24px 24px 0', overflow: 'initial', textAlign: 'center' }}>
 
-						<Row align='middle' justify='center'>
+            <Row align='middle' justify='center'>
 
-							<Col>
+              <Col>
 
-								<div style={{ fontFamily: 'Work Sans', fontSize: '4vh' }}>Choose one.</div>
-								<a href="/">
-									<Card style={{
-										border: '1px solid #000',
-										margin: '10px',
-										background: 'black',
-										height: '20vh',
-										width: '60vh',
-										display: 'flex',
-										justifyContent: 'center',
-										alignItems: 'center',
-										color: 'white',
-									}}>
-										<div style={{ fontFamily: 'Work Sans', fontSize: '3vh' }}>
-											Where shall I go?
-											<br />
-											What shall I do when I’m there?
-										</div>
-									</Card>
-								</a>
+                <div style={{ fontFamily: 'Work Sans', fontSize: '4vh' }}>Choose one.</div>
+                <a href="./quiz1">
+                  <Card style={{
+                    border: '1px solid #000',
+                    margin: '10px',
+                    background: 'black',
+                    height: '20vh',
+                    width: '60vh',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    color: 'white',
+                  }}>
+                    <div style={{ fontFamily: 'Work Sans', fontSize: '3vh' }}>
+                      Where shall I go?
+                      <br />
+                      What shall I do when I’m there?
+                    </div>
+                  </Card>
+                </a>
 
-								<a href="/">
-									<Card style={{
-										border: '1px solid #000',
-										margin: '10px',
-										background: 'black',
-										height: '20vh',
-										width: '60vh',
-										display: 'flex',
-										justifyContent: 'center',
-										alignItems: 'center',
-										color: 'white',
-									}}>
-										<div style={{ fontFamily: 'Work Sans', fontSize: '3vh' }}>
-											I know where I'm going,
-											<br />
-											but what shall I do?
-										</div>
-									</Card>
-								</a>
-							</Col>
-						</Row>
-					</Content>
+                <a href="./selectcity">
+                  <Card style={{
+                    border: '1px solid #000',
+                    margin: '10px',
+                    background: 'black',
+                    height: '20vh',
+                    width: '60vh',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    color: 'white',
+                  }}>
+                    <div style={{ fontFamily: 'Work Sans', fontSize: '3vh' }}>
+                      I know where I'm going,
+                      <br />
+                      but what shall I do?
+                    </div>
+                  </Card>
+                </a>
+              </Col>
+            </Row>
+          </Content>
 
-					<Footer />
-				</Layout>
-			</Layout >
-		);
-	}
+          <Footer />
+        </Layout>
+      </Layout >
+    );
+  }
 }
 
 export default QuizPage0

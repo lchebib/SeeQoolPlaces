@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-	BrowserRouter as Router,
-	Route,
-	Switch
+  BrowserRouter as Router,
+  Route,
+  Switch
 } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import QuizPage0 from './pages/QuizPage0';
@@ -14,49 +14,55 @@ import ActivitiesPage from './pages/ActivitiesPage';
 import SchedulePage from './pages/SchedulePage';
 import 'antd/dist/antd.css';
 import './index.less';
+import QuizPageSelectCity from './pages/QuizPageSelectCity';
 
 ReactDOM.render(
-	<div>
-		<Router>
-			<Switch>
-				<Route exact
-					path="/"
-					render={() => (
-						<LandingPage />
-					)} />
-				<Route exact
-					path="/quiz"
-					render={() => (
-						<QuizPage0 />
-					)} />
-				<Route exact
-					path="/quiz1"
-					render={() => (
-						<QuizPage1 />
-					)} />
-				<Route exact
-					path="/quiz2"
-					render={() => (
-						<QuizPage2 />
-					)} />
-				<Route exact
-					path="/createtrip"
-					render={() => (
-						<CreateTripPage />
-					)} />
-				<Route exact
-					path="/activities"
-					render={() => (
-						<ActivitiesPage />
-					)} />
-				<Route exact
-					path="/schedule"
-					render={() => (
-						<SchedulePage />
-					)} />
-			</Switch>
-		</Router>
-	</div>,
-	document.getElementById('root')
+  <div>
+    <Router>
+      <Switch>
+        <Route exact
+          path="/"
+          render={() => (
+            <LandingPage />
+          )} />
+        <Route exact
+          path="/quiz"
+          render={() => (
+            <QuizPage0 />
+          )} />
+        <Route exact
+          path="/quiz1"
+          render={() => (
+            <QuizPage1 />
+          )} />
+        <Route exact
+          path="/selectcity"
+          render={() => (
+            <QuizPageSelectCity />
+          )} />
+        <Route exact
+          path="/quiz2"
+          render={() => (
+            <QuizPage2 />
+          )} />
+        <Route exact
+          path="/createtrip"
+          render={() => (
+            <CreateTripPage />
+          )} />
+        <Route exact
+          path="/activities"
+          render={() => (
+            <ActivitiesPage />
+          )} />
+        <Route exact
+          path="/schedule"
+          render={() => (
+            <SchedulePage />
+          )} />
+      </Switch>
+    </Router>
+  </div>,
+  document.getElementById('root')
 );
 
