@@ -94,7 +94,7 @@ class LandingPage extends React.Component {
                       <Divider />
                       <Space>
                         <Button onClick={this.onSurpriseMe} size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Surprise Me!</Button>
-                        <Button href={`/city?id=${this.state.randomCity.id}`} size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Go To City</Button>
+                        <Button href={`/city?id=${this.state.randomCity.id}`} size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Visit {this.state.randomCity.city}</Button>
                       </Space>
                     </div>
                   </Card>
