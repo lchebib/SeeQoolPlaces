@@ -17,7 +17,6 @@ app.get('/random_city', routes.random)
 app.get('/trips', routes.all_trips)
 
 
-
 // EXAMPLES FROM HW
 // // Route 2 - register as GET 
 // app.get('/jersey/:choice', routes.jersey)

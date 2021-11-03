@@ -1,0 +1,22 @@
+PyParse contains a number of tools to clean, parse, and verify datasets prior to pushing to AWS RDS.
+The motivation for these tools is that Datagrip takes an extremely long time to parse and upload datasets that contain errors, such as missing foreign key references.
+The tools in PyParse can clean up and verify datasets at a much faster rate.
+
+A brief description of each tool follows.
+
+1) Column Parser
+Allows user to select and reorder columns in a csv file. This is useful for csv files that are too big to open in Excel.
+A new file is written to disk containing only the selected columns in the specified order.
+
+2) Verify Key References
+This tool checks the keys in one table referenced by a foreign keys in another table. Only valid rows (i.e. where the foreign keys and keys are aligned) are kept.
+The cleaned dataset containing only valid rows is written to disk.
+
+3) Compare Columns
+Takes two tables as input and the user specifies the columns to compare. A set is created for the specified column from each table and compared.
+
+4) Compare CSV
+Checks if every field is identical between two .csv files.
+
+5) FileIO
+Simple csv reader/writer.
