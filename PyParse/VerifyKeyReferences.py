@@ -1,5 +1,16 @@
 import FileIO
 
+def generateKeySet(table, indexes):
+    keySet = set()
+
+    for row in table:
+        key = ""
+        for i in indexes:
+            key += row[int(i)]
+        keySet.add(key.lower())
+
+    return keySet
+
 def allReferenceKeysExist(referenceTable, referenceKeyIndexes, foreignKeys):
     for row in referenceTable:
         if foreignKeys[0].lower() == row[int(referenceKeyIndexes[0])].lower():
@@ -33,6 +44,7 @@ for i in range(len(referenceTable[0])):
 
 print("\nSelect index(es) of REFERENCE key(s), separated by space (e.g. 2 4): ")
 referenceKeyIndexes = input().split()
+referenceKeySet = generateKeySet(referenceTable, referenceKeyIndexes)
 
 validRows = []
 invalidRows = []
@@ -42,17 +54,17 @@ validRows.append(foreignTable[0])
 invalidRows.append(foreignTable[0])
 
 for row in range(1, len(foreignTable)):
-    foreignKeys = []
+    foreignKeys = ""
     for i in foreignKeyIndexes:
-        foreignKeys.append(foreignTable[row][int(i)])
+        foreignKeys += foreignTable[row][int(i)].lower()
 
-    if (allReferenceKeysExist(referenceTable, referenceKeyIndexes, foreignKeys)):
+    if (foreignKeys in referenceKeySet):
         validRows.append(foreignTable[row])
 
     else:
         invalidRows.append(row)
 
-FileIO.writeCSV("cleaned2_" + foreign, validRows)
+FileIO.writeCSV("cleaned_" + foreign, validRows)
 
 print("\nValid rows:", len(foreignTable) - len(invalidRows))
 print("Invalid rows:", len(invalidRows) - 1, "\n")
