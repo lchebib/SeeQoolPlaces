@@ -11,17 +11,6 @@ def generateKeySet(table, indexes):
 
     return keySet
 
-def allReferenceKeysExist(referenceTable, referenceKeyIndexes, foreignKeys):
-    for row in referenceTable:
-        if foreignKeys[0].lower() == row[int(referenceKeyIndexes[0])].lower():
-            allKeysGood = True
-            if len(foreignKeys) > 1:
-                for i in range(1, len(foreignKeys)):
-                    if foreignKeys[i].lower() != row[int(referenceKeyIndexes[i])].lower():
-                        allKeysGood = False
-            if allKeysGood:
-                return True
-    return False
 
 print("\nEnter foreign key csv (must be in same folder as this program): ")
 foreign = input() + ".csv"
