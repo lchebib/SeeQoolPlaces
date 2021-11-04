@@ -6,38 +6,37 @@ import {
 import SideBar from '../components/SideBar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { BuzzFeedQuiz } from "react-buzzfeed-quiz";
 import { getAllCities } from '../fetcher';
 import "react-buzzfeed-quiz/lib/styles.css";
 
 const { Content } = Layout;
 
-const options = [
-  {
-    value: 'california',
-    label: 'California',
-    children: [
-      {
-        value: 'joshua tree',
-        label: 'Joshua Tree',
-      },
-      {
-        value: 'big sur',
-        label: 'Big Sur',
-      },
-    ],
-  },
-  {
-    value: 'british columbia',
-    label: 'British Columbia',
-    children: [
-      {
-        value: 'vancouver',
-        label: 'Vancouver',
-      },
-    ],
-  },
-];
+const makeOptions = (arr) => {
+  if (!Array.isArray(arr)) {
+    return [];
+  }
+  let result = [
+    {
+      value: 'california',
+      label: 'California',
+      children: []
+    },
+    {
+      value: 'british columbia',
+      label: 'British Columbia',
+      children: []
+    }];
+  arr.forEach(obj => {
+    let cityArr = Object.entries(obj);
+    let cityObj = { value: cityArr[1][1].toLowerCase(), label: cityArr[1][1] };
+    if (cityArr[0][1] === "California") {
+      result[0].children.push(cityObj);
+    } else {
+      result[1].children.push(cityObj);
+    }
+  });
+  return result;
+}
 
 
 // how do we write a function that maps our cities and states into the options variable?
@@ -51,16 +50,8 @@ class QuizPageSelectCity extends React.Component {
       selectedCity: "",
       buttonStatus: false,
     }
-
-    // this.onSurpriseMe = this.onSurpriseMe.bind(this)
-    this.onChange = this.onChange.bind(this)
+    this.onChange = this.onChange.bind(this);
   }
-
-  // onSurpriseMe() {
-  //   getRandomCity().then(res => {
-  //     this.setState({ randomCity: res.results })
-  //   })
-  // }
 
   onChange() {
     this.setState({ buttonStatus: true })
@@ -68,14 +59,9 @@ class QuizPageSelectCity extends React.Component {
 
   componentDidMount() {
     getAllCities().then(res => {
-      this.setState({ options: res.results })
+      this.setState({ options: makeOptions(res) })
     })
   }
-
-
-  // function makeOptions(arr) {
-
-  // }
 
 
   render() {
@@ -86,8 +72,6 @@ class QuizPageSelectCity extends React.Component {
       }
       return <Button disabled href={"/quiz2"} size='large' shape='round' style={{ background: 'grey', color: 'black', border: 'none' }}>Done</Button>
     }
-
-
 
     return (
       <Layout>
@@ -119,7 +103,7 @@ class QuizPageSelectCity extends React.Component {
                     <br />
                     Go ahead and tell us which city.
                   </div>
-                  <Cascader options={options} onChange={this.onChange} placeholder="Select City" />
+                  <Cascader options={this.state.options} onChange={this.onChange} placeholder="Select City" />
                   <br />
                   <br />
                   {/* <Button {...this.state.buttonStatus} href={"/quiz2"} size='large' shape='round' style={{ background: 'white', color: 'black', border: 'none' }}>Done</Button> */}
