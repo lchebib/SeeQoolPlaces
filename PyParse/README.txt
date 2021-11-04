@@ -20,3 +20,6 @@ Checks if every field is identical between two .csv files.
 
 5) FileIO
 Simple csv reader/writer.
+
+6) Update Attribute
+Displays all tables from the database for the user to choose from. Then, user selects key and attribute to be updated. Next, user specifies csv with the new values and specifies the key and new value columns. Finally, the tool updates the database with these new values.
