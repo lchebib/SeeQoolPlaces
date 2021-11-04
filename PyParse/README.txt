@@ -9,8 +9,9 @@ Allows user to select and reorder columns in a csv file. This is useful for csv 
 A new file is written to disk containing only the selected columns in the specified order.
 
 2) Verify Key References
-This tool checks the keys in one table referenced by a foreign keys in another table. Only valid rows (i.e. where the foreign keys and keys are aligned) are kept.
-The cleaned dataset containing only valid rows is written to disk.
+This tool checks if the keys and foreign keys between two tables match.
+Uses psuedo-Huffman coding and hashing to execute the checks at substantially higher rate than Datagrip.
+Only valid rows (i.e. where the foreign keys and keys are aligned) are kept. The cleaned dataset containing only valid rows is written to disk.
 
 3) Compare Columns
 Takes two tables as input and the user specifies the columns to compare. A set is created for the specified column from each table and compared.
