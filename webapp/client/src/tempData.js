@@ -42,6 +42,50 @@ const tempRandomCities = [
 	}
 ];
 
+//Temporary cities to select
+const tempGetAllCities = [
+	{
+		state: "California",
+		city: "Los Angeles"
+	},
+	{
+		state: "California",
+		city: "San Francisco"
+	},
+	{
+		state: "California",
+		city: "Big Sur"
+	},
+	{
+		state: "California",
+		city: "San Diego"
+	},
+	{
+		state: "California",
+		city: "Santa Cruz"
+	},
+	{
+		state: "British Columbia",
+		city: "Vancouver"
+	},
+	{
+		state: "British Columbia",
+		city: "Vernon"
+	},
+	{
+		state: "British Columbia",
+		city: "Whistler"
+	},
+	{
+		state: "British Columbia",
+		city: "Victoria"
+	},
+	{
+		state: "British Columbia",
+		city: "Kelowna"
+	},
+]
+
 // // Temporary users
 // const tempUsers = [
 // 	{

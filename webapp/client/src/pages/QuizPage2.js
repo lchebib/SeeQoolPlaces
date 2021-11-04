@@ -19,15 +19,19 @@ class QuizPage2 extends React.Component {
         <Layout className='layout' style={{ background: 'white', marginLeft: 200 }}>
           <Header />
 
-          <Content style={{ margin: '24px 24px 0', overflow: 'initial' }}>
+          <Content style={{ margin: '24px 24px 0', overflow: 'initial', textAlign: 'center', fontFamily: 'Work Sans' }}>
+
+            <div style={{ fontSize: '4vh' }}>On this trip, I want to... </div>
+            {/* <br /> */}
+            {/* <div style={{ fontSize: '2vh' }}>For each of the below questions, select an answer <br /> that best describes how you feel. </div> */}
 
             <BuzzFeedQuiz
-              title={"What will you do in this Qool place?"}
-              description={"select the Qoolness of each possibility."}
+              // title={"On this trip, I want to..."}
+              // description={"For each of the below questions, select an answer that you relate with the most."}
               byline={true}
               autoScroll={true}
-              onRestart={() => alert("This alert was triggered by the onRestart prop!")}
-              onResult={() => alert("The onResult prop triggered this alert!")}
+              // onRestart={() => alert("This alert was triggered by the onRestart prop!")}
+              // onResult={() => alert("The onResult prop triggered this alert!")}
               questions={[
                 {
                   question: "Check out local breweries or drink the best coffee the city has to offer.",
@@ -51,7 +55,7 @@ class QuizPage2 extends React.Component {
                   ],
                 },
                 {
-                  question: "Shop for vintage clothing or visit record shops.",
+                  question: "Shop for vintage clothing or visit cool record stores.",
                   answers: [
                     {
                       answer: "very Qool",
@@ -72,7 +76,7 @@ class QuizPage2 extends React.Component {
                   ],
                 },
                 {
-                  question: "Enjoy nature and go on hikes.",
+                  question: "Enjoy being in nature and going on hikes.",
                   answers: [
                     {
                       answer: "very Qool",
@@ -114,7 +118,7 @@ class QuizPage2 extends React.Component {
                   ],
                 },
                 {
-                  question: "Day drink on the beach or by a fancy hotel pool.",
+                  question: "Sip on a tasty drink beachside, or by a fancy hotel pool.",
                   answers: [
                     {
                       answer: "very Qool",
@@ -135,7 +139,7 @@ class QuizPage2 extends React.Component {
                   ],
                 },
                 {
-                  question: "Make memories with my children.",
+                  question: "Make lasting memories with my children.",
                   answers: [
                     {
                       answer: "very Qool",
@@ -156,7 +160,7 @@ class QuizPage2 extends React.Component {
                   ],
                 },
                 {
-                  question: "Find activities the whole family will enjoy.",
+                  question: "Do fun activities that the whole family can enjoy.",
                   answers: [
                     {
                       answer: "very Qool",
@@ -177,7 +181,7 @@ class QuizPage2 extends React.Component {
                   ],
                 },
                 {
-                  question: "Going with the flow and finding the best local spots.",
+                  question: "Go with the flow and find the best local spots.",
                   answers: [
                     {
                       answer: "very Qool",
@@ -198,7 +202,7 @@ class QuizPage2 extends React.Component {
                   ],
                 },
                 {
-                  question: "Steep in the history and culture of the city by visiting museums and landmarks",
+                  question: "Steep in the history and culture of the city by visiting museums and landmarks.",
                   answers: [
                     {
                       answer: "very Qool",
@@ -261,7 +265,6 @@ class QuizPage2 extends React.Component {
                 },
               ]}
             />
-            );
 
           </Content>
 

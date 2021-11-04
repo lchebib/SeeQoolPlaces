@@ -1,9 +1,13 @@
 import React from 'react';
-import { Layout, Row, Col, Card, Button, Divider, Cascader } from 'antd';
+import { Layout, Row, Col, Card, Button, Divider, Cascader, ArrowLeftOutlined } from 'antd';
+import {
+  LeftSquareOutlined
+} from '@ant-design/icons';
 import SideBar from '../components/SideBar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { BuzzFeedQuiz } from "react-buzzfeed-quiz";
+import { getAllCities } from '../fetcher';
 import "react-buzzfeed-quiz/lib/styles.css";
 
 const { Content } = Layout;
@@ -35,9 +39,6 @@ const options = [
   },
 ];
 
-function onChange(value) {
-  console.log(value);
-}
 
 // how do we write a function that maps our cities and states into the options variable?
 class QuizPageSelectCity extends React.Component {
@@ -47,10 +48,12 @@ class QuizPageSelectCity extends React.Component {
 
     this.state = {
       options: [],
-      selectedCity: ""
+      selectedCity: "",
+      buttonStatus: false,
     }
 
     // this.onSurpriseMe = this.onSurpriseMe.bind(this)
+    this.onChange = this.onChange.bind(this)
   }
 
   // onSurpriseMe() {
@@ -59,15 +62,33 @@ class QuizPageSelectCity extends React.Component {
   //   })
   // }
 
+  onChange() {
+    this.setState({ buttonStatus: true })
+  }
 
-  // componentDidMount() {
-  //   getRandomCity().then(res => {
-  //     this.setState({ randomCity: res.results })
-  //   })
+  componentDidMount() {
+    getAllCities().then(res => {
+      this.setState({ options: res.results })
+    })
+  }
+
+
+  // function makeOptions(arr) {
+
   // }
 
 
   render() {
+
+    const enableButton = () => {
+      if (this.state.buttonStatus === true) {
+        return <Button href={"/quiz2"} size='large' shape='round' style={{ background: 'white', color: 'black', border: 'none' }}>Done</Button>
+      }
+      return <Button disabled href={"/quiz2"} size='large' shape='round' style={{ background: 'grey', color: 'black', border: 'none' }}>Done</Button>
+    }
+
+
+
     return (
       <Layout>
         <SideBar />
@@ -98,12 +119,21 @@ class QuizPageSelectCity extends React.Component {
                     <br />
                     Go ahead and tell us which city.
                   </div>
-                  <Cascader options={options} onChange={onChange} placeholder="select city" />
+                  <Cascader options={options} onChange={this.onChange} placeholder="Select City" />
                   <br />
                   <br />
-                  <Button href={"/quiz2"} size='large' shape='round' style={{ background: 'white', color: 'black', border: 'none' }}>Done</Button>
-
+                  {/* <Button {...this.state.buttonStatus} href={"/quiz2"} size='large' shape='round' style={{ background: 'white', color: 'black', border: 'none' }}>Done</Button> */}
+                  {enableButton()}
                 </Card>
+                <a href="./quiz" style={{ color: "black" }}>
+                  <div className="icons-list">
+                    <LeftSquareOutlined /> Go Back
+                  </div>
+                </a>
+                <br />
+                <br />
+
+
 
 
               </Col>

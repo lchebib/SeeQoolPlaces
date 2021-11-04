@@ -19,6 +19,15 @@ const getRandomCity = async () => {
     return res;
 }
 
+const getAllCities = async () => {
+    // var res = await fetch(`http://${config.server_host}:${config.server_port}/cities`, {
+    //     method: 'GET',
+    // })
+    // return res.json()
+    var res = { results: tempGetRandomCity() }
+    return res;
+}
+
 
 const getLoggedInUser = async () => {
     // var res = await fetch(`http://${config.server_host}:${config.server_port}/logged-in-user`, {
@@ -56,6 +65,10 @@ const signUp = async (username) => {
 
 }
 
+// const getAllCities = async() +> {
+
+// }
+
 
 export {
     getAllTrips,
@@ -63,5 +76,6 @@ export {
     getLoggedInUser,
     logout,
     login,
-    signUp
+    signUp,
+    getAllCities
 }
