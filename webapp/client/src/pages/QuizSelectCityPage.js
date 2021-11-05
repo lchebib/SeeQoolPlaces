@@ -29,7 +29,7 @@ const makeOptions = (arr) => {
   arr.forEach(obj => {
     let cityArr = Object.entries(obj);
     let cityObj = { value: cityArr[1][1].toLowerCase(), label: cityArr[1][1] };
-    if (cityArr[0][1] === "California") {
+    if (cityArr[0][1] === "CA") {
       result[0].children.push(cityObj);
     } else {
       result[1].children.push(cityObj);
@@ -40,7 +40,7 @@ const makeOptions = (arr) => {
 
 
 // how do we write a function that maps our cities and states into the options variable?
-class QuizPageSelectCity extends React.Component {
+class QuizSelectCityPage extends React.Component {
 
   constructor(props) {
     super(props)
@@ -117,9 +117,6 @@ class QuizPageSelectCity extends React.Component {
                 <br />
                 <br />
 
-
-
-
               </Col>
             </Row>
           </Content>
@@ -131,4 +128,4 @@ class QuizPageSelectCity extends React.Component {
   }
 }
 
-export default QuizPageSelectCity
+export default QuizSelectCityPage

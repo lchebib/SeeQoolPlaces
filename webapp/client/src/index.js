@@ -14,7 +14,7 @@ import ActivitiesPage from './pages/ActivitiesPage';
 import SchedulePage from './pages/SchedulePage';
 import 'antd/dist/antd.css';
 import './index.less';
-import QuizPageSelectCity from './pages/QuizPageSelectCity';
+import QuizSelectCityPage from './pages/QuizSelectCityPage';
 
 ReactDOM.render(
   <div>
@@ -38,7 +38,7 @@ ReactDOM.render(
         <Route exact
           path="/selectcity"
           render={() => (
-            <QuizPageSelectCity />
+            <QuizSelectCityPage />
           )} />
         <Route exact
           path="/quiz2"
