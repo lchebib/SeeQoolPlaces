@@ -283,22 +283,22 @@ class QuizPage1 extends React.Component {
 
             <div style={{ fontSize: '8vh', }}>On this trip, I want to... </div>
 
-            <Row type="flex" style={{ alignItems: "center", justifyContent: 'center' }}>
+            {/* <Row type="flex" style={{ alignItems: "center", justifyContent: 'center' }}>
               <Col>
 
                 {questions.map((question) =>
-                  <div style={{ width: '52vw', marginBottom: '20vw' }}>
+                  <div style={{ width: '54vw', marginBottom: '20vw' }}>
                     <Card
-                      style={{ marginBottom: '10px', background: 'black', width: '52vw', padding: '10px', borderRadius: '4px', color: 'white', fontSize: '4vw' }}>
+                      style={{ margin: '1vw', marginBottom: '10px', background: 'black', width: '52vw', padding: '10px', borderRadius: '4px', color: 'white', fontSize: '3vmin' }}>
                       {question.text}
                     </Card >
 
-                    <div style={{ width: '52vw' }}>
+                    <div style={{ width: '54vw' }}>
                       {answers.map((answer) =>
                         <Button
-                          style={{ margin: '5px', marginTop: '5px', borderRadius: '4px', marginBottom: '5px', width: '25vw', height: '18vh', fontSize: '2vw', fontFamily: 'sans-serif bold', color: 'white', background: 'linear-gradient(#ff0080, #ff4000, #ff0080)' }}
-                          onclick={() => this.onButtonClick(question.personality, answer.score)}
-                          danger='true'>
+                          type='ghost'
+                          style={{ margin: '1vw', marginTop: '5px', borderRadius: '4px', marginBottom: '5px', width: '25vw', height: '18vw', fontSize: '2vw', fontFamily: 'sans-serif bold' }}
+                          onclick={() => this.onButtonClick(question.personality, answer.score)}>
 
                           {answer.text}
                         </Button>
@@ -309,405 +309,405 @@ class QuizPage1 extends React.Component {
                 )}
 
               </Col>
-            </Row>
+            </Row> */}
 
             <BuzzFeedQuiz
               byline={true}
               autoScroll={true}
               style={{ className: 'rbq_question_inner_container' }}
               questions={[
-                // {
-                //   question: "Visit a _______ city.",
-                //   questionID: 0,
-                //   // backgroundColor: "rgb(20, 41, 133)",
-                //   answers: [
-                //     {
-                //       answer: "small but quaint",
-                //       resultID: 0,
-                //       onAnswerSelection: () => this.onCityQuestion(3),
-                //       backgroundColor: "rgb(24, 82, 24)",
-                //     },
-                //     {
-                //       answer: "normal sized",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(50, 118, 11)",
-                //       onAnswerSelection: () => this.onCityQuestion(2),
-                //     },
-                //     {
-                //       answer: "very big",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(133, 187, 104)",
-                //       onAnswerSelection: () => this.onCityQuestion(1),
-                //     },
-                //     {
-                //       answer: "...size doesn't matter",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(193, 221, 135)",
-                //       onAnswerSelection: () => this.onCityQuestion(0),
-                //     }
-                //   ],
-                // },
-                // {
-                //   question: "Check out local breweries or drink the best coffee the city has to offer.",
-                //   // backgroundColor: "rgb(208, 87, 130)",
-                //   answers: [
-                //     {
-                //       answer: "very Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(24, 82, 24)",
-                //       onAnswerSelection: () => this.onCoolCatQuestion(3)
-                //     },
-                //     {
-                //       answer: "a little Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(50, 118, 11)",
-                //       onAnswerSelection: () => this.onCoolCatQuestion(2)
-                //     },
-                //     {
-                //       answer: "unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(133, 187, 104)",
-                //       onAnswerSelection: () => this.onCoolCatQuestion(1)
-                //     },
-                //     {
-                //       answer: "VERY unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(193, 221, 135)",
-                //       onAnswerSelection: () => this.onCoolCatQuestion(0)
-                //     }
-                //   ],
-                // },
-                // {
-                //   question: "Enjoy being in nature and going on hikes.",
-                //   // backgroundColor: "rgb(182, 0, 0)",
-                //   answers: [
-                //     {
-                //       answer: "very Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(24, 82, 24)",
-                //       onAnswerSelection: () => this.onAdventurerQuestion(3)
-                //     },
-                //     {
-                //       answer: "a little Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(50, 118, 11)",
-                //       onAnswerSelection: () => this.onAdventurerQuestion(2)
-                //     },
-                //     {
-                //       answer: "unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(133, 187, 104)",
-                //       onAnswerSelection: () => this.onAdventurerQuestion(1)
-                //     },
-                //     {
-                //       answer: "VERY unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(193, 221, 135)",
-                //       onAnswerSelection: () => this.onAdventurerQuestion(0)
-                //     }
-                //   ],
-                // },
-                // {
-                //   question: "Sip on a tasty drink beachside, or by a fancy hotel pool.",
-                //   // backgroundColor: "rgb(219, 124, 0)",
-                //   answers: [
-                //     {
-                //       answer: "very Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(24, 82, 24)",
-                //       onAnswerSelection: () => this.onEntertainerQuestion(3)
-                //     },
-                //     {
-                //       answer: "a little Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(50, 118, 11)",
-                //       onAnswerSelection: () => this.onEntertainerQuestion(2)
-                //     },
-                //     {
-                //       answer: "unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(133, 187, 104)",
-                //       onAnswerSelection: () => this.onEntertainerQuestion(1)
-                //     },
-                //     {
-                //       answer: "VERY unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(193, 221, 135)",
-                //       onAnswerSelection: () => this.onEntertainerQuestion(0)
-                //     }
-                //   ],
-                // },
-                // {
-                //   question: "Steep in the history and culture of the city by visiting museums and landmarks.",
-                //   // backgroundColor: "rgb(238, 184, 34)",
-                //   answers: [
-                //     {
-                //       answer: "very Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(24, 82, 24)",
-                //       onAnswerSelection: () => this.onInvestiagtorQuestion(3)
-                //     },
-                //     {
-                //       answer: "a little Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(50, 118, 11)",
-                //       onAnswerSelection: () => this.onInvestiagtorQuestion(2)
-                //     },
-                //     {
-                //       answer: "unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(133, 187, 104)",
-                //       onAnswerSelection: () => this.onInvestiagtorQuestion(1)
-                //     },
-                //     {
-                //       answer: "VERY unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(193, 221, 135)",
-                //       onAnswerSelection: () => this.onInvestiagtorQuestion(0)
-                //     }
-                //   ],
-                // },
-                // {
-                //   question: "Do fun activities that the whole family can enjoy.",
-                //   // backgroundColor: "rgb(20, 41, 133)",
-                //   answers: [
-                //     {
-                //       answer: "very Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(24, 82, 24)",
-                //       onAnswerSelection: () => this.onFamilyQuestion(3)
-                //     },
-                //     {
-                //       answer: "a little Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(50, 118, 11)",
-                //       onAnswerSelection: () => this.onFamilyQuestion(2)
-                //     },
-                //     {
-                //       answer: "unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(133, 187, 104)",
-                //       onAnswerSelection: () => this.onFamilyQuestion(1)
-                //     },
-                //     {
-                //       answer: "VERY unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(193, 221, 135)",
-                //       onAnswerSelection: () => this.onFamilyQuestion(0)
-                //     }
-                //   ],
-                // },
-                // {
-                //   question: "Go with the flow and find the best local spots.",
-                //   // backgroundColor: "rgb(208, 87, 130)",
-                //   answers: [
-                //     {
-                //       answer: "very Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(24, 82, 24)",
-                //       onAnswerSelection: () => this.onEnthusiastQuestion(3)
-                //     },
-                //     {
-                //       answer: "a little Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(50, 118, 11)",
-                //       onAnswerSelection: () => this.onEnthusiastQuestion(2)
-                //     },
-                //     {
-                //       answer: "unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(133, 187, 104)",
-                //       onAnswerSelection: () => this.onEnthusiastQuestion(1)
-                //     },
-                //     {
-                //       answer: "VERY unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(193, 221, 135)",
-                //       onAnswerSelection: () => this.onEnthusiastQuestion(0)
-                //     }
-                //   ],
-                // },
-                // {
-                //   question: "Do outdoor sports, like skiing, surfing, or boating.",
-                //   // backgroundColor: "rgb(182, 0, 0)",
-                //   answers: [
-                //     {
-                //       answer: "very Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(24, 82, 24)",
-                //       onAnswerSelection: () => this.onAdventurerQuestion(3)
-                //     },
-                //     {
-                //       answer: "Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(50, 118, 11)",
-                //       onAnswerSelection: () => this.onAdventurerQuestion(2)
-                //     },
-                //     {
-                //       answer: "a little Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(133, 187, 104)",
+                {
+                  question: "Visit a _______ city.",
+                  questionID: 0,
+                  // backgroundColor: "rgb(20, 41, 133)",
+                  answers: [
+                    {
+                      answer: "small but quaint",
+                      resultID: 0,
+                      onAnswerSelection: () => this.onCityQuestion(3),
+                      backgroundColor: "rgb(24, 82, 24)",
+                    },
+                    {
+                      answer: "normal sized",
+                      resultID: 0,
+                      backgroundColor: "rgb(50, 118, 11)",
+                      onAnswerSelection: () => this.onCityQuestion(2),
+                    },
+                    {
+                      answer: "very big",
+                      resultID: 0,
+                      backgroundColor: "rgb(133, 187, 104)",
+                      onAnswerSelection: () => this.onCityQuestion(1),
+                    },
+                    {
+                      answer: "...size doesn't matter",
+                      resultID: 0,
+                      backgroundColor: "rgb(193, 221, 135)",
+                      onAnswerSelection: () => this.onCityQuestion(0),
+                    }
+                  ],
+                },
+                {
+                  question: "Check out local breweries or drink the best coffee the city has to offer.",
+                  // backgroundColor: "rgb(208, 87, 130)",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(24, 82, 24)",
+                      onAnswerSelection: () => this.onCoolCatQuestion(3)
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(50, 118, 11)",
+                      onAnswerSelection: () => this.onCoolCatQuestion(2)
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(133, 187, 104)",
+                      onAnswerSelection: () => this.onCoolCatQuestion(1)
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(193, 221, 135)",
+                      onAnswerSelection: () => this.onCoolCatQuestion(0)
+                    }
+                  ],
+                },
+                {
+                  question: "Enjoy being in nature and going on hikes.",
+                  // backgroundColor: "rgb(182, 0, 0)",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(24, 82, 24)",
+                      onAnswerSelection: () => this.onAdventurerQuestion(3)
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(50, 118, 11)",
+                      onAnswerSelection: () => this.onAdventurerQuestion(2)
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(133, 187, 104)",
+                      onAnswerSelection: () => this.onAdventurerQuestion(1)
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(193, 221, 135)",
+                      onAnswerSelection: () => this.onAdventurerQuestion(0)
+                    }
+                  ],
+                },
+                {
+                  question: "Sip on a tasty drink beachside, or by a fancy hotel pool.",
+                  // backgroundColor: "rgb(219, 124, 0)",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(24, 82, 24)",
+                      onAnswerSelection: () => this.onEntertainerQuestion(3)
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(50, 118, 11)",
+                      onAnswerSelection: () => this.onEntertainerQuestion(2)
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(133, 187, 104)",
+                      onAnswerSelection: () => this.onEntertainerQuestion(1)
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(193, 221, 135)",
+                      onAnswerSelection: () => this.onEntertainerQuestion(0)
+                    }
+                  ],
+                },
+                {
+                  question: "Steep in the history and culture of the city by visiting museums and landmarks.",
+                  // backgroundColor: "rgb(238, 184, 34)",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(24, 82, 24)",
+                      onAnswerSelection: () => this.onInvestiagtorQuestion(3)
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(50, 118, 11)",
+                      onAnswerSelection: () => this.onInvestiagtorQuestion(2)
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(133, 187, 104)",
+                      onAnswerSelection: () => this.onInvestiagtorQuestion(1)
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(193, 221, 135)",
+                      onAnswerSelection: () => this.onInvestiagtorQuestion(0)
+                    }
+                  ],
+                },
+                {
+                  question: "Do fun activities that the whole family can enjoy.",
+                  // backgroundColor: "rgb(20, 41, 133)",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(24, 82, 24)",
+                      onAnswerSelection: () => this.onFamilyQuestion(3)
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(50, 118, 11)",
+                      onAnswerSelection: () => this.onFamilyQuestion(2)
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(133, 187, 104)",
+                      onAnswerSelection: () => this.onFamilyQuestion(1)
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(193, 221, 135)",
+                      onAnswerSelection: () => this.onFamilyQuestion(0)
+                    }
+                  ],
+                },
+                {
+                  question: "Go with the flow and find the best local spots.",
+                  // backgroundColor: "rgb(208, 87, 130)",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(24, 82, 24)",
+                      onAnswerSelection: () => this.onEnthusiastQuestion(3)
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(50, 118, 11)",
+                      onAnswerSelection: () => this.onEnthusiastQuestion(2)
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(133, 187, 104)",
+                      onAnswerSelection: () => this.onEnthusiastQuestion(1)
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(193, 221, 135)",
+                      onAnswerSelection: () => this.onEnthusiastQuestion(0)
+                    }
+                  ],
+                },
+                {
+                  question: "Do outdoor sports, like skiing, surfing, or boating.",
+                  // backgroundColor: "rgb(182, 0, 0)",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(24, 82, 24)",
+                      onAnswerSelection: () => this.onAdventurerQuestion(3)
+                    },
+                    {
+                      answer: "Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(50, 118, 11)",
+                      onAnswerSelection: () => this.onAdventurerQuestion(2)
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(133, 187, 104)",
 
-                //       onAnswerSelection: () => this.onAdventurerQuestion(1)
-                //     },
-                //     {
-                //       answer: "unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(193, 221, 135)",
-                //       onAnswerSelection: () => this.onAdventurerQuestion(0)
-                //     }
-                //   ],
-                // },
-                // {
-                //   question: "Do a little bit of everything.",
-                //   // backgroundColor: "rgb(219, 124, 0)",
-                //   answers: [
-                //     {
-                //       answer: "very Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(24, 82, 24)",
-                //       onAnswerSelection: () => this.onEnthusiastQuestion(3)
-                //     },
-                //     {
-                //       answer: "a little Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(50, 118, 11)",
-                //       onAnswerSelection: () => this.onEnthusiastQuestion(2)
-                //     },
-                //     {
-                //       answer: "unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(133, 187, 104)",
-                //       onAnswerSelection: () => this.onEnthusiastQuestion(1)
-                //     },
-                //     {
-                //       answer: "VERY unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(193, 221, 135)",
-                //       onAnswerSelection: () => this.onEnthusiastQuestion(0)
-                //     }
-                //   ],
-                // },
-                // {
-                //   question: "Shop for vintage clothing or visit cool record stores.",
-                //   // backgroundColor: "rgb(238, 184, 34)",
-                //   answers: [
-                //     {
-                //       answer: "very Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(24, 82, 24)",
-                //       onAnswerSelection: () => this.onCoolCatQuestion(3)
-                //     },
-                //     {
-                //       answer: "a little Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(50, 118, 11)",
-                //       onAnswerSelection: () => this.onCoolCatQuestion(2)
-                //     },
-                //     {
-                //       answer: "unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(133, 187, 104)",
-                //       onAnswerSelection: () => this.onCoolCatQuestion(1)
-                //     },
-                //     {
-                //       answer: "VERY unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(193, 221, 135)",
-                //       onAnswerSelection: () => this.onCoolCatQuestion(0)
-                //     }
-                //   ],
-                // },
-                // {
-                //   question: "Get dressed up and go out on the town.",
-                //   // backgroundColor: "rgb(20, 41, 133)",
-                //   answers: [
-                //     {
-                //       answer: "very Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(24, 82, 24)",
-                //       onAnswerSelection: () => this.onEntertainerQuestion(3)
-                //     },
-                //     {
-                //       answer: "a little Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(50, 118, 11)",
-                //       onAnswerSelection: () => this.onEntertainerQuestion(2)
-                //     },
-                //     {
-                //       answer: "unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(133, 187, 104)",
-                //       onAnswerSelection: () => this.onEntertainerQuestion(1)
-                //     },
-                //     {
-                //       answer: "VERY unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(193, 221, 135)",
-                //       onAnswerSelection: () => this.onEntertainerQuestion(0)
-                //     }
-                //   ],
-                // },
-                // {
-                //   question: "Make lasting memories with my children.",
-                //   // backgroundColor: "rgb(208, 87, 130)",
-                //   answers: [
-                //     {
-                //       answer: "very Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(24, 82, 24)",
-                //       onAnswerSelection: () => this.onFamilyQuestion(3)
-                //     },
-                //     {
-                //       answer: "a little Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(50, 118, 11)",
-                //       onAnswerSelection: () => this.onFamilyQuestion(2)
-                //     },
-                //     {
-                //       answer: "unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(133, 187, 104)",
-                //       onAnswerSelection: () => this.onFamilyQuestion(1)
-                //     },
-                //     {
-                //       answer: "VERY unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(193, 221, 135)",
-                //       onAnswerSelection: () => this.onFamilyQuestion(0)
-                //     }
-                //   ],
-                // },
-                // {
-                //   question: "Occupy a cozy corner of a quiet cafe or bar with a good book.",
-                //   // backgroundColor: "rgb(182, 0, 0)",
-                //   answers: [
-                //     {
-                //       answer: "very Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(24, 82, 24)",
-                //       onAnswerSelection: () => this.onInvestiagtorQuestion(3)
-                //     },
-                //     {
-                //       answer: "a little Qool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(50, 118, 11)",
-                //       onAnswerSelection: () => this.onInvestiagtorQuestion(2)
-                //     },
-                //     {
-                //       answer: "unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(133, 187, 104)",
-                //       onAnswerSelection: () => this.onInvestiagtorQuestion(1)
-                //     },
-                //     {
-                //       answer: "VERY unQool",
-                //       resultID: 0,
-                //       backgroundColor: "rgb(193, 221, 135)",
-                //       onAnswerSelection: () => this.onInvestiagtorQuestion(0),
-                //     }
-                //   ],
-                // },
+                      onAnswerSelection: () => this.onAdventurerQuestion(1)
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(193, 221, 135)",
+                      onAnswerSelection: () => this.onAdventurerQuestion(0)
+                    }
+                  ],
+                },
+                {
+                  question: "Do a little bit of everything.",
+                  // backgroundColor: "rgb(219, 124, 0)",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(24, 82, 24)",
+                      onAnswerSelection: () => this.onEnthusiastQuestion(3)
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(50, 118, 11)",
+                      onAnswerSelection: () => this.onEnthusiastQuestion(2)
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(133, 187, 104)",
+                      onAnswerSelection: () => this.onEnthusiastQuestion(1)
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(193, 221, 135)",
+                      onAnswerSelection: () => this.onEnthusiastQuestion(0)
+                    }
+                  ],
+                },
+                {
+                  question: "Shop for vintage clothing or visit cool record stores.",
+                  // backgroundColor: "rgb(238, 184, 34)",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(24, 82, 24)",
+                      onAnswerSelection: () => this.onCoolCatQuestion(3)
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(50, 118, 11)",
+                      onAnswerSelection: () => this.onCoolCatQuestion(2)
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(133, 187, 104)",
+                      onAnswerSelection: () => this.onCoolCatQuestion(1)
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(193, 221, 135)",
+                      onAnswerSelection: () => this.onCoolCatQuestion(0)
+                    }
+                  ],
+                },
+                {
+                  question: "Get dressed up and go out on the town.",
+                  // backgroundColor: "rgb(20, 41, 133)",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(24, 82, 24)",
+                      onAnswerSelection: () => this.onEntertainerQuestion(3)
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(50, 118, 11)",
+                      onAnswerSelection: () => this.onEntertainerQuestion(2)
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(133, 187, 104)",
+                      onAnswerSelection: () => this.onEntertainerQuestion(1)
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(193, 221, 135)",
+                      onAnswerSelection: () => this.onEntertainerQuestion(0)
+                    }
+                  ],
+                },
+                {
+                  question: "Make lasting memories with my children.",
+                  // backgroundColor: "rgb(208, 87, 130)",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(24, 82, 24)",
+                      onAnswerSelection: () => this.onFamilyQuestion(3)
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(50, 118, 11)",
+                      onAnswerSelection: () => this.onFamilyQuestion(2)
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(133, 187, 104)",
+                      onAnswerSelection: () => this.onFamilyQuestion(1)
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(193, 221, 135)",
+                      onAnswerSelection: () => this.onFamilyQuestion(0)
+                    }
+                  ],
+                },
+                {
+                  question: "Occupy a cozy corner of a quiet cafe or bar with a good book.",
+                  // backgroundColor: "rgb(182, 0, 0)",
+                  answers: [
+                    {
+                      answer: "very Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(24, 82, 24)",
+                      onAnswerSelection: () => this.onInvestiagtorQuestion(3)
+                    },
+                    {
+                      answer: "a little Qool",
+                      resultID: 0,
+                      backgroundColor: "rgb(50, 118, 11)",
+                      onAnswerSelection: () => this.onInvestiagtorQuestion(2)
+                    },
+                    {
+                      answer: "unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(133, 187, 104)",
+                      onAnswerSelection: () => this.onInvestiagtorQuestion(1)
+                    },
+                    {
+                      answer: "VERY unQool",
+                      resultID: 0,
+                      backgroundColor: "rgb(193, 221, 135)",
+                      onAnswerSelection: () => this.onInvestiagtorQuestion(0),
+                    }
+                  ],
+                },
                 {
 
                   question: "How ready are you to go on this trip?!",
