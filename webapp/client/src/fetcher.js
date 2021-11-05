@@ -6,49 +6,49 @@ import { tempGetRandomCity, tempGetLoggedInUser, tempMyTrips, tempLogout, tempLo
 // ********************************************
 
 const getAllTrips = async () => {
-    // var res = await fetch(`http://${config.server_host}:${config.server_port}/trips`, {
-    //     method: 'GET',
-    // })
-    // return res.json()
-    var res = { results: tempMyTrips }
-    return res;
+  // var res = await fetch(`http://${config.server_host}:${config.server_port}/trips`, {
+  //     method: 'GET',
+  // })
+  // return res.json()
+  var res = { results: tempMyTrips }
+  return res;
 }
 
 
 const getLoggedInUser = async () => {
-    // var res = await fetch(`http://${config.server_host}:${config.server_port}/logged-in-user`, {
-    //     method: 'GET',
-    // })
-    // return res.json()
-    var res = { results: tempGetLoggedInUser() }
-    return res;
+  // var res = await fetch(`http://${config.server_host}:${config.server_port}/logged-in-user`, {
+  //     method: 'GET',
+  // })
+  // return res.json()
+  var res = { results: tempGetLoggedInUser() }
+  return res;
 }
 
 
 const logout = async (username) => {
-    // var res = await fetch(`http://${config.server_host}:${config.server_port}/logout`, {
-    //     method: 'POST',
-    // })
+  // var res = await fetch(`http://${config.server_host}:${config.server_port}/logout`, {
+  //     method: 'POST',
+  // })
 
-    return tempLogout(username);
+  return tempLogout(username);
 
 }
 
 const login = async (username) => {
-    // var res = await fetch(`http://${config.server_host}:${config.server_port}/login`, {
-    //     method: 'POST',
-    // })
+  // var res = await fetch(`http://${config.server_host}:${config.server_port}/login`, {
+  //     method: 'POST',
+  // })
 
-    return tempLogin(username);
+  return tempLogin(username);
 
 }
 
 const signUp = async (username) => {
-    // var res = await fetch(`http://${config.server_host}:${config.server_port}/signup`, {
-    //     method: 'POST',
-    // })
+  // var res = await fetch(`http://${config.server_host}:${config.server_port}/signup`, {
+  //     method: 'POST',
+  // })
 
-    return tempSignUp(username);
+  return tempSignUp(username);
 
 }
 
@@ -58,12 +58,12 @@ const signUp = async (username) => {
 
 
 const getRandomCity = async () => {
-    // var res = await fetch(`http://${config.server_host}:${config.server_port}/random`, {
-    //     method: 'GET',
-    // })
-    // return res.json()
-    var res = { results: tempGetRandomCity() }
-    return res;
+  // var res = await fetch(`http://${config.server_host}:${config.server_port}/random`, {
+  //     method: 'GET',
+  // })
+  // return res.json()
+  var res = { results: tempGetRandomCity() }
+  return res;
 }
 
 
@@ -76,12 +76,12 @@ const getRandomCity = async () => {
 // ********************************************
 
 const getAllCities = async () => {
-    // var res = await fetch(`http://${config.server_host}:${config.server_port}/cities`, {
-    //     method: 'GET',
-    // })
-    // return res.json()
-    var res = { results: tempGetRandomCity() }
-    return res;
+  // var res = await fetch(`http://${config.server_host}:${config.server_port}/cities`, {
+  //     method: 'GET',
+  // })
+  // return res.json()
+  var res = tempGetAllCities();
+  return res;
 }
 
 // ********************************************
@@ -97,21 +97,21 @@ const getAllCities = async () => {
 // ********************************************
 
 const getQuizCities = async (size, p0, p1, p2, p3, p4, p5) => {
-    var res = await fetch(`http://${config.server_host}:${config.server_port}/quiz?size=${size}&p0=${p0}&p1=${p1}&p2=${p2}&p3=${p3}&p4=${p4}&p5=${p5}`, {
-        method: 'GET',
-    })
-    return res.json()
+  var res = await fetch(`http://${config.server_host}:${config.server_port}/quiz?size=${size}&p0=${p0}&p1=${p1}&p2=${p2}&p3=${p3}&p4=${p4}&p5=${p5}`, {
+    method: 'GET',
+  })
+  return res.json()
 }
 
 
 
 export {
-    getAllTrips,
-    getRandomCity,
-    getLoggedInUser,
-    logout,
-    login,
-    signUp,
-    getAllCities,
-    getQuizCities
+  getAllTrips,
+  getRandomCity,
+  getLoggedInUser,
+  logout,
+  login,
+  signUp,
+  getAllCities,
+  getQuizCities
 }
