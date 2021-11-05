@@ -10,6 +10,34 @@ const { Content } = Layout;
 
 class QuizPage2 extends React.Component {
 
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      score: { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
+      result: { city: false, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false },
+      description: "",
+      renderResult: false,
+      cities: [{ 'city': 'Los Angeles', 'state': 'CA' }, { 'city': 'San Diego', 'state': 'CA' }, { 'city': 'Vancouver', 'state': 'BC' }],
+      selectedCity: ""
+    }
+
+    this.onCityQuestion = this.onCityQuestion.bind(this)
+    this.onCoolCatQuestion = this.onCoolCatQuestion.bind(this)
+    this.onAdventurerQuestion = this.onAdventurerQuestion.bind(this)
+    this.onEntertainerQuestion = this.onEntertainerQuestion.bind(this)
+    this.onFamilyQuestion = this.onFamilyQuestion.bind(this)
+    this.onEnthusiastQuestion = this.onEnthusiastQuestion.bind(this)
+    this.onInvestiagtorQuestion = this.onInvestiagtorQuestion.bind(this)
+    this.onResult = this.onResult.bind(this)
+    this.scrollToBottom = this.scrollToBottom.bind(this)
+  }
+
+  componentDidMount() {
+    const selectedCity = localStorage.getItem('selectedCity');
+    this.setState({ selectedCity });
+  }
+
 
 
   render() {

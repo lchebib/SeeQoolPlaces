@@ -49,12 +49,19 @@ class QuizSelectCityPage extends React.Component {
       options: [],
       selectedCity: "",
       buttonStatus: false,
+      selectedOptions: ""
     }
     this.onChange = this.onChange.bind(this);
   }
 
-  onChange() {
-    this.setState({ buttonStatus: true })
+  onChange(value, selectedOptions) {
+    this.setState({ buttonStatus: true });
+    this.setState({ selectedOptions: selectedOptions });
+    console.log(value, selectedOptions);
+  }
+
+  filter(inputValue, path) {
+    return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
   }
 
   componentDidMount() {
@@ -68,6 +75,8 @@ class QuizSelectCityPage extends React.Component {
 
     const enableButton = () => {
       if (this.state.buttonStatus === true) {
+        const selectedCity = this.state.selectedCity;
+        localStorage.setItem('selectedCity', selectedCity);
         return <Button href={"/quiz2"} size='large' shape='round' style={{ background: 'white', color: 'black', border: 'none' }}>Done</Button>
       }
       return <Button disabled href={"/quiz2"} size='large' shape='round' style={{ background: 'grey', color: 'black', border: 'none' }}>Done</Button>
@@ -103,7 +112,7 @@ class QuizSelectCityPage extends React.Component {
                     <br />
                     Go ahead and tell us which city.
                   </div>
-                  <Cascader options={this.state.options} onChange={this.onChange} placeholder="Select City" />
+                  <Cascader options={this.state.options} onChange={this.onChange} showSearch={this.filter} placeholder="Select City" />
                   <br />
                   <br />
                   {/* <Button {...this.state.buttonStatus} href={"/quiz2"} size='large' shape='round' style={{ background: 'white', color: 'black', border: 'none' }}>Done</Button> */}
