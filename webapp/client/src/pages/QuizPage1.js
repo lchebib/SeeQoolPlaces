@@ -297,7 +297,8 @@ class QuizPage1 extends React.Component {
                       {answers.map((answer) =>
                         <Button
                           style={{ margin: '5px', marginTop: '5px', borderRadius: '4px', marginBottom: '5px', width: '25vw', height: '18vh', fontSize: '2vw', fontFamily: 'sans-serif bold', color: 'white', background: 'linear-gradient(#ff0080, #ff4000, #ff0080)' }}
-                          onclick={() => this.onButtonClick(question.personality, answer.score)}>
+                          onclick={() => this.onButtonClick(question.personality, answer.score)}
+                          danger='true'>
 
                           {answer.text}
                         </Button>
