@@ -17,18 +17,18 @@ const makeOptions = (arr) => {
   }
   let result = [
     {
-      value: 'california',
+      value: 'California',
       label: 'California',
       children: []
     },
     {
-      value: 'british columbia',
+      value: 'British Columbia',
       label: 'British Columbia',
       children: []
     }];
   arr.forEach(obj => {
     let cityArr = Object.entries(obj);
-    let cityObj = { value: cityArr[1][1].toLowerCase(), label: cityArr[1][1] };
+    let cityObj = { value: cityArr[1][1], label: cityArr[1][1] };
     if (cityArr[0][1] === "CA") {
       result[0].children.push(cityObj);
     } else {
@@ -47,17 +47,16 @@ class QuizSelectCityPage extends React.Component {
 
     this.state = {
       options: [],
-      selectedCity: "",
       buttonStatus: false,
-      selectedOptions: ""
+      selectedOptions: []
     }
     this.onChange = this.onChange.bind(this);
   }
 
   onChange(value, selectedOptions) {
     this.setState({ buttonStatus: true });
-    this.setState({ selectedOptions: selectedOptions });
-    console.log(value, selectedOptions);
+    this.setState({ selectedOptions: value });
+    console.log(value);
   }
 
   filter(inputValue, path) {
@@ -75,8 +74,8 @@ class QuizSelectCityPage extends React.Component {
 
     const enableButton = () => {
       if (this.state.buttonStatus === true) {
-        const selectedCity = this.state.selectedCity;
-        localStorage.setItem('selectedCity', selectedCity);
+        const selectedOptions = this.state.selectedOptions;
+        localStorage.setItem('selectedOptions', selectedOptions);
         return <Button href={"/quiz2"} size='large' shape='round' style={{ background: 'white', color: 'black', border: 'none' }}>Done</Button>
       }
       return <Button disabled href={"/quiz2"} size='large' shape='round' style={{ background: 'grey', color: 'black', border: 'none' }}>Done</Button>

@@ -19,26 +19,25 @@ class QuizPage2 extends React.Component {
       description: "",
       renderResult: false,
       cities: [{ 'city': 'Los Angeles', 'state': 'CA' }, { 'city': 'San Diego', 'state': 'CA' }, { 'city': 'Vancouver', 'state': 'BC' }],
-      selectedCity: ""
+      selectedOptions: localStorage.getItem('selectedOptions').split(',')
     }
 
-    this.onCityQuestion = this.onCityQuestion.bind(this)
-    this.onCoolCatQuestion = this.onCoolCatQuestion.bind(this)
-    this.onAdventurerQuestion = this.onAdventurerQuestion.bind(this)
-    this.onEntertainerQuestion = this.onEntertainerQuestion.bind(this)
-    this.onFamilyQuestion = this.onFamilyQuestion.bind(this)
-    this.onEnthusiastQuestion = this.onEnthusiastQuestion.bind(this)
-    this.onInvestiagtorQuestion = this.onInvestiagtorQuestion.bind(this)
-    this.onResult = this.onResult.bind(this)
-    this.scrollToBottom = this.scrollToBottom.bind(this)
+    // this.onCityQuestion = this.onCityQuestion.bind(this)
+    // this.onCoolCatQuestion = this.onCoolCatQuestion.bind(this)
+    // this.onAdventurerQuestion = this.onAdventurerQuestion.bind(this)
+    // this.onEntertainerQuestion = this.onEntertainerQuestion.bind(this)
+    // this.onFamilyQuestion = this.onFamilyQuestion.bind(this)
+    // this.onEnthusiastQuestion = this.onEnthusiastQuestion.bind(this)
+    // this.onInvestiagtorQuestion = this.onInvestiagtorQuestion.bind(this)
+    // this.onResult = this.onResult.bind(this)
+    // this.scrollToBottom = this.scrollToBottom.bind(this)
   }
 
   componentDidMount() {
-    const selectedCity = localStorage.getItem('selectedCity');
-    this.setState({ selectedCity });
+    //const selectedOptions = localStorage.getItem('selectedOptions');
+    //this.setState({ selectedOptions: selectedOptions });
+    console.log(this.state.selectedOptions);
   }
-
-
 
   render() {
     return (
@@ -49,7 +48,7 @@ class QuizPage2 extends React.Component {
 
           <Content style={{ margin: '24px 24px 0', overflow: 'initial', textAlign: 'center', fontFamily: 'Work Sans' }}>
 
-            <div style={{ fontSize: '4vh' }}>On this trip, I want to... </div>
+            <div style={{ fontSize: '4vh' }}>When I visit {this.state.selectedOptions[1]}, I want to... </div>
             {/* <br /> */}
             {/* <div style={{ fontSize: '2vh' }}>For each of the below questions, select an answer <br /> that best describes how you feel. </div> */}
 
