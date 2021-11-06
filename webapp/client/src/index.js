@@ -5,6 +5,7 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
+import Home from './pages/Home';
 import LandingPage from './pages/LandingPage';
 import QuizPage0 from './pages/QuizPage0';
 import QuizPage1 from './pages/QuizPage1';
@@ -22,6 +23,11 @@ ReactDOM.render(
       <Switch>
         <Route exact
           path="/"
+          render={() => (
+            <Home />
+          )} />
+        <Route exact
+          path="/LandingPage"
           render={() => (
             <LandingPage />
           )} />
