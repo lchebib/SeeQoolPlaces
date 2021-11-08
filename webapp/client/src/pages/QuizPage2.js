@@ -1,12 +1,27 @@
 import React from 'react';
-import { Layout, Row, Col, Card, Button, Divider } from 'antd';
+import { Layout, Row, Col, Card, Button, Divider, Radio } from 'antd';
 import SideBar from '../components/SideBar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import {
+  LeftSquareOutlined
+} from '@ant-design/icons';
 import { BuzzFeedQuiz } from "react-buzzfeed-quiz";
 import "react-buzzfeed-quiz/lib/styles.css";
+import * as Scroll from 'react-scroll';
+import { animateScroll as scroll } from 'react-scroll'
 
 const { Content } = Layout;
+
+const descriptions =
+{
+  coolCat: "You're a cool cat. ",
+  adventurer: "You have an adventurous spirit. ",
+  entertainer: "You enjoy the finer things in life. ",
+  family: "You want to spend quality time with loved ones. ",
+  enthusiast: "You go with the flow, and are up for anything. ",
+  investigator: "You're happy when you're learning. "
+}
 
 class QuizPage2 extends React.Component {
 
@@ -15,286 +30,688 @@ class QuizPage2 extends React.Component {
 
     this.state = {
       score: { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
-      result: { city: false, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false },
+      personalityResults: {
+        population: 0, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false
+      },
       description: "",
-      renderResult: false,
-      cities: [{ 'city': 'Los Angeles', 'state': 'CA' }, { 'city': 'San Diego', 'state': 'CA' }, { 'city': 'Vancouver', 'state': 'BC' }],
-      selectedOptions: localStorage.getItem('selectedOptions').split(',')
+      renderResults: false,
+      destResults: [{ 'city': 'Los Angeles', 'state': 'CA' }, { 'city': 'San Diego', 'state': 'CA' }, { 'city': 'Vancouver', 'state': 'BC' }],
+      selectedDest: localStorage.getItem('selectedDest').split(',')
     }
-
-    // this.onCityQuestion = this.onCityQuestion.bind(this)
-    // this.onCoolCatQuestion = this.onCoolCatQuestion.bind(this)
-    // this.onAdventurerQuestion = this.onAdventurerQuestion.bind(this)
-    // this.onEntertainerQuestion = this.onEntertainerQuestion.bind(this)
-    // this.onFamilyQuestion = this.onFamilyQuestion.bind(this)
-    // this.onEnthusiastQuestion = this.onEnthusiastQuestion.bind(this)
-    // this.onInvestiagtorQuestion = this.onInvestiagtorQuestion.bind(this)
-    // this.onResult = this.onResult.bind(this)
-    // this.scrollToBottom = this.scrollToBottom.bind(this)
+    // this.onButtonClick = this.onButtonClick.bind(this)
+    this.onCityQuestion = this.onCityQuestion.bind(this)
+    this.onCoolCatQuestion = this.onCoolCatQuestion.bind(this)
+    this.onAdventurerQuestion = this.onAdventurerQuestion.bind(this)
+    this.onEntertainerQuestion = this.onEntertainerQuestion.bind(this)
+    this.onFamilyQuestion = this.onFamilyQuestion.bind(this)
+    this.onEnthusiastQuestion = this.onEnthusiastQuestion.bind(this)
+    this.onInvestiagtorQuestion = this.onInvestiagtorQuestion.bind(this)
+    this.onResult = this.onResult.bind(this)
+    this.scrollToBottom = this.scrollToBottom.bind(this)
+    this.scrollTo = this.scrollTo.bind(this)
+    this.setSelectedDest = this.setSelectedDest.bind(this)
   }
 
   componentDidMount() {
-    //const selectedOptions = localStorage.getItem('selectedOptions');
-    //this.setState({ selectedOptions: selectedOptions });
-    console.log(this.state.selectedOptions);
+    //const selectedDestination = localStorage.getItem('selectedDestination');
+    //this.setState({ selectedDestination: selectedDestination });
+    console.log(this.state.selectedDest);
   }
 
+  scrollToBottom() {
+    scroll.scrollToBottom();
+  }
+
+  scrollTo() {
+    scroll.scrollTo();
+  }
+
+  onCityQuestion(answerScore) {
+    var newResult = this.state.personalityResults
+    newResult.population = newResult.population + answerScore
+    this.setState({ personalityResults: newResult })
+  }
+
+  onCoolCatQuestion(answerScore) {
+    var newScore = this.state.score
+    newScore.coolCat = newScore.coolCat + answerScore
+    this.setState({ score: newScore })
+  }
+
+  onAdventurerQuestion(answerScore) {
+    var newScore = this.state.score
+    newScore.adventurer = newScore.adventurer + answerScore
+    this.setState({ score: newScore })
+  }
+
+  onEntertainerQuestion(answerScore) {
+    var newScore = this.state.score
+    newScore.entertainer = newScore.entertainer + answerScore
+    this.setState({ score: newScore })
+  }
+
+  onFamilyQuestion(answerScore) {
+    var newScore = this.state.score
+    newScore.family = newScore.family + answerScore
+    this.setState({ score: newScore })
+  }
+
+  onEnthusiastQuestion(answerScore) {
+    var newScore = this.state.score
+    newScore.enthusiast = newScore.enthusiast + answerScore
+    this.setState({ score: newScore })
+  }
+
+  onInvestiagtorQuestion(answerScore) {
+    var newScore = this.state.score
+    newScore.investigator = newScore.investigator + answerScore
+    this.setState({ score: newScore })
+  }
+
+
+  onResult() {
+
+
+    this.state.personalityResults = { city: false, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false }
+    this.state.description = ""
+
+    var numPersonalities = 0
+
+    for (const key in this.state.score) {
+      if (this.state.score[key] >= 5) {
+        this.state.personalityResults[key] = true
+        this.state.description += descriptions[key]
+        numPersonalities += 1;
+      }
+    }
+
+    if (numPersonalities == 0 || numPersonalities == 6) {
+      this.setState({ personalityResults: { city: false, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: true, investigator: false } })
+      this.setState({ description: descriptions.enthusiast })
+    }
+
+
+    this.state.score = { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 }
+    this.setState({ renderResults: true })
+
+    this.scrollToBottom()
+
+  }
+
+  setSelectedDest(e) {
+
+    var index = parseInt(e.value)
+
+    this.setState({ selectedDest: [this.state.destResults[index]] });
+
+  }
+
+
+  pushQuizResults() {
+    // setting local storage for personality results and selected destination
+    const coolCat = this.state.personalityResults[coolCat];
+    localStorage.setItem('coolCat', coolCat);
+    const adventurer = this.state.personalityResults[adventurer];
+    localStorage.setItem('adventurer', adventurer);
+    const entertainer = this.state.personalityResults[entertainer];
+    localStorage.setItem('entertainer', entertainer);
+    const family = this.state.personalityResults[family];
+    localStorage.setItem('family', family);
+    const enthusiast = this.state.personalityResults[enthusiast];
+    localStorage.setItem('enthusiast', enthusiast);
+    const investigator = this.state.personalityResults[investigator];
+    localStorage.setItem('investigator', investigator);
+    const selectedDest = this.state.selectedDest;
+    localStorage.setItem('selectedDest', selectedDest);
+  }
+
+
+  onSelectCity(value) {
+    this.setState({ buttonStatus: true });
+    this.setState({ selectedDest: value });
+    console.log(value);
+  }
+
+
+
   render() {
+
+    const renderResults = () => {
+      if (this.state.renderResults === true) {
+        return (
+          <Row type="flex" style={{ justifyContent: 'center' }}>
+            <Col>
+
+              <Card ref='res' style={{
+                backgroundImage: 'linear-gradient(#ff0080, #ff4000, #ff0080)',
+                padding: '10px',
+                borderRadius: '3px',
+                maxWidth: '48vw',
+              }
+              }>
+                <div style={{ fontSize: '4vw', color: 'white' }}>Your results are in! </div>
+                <br />
+                <div style={{ fontSize: '3vw', }}> From what we've gathered, we think... </div>
+                <br />
+                <br />
+                <div style={{ fontSize: '2vw', fontFamily: 'sans-serif bold' }}> {this.state.description} </div>
+                <br />
+                <br />
+                <div style={{ fontSize: '3vw', }}> Your perfect cities are... </div>
+                <br />
+
+                <Radio.Group buttonStyle="solid">
+                  <Radio.Button value="0" onChange={(e) => this.setSelectedDest(e)} style={{ padding: '2vh', borderRadius: '3px', marginTop: '20px', width: '80%', height: '8vh', fontSize: '2vw', fontFamily: 'sans-serif bold', border: 'none' }}>
+                    {this.state.destResults[0].city}, {this.state.destResults[0].state}
+                  </Radio.Button>
+                  <Radio.Button value="1" onChange={(e) => this.setSelectedDest(e)} style={{ padding: '2vh', borderRadius: '3px', marginTop: '20px', width: '80%', height: '8vh', fontSize: '2vw', fontFamily: 'sans-serif bold', border: 'none' }}>
+                    {this.state.destResults[1].city}, {this.state.destResults[1].state}
+                  </Radio.Button>
+                  <Radio.Button value="2" onChange={(e) => this.setSelectedDest(e)} style={{ padding: '2vh', borderRadius: '3px', marginTop: '20px', width: '80%', height: '8vh', fontSize: '2vw', fontFamily: 'sans-serif bold', border: 'none' }}>
+                    {this.state.destResults[2].city}, {this.state.destResults[2].state}
+                  </Radio.Button>
+                </Radio.Group>
+              </Card >
+
+
+              {enableButton()}
+
+            </Col>
+          </Row>
+
+        )
+      }
+    }
+
+
+    const enableButton = () => {
+      if (this.state.buttonStatus === true) {
+        const selectedDest = this.state.selectedDest;
+        localStorage.setItem('selectedDest', selectedDest);
+        return <Button href={"/quiz2"} size='large' shape='round' style={{ background: 'white', color: 'black', border: 'none' }}>Done</Button>
+      }
+      return <Button disabled href={"/quiz2"} size='large' shape='round' style={{ background: 'grey', color: 'black', border: 'none' }}>Done</Button>
+    }
+
+
+
+
     return (
       <Layout>
         <SideBar />
         <Layout className='layout' style={{ background: 'white', marginLeft: 200 }}>
           <Header />
 
-          <Content style={{ margin: '24px 24px 0', overflow: 'initial', textAlign: 'center', fontFamily: 'Work Sans' }}>
+          <Content style={{ margin: '24px 24px 0', overflow: 'initial', textAlign: 'center', fontFamily: 'Work Sans', alignItems: 'center' }}>
+            <Row align='middle' justify='center'>
 
-            <div style={{ fontSize: '4vh' }}>When I visit {this.state.selectedOptions[1]}, I want to... </div>
-            {/* <br /> */}
-            {/* <div style={{ fontSize: '2vh' }}>For each of the below questions, select an answer <br /> that best describes how you feel. </div> */}
+              <Col>
 
-            <BuzzFeedQuiz
-              // title={"On this trip, I want to..."}
-              // description={"For each of the below questions, select an answer that you relate with the most."}
-              byline={true}
-              autoScroll={true}
-              // onRestart={() => alert("This alert was triggered by the onRestart prop!")}
-              // onResult={() => alert("The onResult prop triggered this alert!")}
-              questions={[
-                {
-                  question: "Check out local breweries or drink the best coffee the city has to offer.",
-                  answers: [
+                <div style={{ fontSize: '8vh', }}>On this trip, I want to... </div>
+
+                {/* <Row type="flex" style={{ alignItems: "center", justifyContent: 'center' }}>
+              <Col>
+
+                {questions.map((question) =>
+                  <div style={{ width: '54vw', marginBottom: '20vw' }}>
+                    <Card
+                      style={{ margin: '1vw', marginBottom: '10px', background: 'black', width: '52vw', padding: '10px', borderRadius: '4px', color: 'white', fontSize: '3vmin' }}>
+                      {question.text}
+                    </Card >
+
+                    <div style={{ width: '54vw' }}>
+                      {answers.map((answer) =>
+                        <Button
+                          type='ghost'
+                          style={{ margin: '1vw', marginTop: '5px', borderRadius: '4px', marginBottom: '5px', width: '25vw', height: '18vw', fontSize: '2vw', fontFamily: 'sans-serif bold' }}
+                          onclick={() => this.onButtonClick(question.personality, answer.score)}>
+
+                          {answer.text}
+                        </Button>
+                      )}
+                    </div>
+
+                  </div>
+                )}
+
+              </Col>
+            </Row> */}
+
+                <BuzzFeedQuiz
+                  byline={true}
+                  autoScroll={true}
+                  style={{ className: 'rbq_question_inner_container' }}
+                  questions={[
                     {
-                      answer: "very Qool",
-                      resultID: 3,
+                      question: "Visit a _______ city.",
+                      questionID: 0,
+                      // backgroundColor: "rgb(20, 41, 133)",
+                      answers: [
+                        {
+                          answer: "small but quaint",
+                          resultID: 0,
+                          onAnswerSelection: () => this.onCityQuestion(3),
+                          // backgroundColor: "rgb(24, 82, 24)",
+                        },
+                        {
+                          answer: "normal sized",
+                          resultID: 0,
+                          // backgroundColor: "rgb(50, 118, 11)",
+                          onAnswerSelection: () => this.onCityQuestion(2),
+                        },
+                        {
+                          answer: "very big",
+                          resultID: 0,
+                          // backgroundColor: "rgb(133, 187, 104)",
+                          onAnswerSelection: () => this.onCityQuestion(1),
+                        },
+                        {
+                          answer: "...size doesn't matter",
+                          resultID: 0,
+                          // backgroundColor: "rgb(193, 221, 135)",
+                          onAnswerSelection: () => this.onCityQuestion(0),
+                        }
+                      ],
                     },
                     {
-                      answer: "a little Qool",
-                      resultID: 2,
+                      question: "Check out local breweries or drink the best coffee the city has to offer.",
+                      // backgroundColor: "rgb(208, 87, 130)",
+                      answers: [
+                        {
+                          answer: "very Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(24, 82, 24)",
+                          onAnswerSelection: () => this.onCoolCatQuestion(3)
+                        },
+                        {
+                          answer: "a little Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(50, 118, 11)",
+                          onAnswerSelection: () => this.onCoolCatQuestion(2)
+                        },
+                        {
+                          answer: "unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(133, 187, 104)",
+                          onAnswerSelection: () => this.onCoolCatQuestion(1)
+                        },
+                        {
+                          answer: "VERY unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(193, 221, 135)",
+                          onAnswerSelection: () => this.onCoolCatQuestion(0)
+                        }
+                      ],
                     },
                     {
-                      answer: "unQool",
-                      resultID: 1,
+                      question: "Enjoy being in nature and going on hikes.",
+                      // backgroundColor: "rgb(182, 0, 0)",
+                      answers: [
+                        {
+                          answer: "very Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(24, 82, 24)",
+                          onAnswerSelection: () => this.onAdventurerQuestion(3)
+                        },
+                        {
+                          answer: "a little Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(50, 118, 11)",
+                          onAnswerSelection: () => this.onAdventurerQuestion(2)
+                        },
+                        {
+                          answer: "unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(133, 187, 104)",
+                          onAnswerSelection: () => this.onAdventurerQuestion(1)
+                        },
+                        {
+                          answer: "VERY unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(193, 221, 135)",
+                          onAnswerSelection: () => this.onAdventurerQuestion(0)
+                        }
+                      ],
                     },
                     {
-                      answer: "VERY unQool",
-                      resultID: 0,
-                    }
-                  ],
-                },
-                {
-                  question: "Shop for vintage clothing or visit cool record stores.",
-                  answers: [
-                    {
-                      answer: "very Qool",
-                      resultID: 3,
+                      question: "Sip on a tasty drink beachside, or by a fancy hotel pool.",
+                      // backgroundColor: "rgb(219, 124, 0)",
+                      answers: [
+                        {
+                          answer: "very Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(24, 82, 24)",
+                          onAnswerSelection: () => this.onEntertainerQuestion(3)
+                        },
+                        {
+                          answer: "a little Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(50, 118, 11)",
+                          onAnswerSelection: () => this.onEntertainerQuestion(2)
+                        },
+                        {
+                          answer: "unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(133, 187, 104)",
+                          onAnswerSelection: () => this.onEntertainerQuestion(1)
+                        },
+                        {
+                          answer: "VERY unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(193, 221, 135)",
+                          onAnswerSelection: () => this.onEntertainerQuestion(0)
+                        }
+                      ],
                     },
                     {
-                      answer: "a little Qool",
-                      resultID: 2,
+                      question: "Steep in the history and culture of the city by visiting museums and landmarks.",
+                      // backgroundColor: "rgb(238, 184, 34)",
+                      answers: [
+                        {
+                          answer: "very Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(24, 82, 24)",
+                          onAnswerSelection: () => this.onInvestiagtorQuestion(3)
+                        },
+                        {
+                          answer: "a little Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(50, 118, 11)",
+                          onAnswerSelection: () => this.onInvestiagtorQuestion(2)
+                        },
+                        {
+                          answer: "unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(133, 187, 104)",
+                          onAnswerSelection: () => this.onInvestiagtorQuestion(1)
+                        },
+                        {
+                          answer: "VERY unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(193, 221, 135)",
+                          onAnswerSelection: () => this.onInvestiagtorQuestion(0)
+                        }
+                      ],
                     },
                     {
-                      answer: "unQool",
-                      resultID: 1,
+                      question: "Do fun activities that the whole family can enjoy.",
+                      // backgroundColor: "rgb(20, 41, 133)",
+                      answers: [
+                        {
+                          answer: "very Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(24, 82, 24)",
+                          onAnswerSelection: () => this.onFamilyQuestion(3)
+                        },
+                        {
+                          answer: "a little Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(50, 118, 11)",
+                          onAnswerSelection: () => this.onFamilyQuestion(2)
+                        },
+                        {
+                          answer: "unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(133, 187, 104)",
+                          onAnswerSelection: () => this.onFamilyQuestion(1)
+                        },
+                        {
+                          answer: "VERY unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(193, 221, 135)",
+                          onAnswerSelection: () => this.onFamilyQuestion(0)
+                        }
+                      ],
                     },
                     {
-                      answer: "VERY unQool",
-                      resultID: 0,
-                    }
-                  ],
-                },
-                {
-                  question: "Enjoy being in nature and going on hikes.",
-                  answers: [
-                    {
-                      answer: "very Qool",
-                      resultID: 3,
+                      question: "Go with the flow and find the best local spots.",
+                      // backgroundColor: "rgb(208, 87, 130)",
+                      answers: [
+                        {
+                          answer: "very Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(24, 82, 24)",
+                          onAnswerSelection: () => this.onEnthusiastQuestion(3)
+                        },
+                        {
+                          answer: "a little Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(50, 118, 11)",
+                          onAnswerSelection: () => this.onEnthusiastQuestion(2)
+                        },
+                        {
+                          answer: "unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(133, 187, 104)",
+                          onAnswerSelection: () => this.onEnthusiastQuestion(1)
+                        },
+                        {
+                          answer: "VERY unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(193, 221, 135)",
+                          onAnswerSelection: () => this.onEnthusiastQuestion(0)
+                        }
+                      ],
                     },
                     {
-                      answer: "a little Qool",
-                      resultID: 2,
+                      question: "Do outdoor sports, like skiing, surfing, or boating.",
+                      // backgroundColor: "rgb(182, 0, 0)",
+                      answers: [
+                        {
+                          answer: "very Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(24, 82, 24)",
+                          onAnswerSelection: () => this.onAdventurerQuestion(3)
+                        },
+                        {
+                          answer: "Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(50, 118, 11)",
+                          onAnswerSelection: () => this.onAdventurerQuestion(2)
+                        },
+                        {
+                          answer: "a little Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(133, 187, 104)",
+
+                          onAnswerSelection: () => this.onAdventurerQuestion(1)
+                        },
+                        {
+                          answer: "unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(193, 221, 135)",
+                          onAnswerSelection: () => this.onAdventurerQuestion(0)
+                        }
+                      ],
                     },
                     {
-                      answer: "unQool",
-                      resultID: 1,
+                      question: "Do a little bit of everything.",
+                      // backgroundColor: "rgb(219, 124, 0)",
+                      answers: [
+                        {
+                          answer: "very Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(24, 82, 24)",
+                          onAnswerSelection: () => this.onEnthusiastQuestion(3)
+                        },
+                        {
+                          answer: "a little Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(50, 118, 11)",
+                          onAnswerSelection: () => this.onEnthusiastQuestion(2)
+                        },
+                        {
+                          answer: "unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(133, 187, 104)",
+                          onAnswerSelection: () => this.onEnthusiastQuestion(1)
+                        },
+                        {
+                          answer: "VERY unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(193, 221, 135)",
+                          onAnswerSelection: () => this.onEnthusiastQuestion(0)
+                        }
+                      ],
                     },
                     {
-                      answer: "VERY unQool",
-                      resultID: 0,
-                    }
-                  ],
-                },
-                {
-                  question: "Get dressed up and go out on the town.",
-                  answers: [
-                    {
-                      answer: "very Qool",
-                      resultID: 3,
+                      question: "Shop for vintage clothing or visit cool record stores.",
+                      // backgroundColor: "rgb(238, 184, 34)",
+                      answers: [
+                        {
+                          answer: "very Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(24, 82, 24)",
+                          onAnswerSelection: () => this.onCoolCatQuestion(3)
+                        },
+                        {
+                          answer: "a little Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(50, 118, 11)",
+                          onAnswerSelection: () => this.onCoolCatQuestion(2)
+                        },
+                        {
+                          answer: "unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(133, 187, 104)",
+                          onAnswerSelection: () => this.onCoolCatQuestion(1)
+                        },
+                        {
+                          answer: "VERY unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(193, 221, 135)",
+                          onAnswerSelection: () => this.onCoolCatQuestion(0)
+                        }
+                      ],
                     },
                     {
-                      answer: "a little Qool",
-                      resultID: 2,
+                      question: "Get dressed up and go out on the town.",
+                      // backgroundColor: "rgb(20, 41, 133)",
+                      answers: [
+                        {
+                          answer: "very Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(24, 82, 24)",
+                          onAnswerSelection: () => this.onEntertainerQuestion(3)
+                        },
+                        {
+                          answer: "a little Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(50, 118, 11)",
+                          onAnswerSelection: () => this.onEntertainerQuestion(2)
+                        },
+                        {
+                          answer: "unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(133, 187, 104)",
+                          onAnswerSelection: () => this.onEntertainerQuestion(1)
+                        },
+                        {
+                          answer: "VERY unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(193, 221, 135)",
+                          onAnswerSelection: () => this.onEntertainerQuestion(0)
+                        }
+                      ],
                     },
                     {
-                      answer: "unQool",
-                      resultID: 1,
+                      question: "Make lasting memories with my children.",
+                      // backgroundColor: "rgb(208, 87, 130)",
+                      answers: [
+                        {
+                          answer: "very Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(24, 82, 24)",
+                          onAnswerSelection: () => this.onFamilyQuestion(3)
+                        },
+                        {
+                          answer: "a little Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(50, 118, 11)",
+                          onAnswerSelection: () => this.onFamilyQuestion(2)
+                        },
+                        {
+                          answer: "unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(133, 187, 104)",
+                          onAnswerSelection: () => this.onFamilyQuestion(1)
+                        },
+                        {
+                          answer: "VERY unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(193, 221, 135)",
+                          onAnswerSelection: () => this.onFamilyQuestion(0)
+                        }
+                      ],
                     },
                     {
-                      answer: "VERY unQool",
-                      resultID: 0,
-                    }
-                  ],
-                },
-                {
-                  question: "Sip on a tasty drink beachside, or by a fancy hotel pool.",
-                  answers: [
-                    {
-                      answer: "very Qool",
-                      resultID: 3,
+                      question: "Occupy a cozy corner of a quiet cafe or bar with a good book.",
+                      // backgroundColor: "rgb(182, 0, 0)",
+                      answers: [
+                        {
+                          answer: "very Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(24, 82, 24)",
+                          onAnswerSelection: () => this.onInvestiagtorQuestion(3)
+                        },
+                        {
+                          answer: "a little Qool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(50, 118, 11)",
+                          onAnswerSelection: () => this.onInvestiagtorQuestion(2)
+                        },
+                        {
+                          answer: "unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(133, 187, 104)",
+                          onAnswerSelection: () => this.onInvestiagtorQuestion(1)
+                        },
+                        {
+                          answer: "VERY unQool",
+                          resultID: 0,
+                          // backgroundColor: "rgb(193, 221, 135)",
+                          onAnswerSelection: () => this.onInvestiagtorQuestion(0),
+                        }
+                      ],
                     },
                     {
-                      answer: "a little Qool",
-                      resultID: 2,
+
+                      question: "How ready are you to go on this trip?!",
+                      answerArrangement: "tile",
+                      class: "rbq_question_inner_container",
+                      // backgroundColor: "#90A3E8",
+                      // fontColor: "#020D4A",
+                      // backgroundColor: "rgb(211, 211, 211)",
+
+                      answers: [
+                        {
+                          answer: "VERY READY",
+                          // backgroundColor: "rgb(50, 118, 11)",
+                          // backgroundColor: "#869df2",
+                          fontColor: "white",
+                          onAnswerSelection: () => this.onResult()
+                        },
+                        {
+                          answer: "A LITTLE READY",
+                          // backgroundColor: "rgb(133, 187, 104)",
+                          // backgroundColor: "#6680df",
+                          fontColor: "white",
+                          onAnswerSelection: () => this.onResult()
+                        },
+                      ],
                     },
-                    {
-                      answer: "unQool",
-                      resultID: 1,
-                    },
-                    {
-                      answer: "VERY unQool",
-                      resultID: 0,
-                    }
-                  ],
-                },
-                {
-                  question: "Make lasting memories with my children.",
-                  answers: [
-                    {
-                      answer: "very Qool",
-                      resultID: 3,
-                    },
-                    {
-                      answer: "a little Qool",
-                      resultID: 2,
-                    },
-                    {
-                      answer: "unQool",
-                      resultID: 1,
-                    },
-                    {
-                      answer: "VERY unQool",
-                      resultID: 0,
-                    }
-                  ],
-                },
-                {
-                  question: "Do fun activities that the whole family can enjoy.",
-                  answers: [
-                    {
-                      answer: "very Qool",
-                      resultID: 3,
-                    },
-                    {
-                      answer: "a little Qool",
-                      resultID: 2,
-                    },
-                    {
-                      answer: "unQool",
-                      resultID: 1,
-                    },
-                    {
-                      answer: "VERY unQool",
-                      resultID: 0,
-                    }
-                  ],
-                },
-                {
-                  question: "Go with the flow and find the best local spots.",
-                  answers: [
-                    {
-                      answer: "very Qool",
-                      resultID: 3,
-                    },
-                    {
-                      answer: "a little Qool",
-                      resultID: 2,
-                    },
-                    {
-                      answer: "unQool",
-                      resultID: 1,
-                    },
-                    {
-                      answer: "VERY unQool",
-                      resultID: 0,
-                    }
-                  ],
-                },
-                {
-                  question: "Steep in the history and culture of the city by visiting museums and landmarks.",
-                  answers: [
-                    {
-                      answer: "very Qool",
-                      resultID: 3,
-                    },
-                    {
-                      answer: "a little Qool",
-                      resultID: 2,
-                    },
-                    {
-                      answer: "unQool",
-                      resultID: 1,
-                    },
-                    {
-                      answer: "VERY unQool",
-                      resultID: 0,
-                    }
-                  ],
-                },
-                {
-                  question: "Occupy a cozy corner of a quiet cafe or bar with a good book.",
-                  answers: [
-                    {
-                      answer: "very Qool",
-                      resultID: 3,
-                    },
-                    {
-                      answer: "a little Qool",
-                      resultID: 2,
-                    },
-                    {
-                      answer: "unQool",
-                      resultID: 1,
-                    },
-                    {
-                      answer: "VERY unQool",
-                      resultID: 0,
-                    }
-                  ],
-                },
-              ]}
-              results={[
-                {
-                  title: "Your first result title goes here",
-                  description: "Your first result description goes here",
-                  // resultImageSrc: FirstResultImage,
-                  imageAttribution: "Your photo attribution text goes here",
-                  resultID: 0,
-                },
-                {
-                  title: "Your second result title goes here",
-                  description: "Your second result description goes here",
-                  // resultImageSrc: SecondResultImage,
-                  resultID: 1,
-                },
-                {
-                  title: "Your third result title goes here",
-                  description: "Result images and attributions are optional!",
-                  resultID: 2,
-                },
-              ]}
-            />
+                  ]}
+                />
+                {renderResults()}
+
+                <a href="./quiz" style={{ color: "black" }}>
+                  <LeftSquareOutlined /> Go Back
+                </a>
+
+              </Col>
+            </Row>
 
           </Content>
-
           <Footer />
         </Layout>
       </Layout >
@@ -303,4 +720,3 @@ class QuizPage2 extends React.Component {
 }
 
 export default QuizPage2
-

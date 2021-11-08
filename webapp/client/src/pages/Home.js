@@ -20,25 +20,43 @@ class Home extends React.Component {
       <Row type="flex" style={{ alignItems: "center", justifyContent: 'center' }}>
         <Col style={{ background: 'white' }}>
           <div style={{
-            position: 'relative',
-            top: '0.5',
-            left: '0.5',
-            marginTop: '-50px',
-            marginLeft: '-50px',
-            width: '80vw',
-            margin: '0 auto',
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
+            // position: 'relative',
+            // top: '0.5',
+            // left: '0.5',
+            // marginTop: '-50px',
+            // marginLeft: '-50px',
+            // width: '80vw',
+            // margin: '0 auto',
+            // backgroundSize: 'cover',
+            // backgroundRepeat: 'no-repeat',
+            // backgroundPosition: 'center',
             height: '80vh',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
           }}>
             {/* <div style={{ fontFamily: 'Work Sans', fontSize: '4vh' }}>Plan the perfect trip.</div> */}
-            <img src={(process.env.PUBLIC_URL + "/Login_Logo.svg")} alt="See Qool Places Logo" style={{ maxWidth: '60vw', padding: '20px', class: "center" }} />
+            <img src={(process.env.PUBLIC_URL + "/Login_Logo.svg")} alt="See Qool Places Logo" style={{ maxWidth: '60vw', padding: '20px' }} />
+
+          </div>
+          <div style={{
+            // position: 'relative',
+            // top: '0.5',
+            // left: '0.5',
+            // marginTop: '-50px',
+            // marginLeft: '-50px',
+            // width: '80vw',
+            // margin: '0 auto',
+            // backgroundSize: 'cover',
+            // backgroundRepeat: 'no-repeat',
+            // backgroundPosition: 'center',
+            // height: '0vh',
+            display: 'flex',
+            justifyContent: 'center',
+            // alignItems: 'center',
+          }}>
             <a href="/LandingPage">
-              <img src={(process.env.PUBLIC_URL + "/google_login.png")} alt="Google Login Button" style={{ maxWidth: '20vw', padding: '20px', class: "center" }} />
+              <img src={(process.env.PUBLIC_URL + "/google_login.png")} alt="Google Login Button" style={{ width: '250px', padding: '20px' }} />
             </a>
           </div>
         </Col >
