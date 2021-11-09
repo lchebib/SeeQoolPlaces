@@ -24,3 +24,7 @@ Simple csv reader/writer.
 
 6) Update Attribute
 Displays all tables from the database for the user to choose from. Then, user selects key and attribute to be updated. Next, user specifies csv with the new values and specifies the key and new value columns. Finally, the tool updates the database with these new values.
+
+7) Retrieve Individual Tags
+Retrieves all the tags from the Attraction and Restaurant tables in the database and puts them into sets, so as to extract distinct individual tags.
+The individual tags are written to csv files - one for Attraction, and another for Restaurant.
