@@ -106,7 +106,6 @@ const getAllCities = async () => {
 const getQuizCities = async (size, p0, p1, p2, p3, p4, p5) => {
   var res = await fetch(`http://${config.server_host}:${config.server_port}/quiz?size=${size}&p0=${p0}&p1=${p1}&p2=${p2}&p3=${p3}&p4=${p4}&p5=${p5}`, {
     method: 'GET',
-    body: JSON.stringify
   })
   return res.json()
 }
@@ -130,14 +129,18 @@ const getAllPOIs = async () => {
 //             CreateTripPage Fetchers
 // ********************************************
 
-const postCreateTrip = async () => {
-  // TODO
-  // var res = await fetch(`http://${config.server_host}:${config.server_port}/cities`, {
-  //     method: 'POST',
-  // })
-  // return res.json()
-  var res = tempGetPOIS();
-  return res.json();
+const postCreateTrip = async (tripDetails) => {
+  console.log(tripDetails)
+  var res = await fetch(`http://${config.server_host}:${config.server_port}/createtrip`, {
+    method: 'GET',
+    body: JSON.stringify(tripDetails)
+  });
+  // const content = await rawResponse.json();
+
+  // console.log(content);
+
+  return res.json()
+
 }
 
 export {

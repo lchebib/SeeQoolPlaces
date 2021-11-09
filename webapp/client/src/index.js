@@ -17,6 +17,8 @@ import 'antd/dist/antd.css';
 import './index.less';
 import QuizSelectCityPage from './pages/QuizSelectCityPage';
 
+console.warn = console.error = () => { };
+
 ReactDOM.render(
   <div>
     <Router>
