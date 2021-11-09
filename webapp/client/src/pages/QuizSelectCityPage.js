@@ -79,7 +79,7 @@ class QuizSelectCityPage extends React.Component {
     const enableButton = () => {
       if (this.state.buttonStatus === true) {
         const selectedDest = this.state.selectedDest;
-        localStorage.setItem('selectedDest', selectedDest);
+        localStorage.setItem('selectedDest', JSON.stringify(selectedDest));
         return <Button href={"/quiz2"} size='large' shape='round' style={{ background: 'white', color: 'black', border: 'none' }}>Done</Button>
       }
       return <Button disabled href={"/quiz2"} size='large' shape='round' style={{ background: 'grey', color: 'black', border: 'none' }}>Done</Button>

@@ -1,5 +1,5 @@
 import config from './config.json'
-import { tempGetRandomCity, tempGetLoggedInUser, tempMyTrips, tempLogout, tempLogin, tempSignUp, tempGetAllCities } from './tempData'
+import { tempGetRandomCity, tempGetLoggedInUser, tempMyTrips, tempLogout, tempLogin, tempSignUp, tempGetAllCities, tempGetPOIS } from './tempData'
 
 // ********************************************
 //             All Page Fetchers
@@ -103,6 +103,19 @@ const getQuizCities = async (size, p0, p1, p2, p3, p4, p5) => {
   return res.json()
 }
 
+// ********************************************
+//             QuizPage2 Fetchers
+// ********************************************
+
+const getAllPOIs = async () => {
+  // TODO
+  // var res = await fetch(`http://${config.server_host}:${config.server_port}/cities`, {
+  //     method: 'GET',
+  // })
+  // return res.json()
+  var res = tempGetPOIS();
+  return res.json();
+}
 
 
 export {
@@ -113,5 +126,6 @@ export {
   login,
   signUp,
   getAllCities,
-  getQuizCities
+  getQuizCities,
+  getAllPOIs
 }

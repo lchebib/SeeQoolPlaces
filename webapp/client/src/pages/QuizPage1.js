@@ -84,14 +84,25 @@ const questions = [
   },
 ]
 
+// const descriptions =
+// {
+//   coolCat: "You're a cool cat. ",
+//   adventurer: "You have an adventurous spirit. ",
+//   entertainer: "You enjoy the finer things in life. ",
+//   family: "You want to spend quality time with loved ones. ",
+//   enthusiast: "You go with the flow, and are up for anything. ",
+//   investigator: "You're happy when you're learning. "
+// }
+
+
 const descriptions =
 {
-  coolCat: "You're a cool cat. ",
-  adventurer: "You have an adventurous spirit. ",
-  entertainer: "You enjoy the finer things in life. ",
+  coolCat: "Your ideal night involves seeing your favorite band perform live or hitting up some local breweries. Also, you've probably worked as a barista at some point in life.",
+  adventurer: "You have an adventurous spirit, and love to get lost and explore whether its a bustling city or the middle of the woods. ",
+  entertainer: "You enjoy the finer things in life and your bucket-list includes a 3 Michelin star restaurant.",
   family: "You want to spend quality time with loved ones. ",
-  enthusiast: "You go with the flow, and are up for anything. ",
-  investigator: "You're happy when you're learning. "
+  enthusiast: "You tend to go with the flow and you're up for anything that sounds fun.",
+  investigator: "You get to know a city by the stories of it's past. You're just happy when you're learning. "
 }
 
 function scrollToBottom() {
@@ -102,9 +113,9 @@ function scrollToTop() {
   scroll.scrollToTop();
 }
 
-function scrollTo() {
-  scroll.scrollTo();
-}
+// function scrollTo() {
+//   scroll.scrollTo();
+// }
 
 
 class QuizPage1 extends React.Component {
@@ -113,8 +124,8 @@ class QuizPage1 extends React.Component {
     super(props)
 
     this.state = {
-      score: { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
-      personalityResults: {
+      personalityScore: { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
+      quizResults: {
         population: 0, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false
       },
       description: "",
@@ -186,72 +197,72 @@ class QuizPage1 extends React.Component {
 
 
   onCityQuestion(answerScore) {
-    var newResult = this.state.personalityResults
-    newResult.city = newResult.city + answerScore
-    this.setState({ personalityResults: newResult })
+    var newResult = this.state.quizResults
+    newResult.population = newResult.population + answerScore
+    this.setState({ quizResults: newResult })
   }
 
   onCoolCatQuestion(answerScore) {
-    var newScore = this.state.score
+    var newScore = this.state.personalityScore
     newScore.coolCat = newScore.coolCat + answerScore
-    this.setState({ score: newScore })
+    this.setState({ personalityScore: newScore })
   }
 
   onAdventurerQuestion(answerScore) {
-    var newScore = this.state.score
+    var newScore = this.state.personalityScore
     newScore.adventurer = newScore.adventurer + answerScore
-    this.setState({ score: newScore })
+    this.setState({ personalityScore: newScore })
   }
 
   onEntertainerQuestion(answerScore) {
-    var newScore = this.state.score
+    var newScore = this.state.personalityScore
     newScore.entertainer = newScore.entertainer + answerScore
-    this.setState({ score: newScore })
+    this.setState({ personalityScore: newScore })
   }
 
   onFamilyQuestion(answerScore) {
-    var newScore = this.state.score
+    var newScore = this.state.personalityScore
     newScore.family = newScore.family + answerScore
-    this.setState({ score: newScore })
+    this.setState({ personalityScore: newScore })
   }
 
   onEnthusiastQuestion(answerScore) {
-    var newScore = this.state.score
+    var newScore = this.state.personalityScore
     newScore.enthusiast = newScore.enthusiast + answerScore
-    this.setState({ score: newScore })
+    this.setState({ personalityScore: newScore })
   }
 
   onInvestiagtorQuestion(answerScore) {
-    var newScore = this.state.score
+    var newScore = this.state.personalityScore
     newScore.investigator = newScore.investigator + answerScore
-    this.setState({ score: newScore })
+    this.setState({ personalityScore: newScore })
   }
 
 
   onResult() {
 
 
-    this.state.personalityResults = { city: false, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false }
+    this.state.quizResults = { city: false, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false }
     this.state.description = ""
 
     var numPersonalities = 0
 
-    for (const key in this.state.score) {
-      if (this.state.score[key] >= 5) {
-        this.state.personalityResults[key] = true
+    for (const key in this.state.personalityScore) {
+      if (this.state.personalityScore[key] >= 5) {
+        this.state.quizResults[key] = true
         this.state.description += descriptions[key]
         numPersonalities += 1;
       }
     }
 
     if (numPersonalities == 0 || numPersonalities == 6) {
-      this.setState({ personalityResults: { city: false, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: true, investigator: false } })
-      this.setState({ description: descriptions.enthusiast })
+      this.setState({ quizResults: { city: false, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: true, investigator: false } })
+      this.setState({ description: descriptions.enthusiast });
     }
 
 
-    this.state.score = { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 }
-    this.setState({ renderResults: true })
+    this.state.personalityScore = { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 };
+    this.setState({ renderResults: true });
 
     scrollToBottom()
 
@@ -259,14 +270,14 @@ class QuizPage1 extends React.Component {
 
   setSelectedDest(e) {
 
-    var index = parseInt(e.target.value)
+    var index = parseInt(e.target.value);
     var destObj = this.state.destResults[index];
     // console.log(e);
     // console.log(index);
     // console.log(this.state.destResults[index]);
 
     // this.setState({ selectedDest: [destObj.city, destObj.state] });
-    this.state.selectedDest = [destObj.state, destObj.city]
+    this.state.selectedDest = [destObj.state, destObj.city];
     console.log(this.state.selectedDest);
 
     this.setState({ buttonStatus: true });
@@ -275,30 +286,32 @@ class QuizPage1 extends React.Component {
   }
 
   clickNextPage() {
-
     this.pushQuizResults()
-
-
-    window.location = '/createtrip'
+    window.location = '/createtrip';
   }
 
 
   pushQuizResults() {
     // setting local storage for personality results and selected destination
-    var coolCat = this.state.personalityResults.coolCat;
-    localStorage.setItem('coolCat', coolCat);
-    var adventurer = this.state.personalityResults.adventurer;
-    localStorage.setItem('adventurer', adventurer);
-    var entertainer = this.state.personalityResults.entertainer;
-    localStorage.setItem('entertainer', entertainer);
-    var family = this.state.personalityResults.family;
-    localStorage.setItem('family', family);
-    var enthusiast = this.state.personalityResults.enthusiast;
-    localStorage.setItem('enthusiast', enthusiast);
-    var investigator = this.state.personalityResults.investigator;
-    localStorage.setItem('investigator', investigator);
-    var selectedDest = this.state.selectedDest;
-    localStorage.setItem('selectedDest', selectedDest);
+    // var coolCat = this.state.quizResults.coolCat;
+    // localStorage.setItem('coolCat', coolCat);
+    // var adventurer = this.state.quizResults.adventurer;
+    // localStorage.setItem('adventurer', adventurer);
+    // var entertainer = this.state.quizResults.entertainer;
+    // localStorage.setItem('entertainer', entertainer);
+    // var family = this.state.quizResults.family;
+    // localStorage.setItem('family', family);
+    // var enthusiast = this.state.quizResults.enthusiast;
+    // localStorage.setItem('enthusiast', enthusiast);
+    // var investigator = this.state.quizResults.investigator;
+    // localStorage.setItem('investigator', investigator);
+    // var selectedDest = this.state.selectedDest;
+    // localStorage.setItem('selectedDest', selectedDest);
+
+    var selectedPersonalities = { ...this.state.quizResults }
+    delete selectedPersonalities["population"];
+
+    localStorage.setItem('selectedPersonalities', JSON.stringify(selectedPersonalities));
   }
 
 
@@ -308,7 +321,6 @@ class QuizPage1 extends React.Component {
 
     const enableButton = () => {
       if (this.state.buttonStatus === true) {
-        const selectedDest = this.state.selectedDest;
         return <Button onClick={this.clickNextPage} type='primary' shape='round' size='large' style={{ margin: '50px', border: 'none', background: 'black', color: 'white', width: '20vw', height: '8vh', fontSize: '2vw' }}>Create Trip</Button>
       }
       return <Button disabled type='primary' shape='round' size='large' style={{ margin: '50px', border: 'none', width: '20vw', height: '8vh', fontSize: '2vw' }}>Create Trip</Button>

@@ -23,6 +23,19 @@ const descriptions =
   investigator: "You're happy when you're learning. "
 }
 
+function scrollToBottom() {
+  scroll.scrollToBottom();
+}
+
+function scrollToTop() {
+  scroll.scrollToTop();
+}
+
+function scrollTo() {
+  scroll.scrollTo();
+}
+
+
 class QuizPage2 extends React.Component {
 
   constructor(props) {
@@ -36,7 +49,9 @@ class QuizPage2 extends React.Component {
       description: "",
       renderResults: false,
       destResults: [{ 'city': 'Los Angeles', 'state': 'CA' }, { 'city': 'San Diego', 'state': 'CA' }, { 'city': 'Vancouver', 'state': 'BC' }],
-      selectedDest: localStorage.getItem('selectedDest').split(',')
+      // selectedDest: localStorage.getItem('selectedDest').split(','),
+      selectedDest: JSON.parse(localStorage.getItem('selectedDest')),
+      buttonStatus: false
     }
     // this.onButtonClick = this.onButtonClick.bind(this)
     this.onCityQuestion = this.onCityQuestion.bind(this)
@@ -47,23 +62,36 @@ class QuizPage2 extends React.Component {
     this.onEnthusiastQuestion = this.onEnthusiastQuestion.bind(this)
     this.onInvestiagtorQuestion = this.onInvestiagtorQuestion.bind(this)
     this.onResult = this.onResult.bind(this)
-    this.scrollToBottom = this.scrollToBottom.bind(this)
-    this.scrollTo = this.scrollTo.bind(this)
-    this.setSelectedDest = this.setSelectedDest.bind(this)
+    // this.setSelectedDest = this.setSelectedDest.bind(this)
+    this.retakeQuiz = this.retakeQuiz.bind(this)
+    this.clickNextPage = this.clickNextPage.bind(this)
+    this.pushQuizResults = this.pushQuizResults.bind(this)
+  }
+
+  retakeQuiz() {
+
+    scrollToTop()
+
+    // this.state = {
+    //   score: { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
+    //   personalityResults: {
+    //     population: 0, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false
+    //   },
+    //   description: "",
+    //   renderResults: false,
+    //   destResults: [{ 'city': 'Los Angeles', 'state': 'CA' }, { 'city': 'San Diego', 'state': 'CA' }, { 'city': 'Vancouver', 'state': 'BC' }],
+    //   selectedDest: [],
+    //   buttonStatus: false
+    // }
+
+    // window.location.reload();
+
   }
 
   componentDidMount() {
     //const selectedDestination = localStorage.getItem('selectedDestination');
     //this.setState({ selectedDestination: selectedDestination });
     console.log(this.state.selectedDest);
-  }
-
-  scrollToBottom() {
-    scroll.scrollToBottom();
-  }
-
-  scrollTo() {
-    scroll.scrollTo();
   }
 
   onCityQuestion(answerScore) {
@@ -134,47 +162,56 @@ class QuizPage2 extends React.Component {
     this.state.score = { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 }
     this.setState({ renderResults: true })
 
-    this.scrollToBottom()
+    scrollToBottom()
 
   }
 
-  setSelectedDest(e) {
-
-    var index = parseInt(e.value)
-
-    this.setState({ selectedDest: [this.state.destResults[index]] });
-
-  }
+  // not necessary because this is already saved
+  // setSelectedDest(e) {
+  //   var index = parseInt(e.value)
+  //   this.setState({ selectedDest: [this.state.destResults[index]] });
+  // }
 
 
   pushQuizResults() {
     // setting local storage for personality results and selected destination
-    const coolCat = this.state.personalityResults[coolCat];
-    localStorage.setItem('coolCat', coolCat);
-    const adventurer = this.state.personalityResults[adventurer];
-    localStorage.setItem('adventurer', adventurer);
-    const entertainer = this.state.personalityResults[entertainer];
-    localStorage.setItem('entertainer', entertainer);
-    const family = this.state.personalityResults[family];
-    localStorage.setItem('family', family);
-    const enthusiast = this.state.personalityResults[enthusiast];
-    localStorage.setItem('enthusiast', enthusiast);
-    const investigator = this.state.personalityResults[investigator];
-    localStorage.setItem('investigator', investigator);
-    const selectedDest = this.state.selectedDest;
-    localStorage.setItem('selectedDest', selectedDest);
+    // var coolCat = this.state.personalityResults.coolCat;
+    // localStorage.setItem('coolCat', coolCat);
+    // var adventurer = this.state.personalityResults.adventurer;
+    // localStorage.setItem('adventurer', adventurer);
+    // var entertainer = this.state.personalityResults.entertainer;
+    // localStorage.setItem('entertainer', entertainer);
+    // var family = this.state.personalityResults.family;
+    // localStorage.setItem('family', family);
+    // var enthusiast = this.state.personalityResults.enthusiast;
+    // localStorage.setItem('enthusiast', enthusiast);
+    // var investigator = this.state.personalityResults.investigator;
+    // localStorage.setItem('investigator', investigator);
+
+    // var selectedDest = this.state.selectedDest;
+    // localStorage.setItem('selectedDest', selectedDest);
+
   }
 
-
-  onSelectCity(value) {
-    this.setState({ buttonStatus: true });
-    this.setState({ selectedDest: value });
-    console.log(value);
+  clickNextPage() {
+    this.pushQuizResults()
+    window.location = '/createtrip'
   }
+
+  // not used on quiz page 2
+  // onSelectCity(value) {
+  //   this.setState({ buttonStatus: true });
+  //   this.setState({ selectedDest: value });
+  //   console.log(value);
+  // }
 
 
 
   render() {
+
+    const enableButton = () => {
+      return <Button onClick={this.clickNextPage} type='primary' shape='round' size='large' style={{ margin: '50px', border: 'none', background: 'black', color: 'white', width: '20vw', height: '8vh', fontSize: '2vw' }}>Create Trip</Button>
+    }
 
     const renderResults = () => {
       if (this.state.renderResults === true) {
@@ -197,10 +234,10 @@ class QuizPage2 extends React.Component {
                 <div style={{ fontSize: '2vw', fontFamily: 'sans-serif bold' }}> {this.state.description} </div>
                 <br />
                 <br />
-                <div style={{ fontSize: '3vw', }}> Your perfect cities are... </div>
+                <div style={{ fontSize: '3vw', color: 'white' }}>Ready to create your trip to {this.state.selectedDest[1]}? </div>
                 <br />
 
-                <Radio.Group buttonStyle="solid">
+                {/* <Radio.Group buttonStyle="solid">
                   <Radio.Button value="0" onChange={(e) => this.setSelectedDest(e)} style={{ padding: '2vh', borderRadius: '3px', marginTop: '20px', width: '80%', height: '8vh', fontSize: '2vw', fontFamily: 'sans-serif bold', border: 'none' }}>
                     {this.state.destResults[0].city}, {this.state.destResults[0].state}
                   </Radio.Button>
@@ -210,11 +247,15 @@ class QuizPage2 extends React.Component {
                   <Radio.Button value="2" onChange={(e) => this.setSelectedDest(e)} style={{ padding: '2vh', borderRadius: '3px', marginTop: '20px', width: '80%', height: '8vh', fontSize: '2vw', fontFamily: 'sans-serif bold', border: 'none' }}>
                     {this.state.destResults[2].city}, {this.state.destResults[2].state}
                   </Radio.Button>
-                </Radio.Group>
+                </Radio.Group> */}
+                {enableButton()}
+                <Button onClick={this.retakeQuiz} type='primary' shape='round' size='large' style={{ margin: '50px', border: 'none', background: '#5c1b4d' }}>Retake Quiz</Button>
               </Card >
 
 
-              {enableButton()}
+              {/* {enableButton()}
+              <Button onClick={this.retakeQuiz} type='primary' shape='round' size='large' style={{ margin: '50px', border: 'none', color: 'white', width: '15vw', height: '6vh', fontSize: '2vw', background: '#5c1b4d' }}>Retake Quiz</Button> */}
+
 
             </Col>
           </Row>
@@ -224,14 +265,14 @@ class QuizPage2 extends React.Component {
     }
 
 
-    const enableButton = () => {
-      if (this.state.buttonStatus === true) {
-        const selectedDest = this.state.selectedDest;
-        localStorage.setItem('selectedDest', selectedDest);
-        return <Button href={"/quiz2"} size='large' shape='round' style={{ background: 'white', color: 'black', border: 'none' }}>Done</Button>
-      }
-      return <Button disabled href={"/quiz2"} size='large' shape='round' style={{ background: 'grey', color: 'black', border: 'none' }}>Done</Button>
-    }
+    // const enableButton = () => {
+    //   if (this.state.buttonStatus === true) {
+    //     const selectedDest = this.state.selectedDest;
+    //     localStorage.setItem('selectedDest', selectedDest);
+    //     return <Button href={"/quiz2"} size='large' shape='round' style={{ background: 'white', color: 'black', border: 'none' }}>Done</Button>
+    //   }
+    //   return <Button disabled href={"/quiz2"} size='large' shape='round' style={{ background: 'grey', color: 'black', border: 'none' }}>Done</Button>
+    // }
 
 
 
