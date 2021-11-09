@@ -40,18 +40,18 @@ const formItemLayout = {
 };
 
 
-const tailFormItemLayout = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 24,
-      offset: 8,
-    },
-  },
-};
+// const tailFormItemLayout = {
+//   wrapperCol: {
+//     xs: {
+//       span: 24,
+//       offset: 0,
+//     },
+//     sm: {
+//       span: 24,
+//       offset: 8,
+//     },
+//   },
+// };
 
 const personalities = [
   { label: 'coolCat', value: 'coolCat' },
@@ -73,30 +73,30 @@ const personalities = [
 
 const personalityTooltip = "Let us get to know you so we can recommend some activities you're guaranteed to enjoy. Take the Trip Quiz to find out your travel personality!"
 
-const descriptions =
-{
-  coolCat: "Your ideal night involves seeing your favorite band perform live or hitting up some local breweries. Also, you've probably worked as a barista at some point in life.",
-  adventurer: "You have an adventurous spirit, and love to get lost and explore whether its a bustling city or the middle of the woods. ",
-  entertainer: "You enjoy the finer things in life and your bucket-list includes a 3 Michelin star restaurant.",
-  family: "You want to spend quality time with loved ones. ",
-  enthusiast: "You tend to go with the flow and you're up for anything that sounds fun.",
-  investigator: "You get to know a city by the stories of it's past. You're just happy when you're learning. "
-}
+// const descriptions =
+// {
+//   coolCat: "Your ideal night involves seeing your favorite band perform live or hitting up some local breweries. Also, you've probably worked as a barista at some point in life.",
+//   adventurer: "You have an adventurous spirit, and love to get lost and explore whether its a bustling city or the middle of the woods. ",
+//   entertainer: "You enjoy the finer things in life and your bucket-list includes a 3 Michelin star restaurant.",
+//   family: "You want to spend quality time with loved ones. ",
+//   enthusiast: "You tend to go with the flow and you're up for anything that sounds fun.",
+//   investigator: "You get to know a city by the stories of it's past. You're just happy when you're learning. "
+// }
 
 
-const makeAutoFill = (str) => {
-  // if ()
-  let arr = str.split(',');
-  let state;
-  let city = arr[1].toLowerCase();
-  if (arr[0] == 'california') {
-    state = 'california';
-  } else {
-    state = 'british columbia';
-  }
-  arr = [state, city];
-  return arr;
-}
+// const makeAutoFill = (str) => {
+//   // if ()
+//   let arr = str.split(',');
+//   let state;
+//   let city = arr[1].toLowerCase();
+//   if (arr[0] == 'california') {
+//     state = 'california';
+//   } else {
+//     state = 'british columbia';
+//   }
+//   arr = [state, city];
+//   return arr;
+// }
 
 const makeOptions = (arr) => {
   if (!Array.isArray(arr)) {
@@ -147,7 +147,7 @@ class CreateTripPage extends React.Component {
       options: [],
       selectedDest: localStorage.getItem('selectedDest') ? JSON.parse(localStorage.getItem('selectedDest')) : [],
       defaultDest: localStorage.getItem('selectedDest') ? JSON.parse((localStorage.getItem('selectedDest')).toLowerCase()) : [],
-      selectedPersonalities: {},
+      selectedPersonalities: localStorage.getItem('selectedPersonalities') ? JSON.parse((localStorage.getItem('selectedPersonalities')).toLowerCase()) : {},
       //   coolCat: localStorage.getItem('coolCat') === 'true',
       //   adventurer: localStorage.getItem('adventurer') === 'true',
       //   entertainer: localStorage.getItem('entertainer') === 'true',
@@ -160,10 +160,17 @@ class CreateTripPage extends React.Component {
 
     this.onCheckConfirmDetails = this.onCheckConfirmDetails.bind(this)
     this.clickNextPage = this.clickNextPage.bind(this)
+    this.createTrip = this.createTrip.bind(this)
+
 
 
 
   }
+
+  createTrip() {
+
+  }
+
 
   clickNextPage() {
     window.location = '/activities';
@@ -174,8 +181,6 @@ class CreateTripPage extends React.Component {
     console.log(this.state.defaultDest);
     getAllCities().then(res => {
       this.setState({ options: makeOptions(res) })
-      // console.log(this.state.selectedDest);
-      // console.log(this.state.autoFill);
 
     })
 
@@ -192,8 +197,8 @@ class CreateTripPage extends React.Component {
     }
 
 
-    console.log(this.state.selectedDest)
-    console.log(this.state.defaultDest)
+    // console.log(this.state.selectedDest)
+    // console.log(this.state.defaultDest)
     // console.log(this.state.selectedPersonalities)
     // console.log(this.state.defaultPersonalities)
 
@@ -239,7 +244,7 @@ class CreateTripPage extends React.Component {
                 <div style={{ marginTop: '50px' }}>
                   <Form
                     {...formItemLayout}
-                    onFinish={this.clickNextPage}
+                    onFinish={this.createTrip}
                     initialValues={{
                       destination: this.state.defaultDest,
                       // destination: ['california', 'big sur'],

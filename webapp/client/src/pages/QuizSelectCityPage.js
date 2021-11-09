@@ -57,11 +57,16 @@ class QuizSelectCityPage extends React.Component {
       selectedDest: []
     }
     this.onChange = this.onChange.bind(this);
+    this.onClickNextPage = this.onClickNextPage.bind(this);
     // this.filter = this.filter.bind(this);
 
   }
+  onClickNextPage() {
+    localStorage.setItem('selectedDest', JSON.stringify(this.state.selectedDest));
+    window.location = "/quiz2"
 
-  onChange(value, selectedDest) {
+  }
+  onChange(value) {
     this.setState({ buttonStatus: true });
     this.setState({ selectedDest: value });
     console.log(value);
@@ -78,11 +83,9 @@ class QuizSelectCityPage extends React.Component {
 
     const enableButton = () => {
       if (this.state.buttonStatus === true) {
-        const selectedDest = this.state.selectedDest;
-        localStorage.setItem('selectedDest', JSON.stringify(selectedDest));
-        return <Button href={"/quiz2"} size='large' shape='round' style={{ background: 'white', color: 'black', border: 'none' }}>Done</Button>
+        return <Button onClick={this.onClickNextPage} size='large' shape='round' style={{ background: 'white', color: 'black', border: 'none' }}>Done</Button>
       }
-      return <Button disabled href={"/quiz2"} size='large' shape='round' style={{ background: 'grey', color: 'black', border: 'none' }}>Done</Button>
+      return <Button disabled size='large' shape='round' style={{ background: 'grey', color: 'black', border: 'none' }}>Done</Button>
     }
 
     return (
