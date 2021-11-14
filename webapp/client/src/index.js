@@ -5,17 +5,17 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
-import Home from './pages/Home';
 import LandingPage from './pages/LandingPage';
+import HomePage from './pages/HomePage';
 import QuizPage0 from './pages/QuizPage0';
 import QuizPage1 from './pages/QuizPage1';
+import QuizSelectCityPage from './pages/QuizSelectCityPage';
 import QuizPage2 from './pages/QuizPage2';
 import CreateTripPage from './pages/CreateTripPage';
 import ActivitiesPage from './pages/ActivitiesPage';
 import SchedulePage from './pages/SchedulePage';
 import 'antd/dist/antd.css';
 import './index.less';
-import QuizSelectCityPage from './pages/QuizSelectCityPage';
 
 console.warn = console.error = () => { };
 
@@ -26,12 +26,12 @@ ReactDOM.render(
         <Route exact
           path="/"
           render={() => (
-            <Home />
+            <LandingPage />
           )} />
         <Route exact
-          path="/LandingPage"
+          path="/home"
           render={() => (
-            <LandingPage />
+            <HomePage />
           )} />
         <Route exact
           path="/quiz"

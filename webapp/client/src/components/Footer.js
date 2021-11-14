@@ -8,7 +8,7 @@ class Footer extends React.Component {
     return (
       <>
 
-        <div style={{ marginTop: '40px', textAlign: 'center', color: 'grey', padding: '20px', borderTop: '1px solid #000' }}>
+        <div style={{ marginTop: '40px', textAlign: 'center', color: '#ddd', padding: '20px', borderTop: '1px solid #eee' }}>
           <div>SeeQoolPlaces © 2021</div>
           <div>Created by Emily Connor, Joel Lim, Xulei Qin, and Lana Chebib</div>
         </div>

@@ -1,9 +1,7 @@
-const all_users = [
-  { "loggedIn": { "username": "admin" } },
-  { "admin": { "username": "admin" } }
-]
-
-localStorage.setItem("all_users", all_users)
+const users = {
+  loggedIn: { "username": "Admin" },
+  admin: { "username": "Admin" }
+}
 
 const tempPOIS = [
   {
@@ -772,17 +770,17 @@ const tempMyTrips = [
 // Temporary cities
 const tempRandomCities = [
   {
-    id: "1",
+    state: "CA",
     city: "Joshua Tree",
     photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/e7/91/8d/photo1jpg.jpg?w=1400&h=-1&s=1"
   },
   {
-    id: "2",
+    state: "BC",
     city: "Vancouver",
     photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/a6/09/9f/beautiful-view-of-stanley.jpg?w=2000&h=-1&s=1"
   },
   {
-    id: "3",
+    state: "CA",
     city: "Big Sur",
     photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/7b/35/5a/pfeiffer-big-sur-state.jpg?w=2200&h=-1&s=1"
   }
@@ -859,24 +857,8 @@ function tempGetAllCities() {
 
 
 function tempGetLoggedInUser() {
-  // return tempUsers.find(user => user.status === true)
 
-  var users = localStorage.getItem('all_users');
-
-  console.log(users)
-
-  // if (users.length > 0) {
-
-  // 	users.forEach(user => {
-
-  // 		if ("loggedIn" in user) {
-
-  // 			return user.username;
-  // 		}
-  // 	})
-  // }
-
-  return false;
+  return users.loggedIn;
 
 }
 

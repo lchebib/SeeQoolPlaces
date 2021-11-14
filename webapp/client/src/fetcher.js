@@ -53,7 +53,7 @@ const signUp = async (username) => {
 }
 
 // ********************************************
-//             Landing Page Fetchers
+//             Home Page Fetchers
 // ********************************************
 
 
