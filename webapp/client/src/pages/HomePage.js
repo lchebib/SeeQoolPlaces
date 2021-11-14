@@ -36,22 +36,22 @@ class HomePage extends React.Component {
   render() {
     return (
       <Layout style={{
-        background: 'white', border: '1px solid #000'
+        background: 'white'
       }}>
-        <Affix>
-          <Sider
-            style={{
-              // overflow: 'auto',
-              // paddingTop: '15px',
-              height: '100vh',
-              position: 'fixed',
-              // left: 0,
-              // width: '200px',
-              border: '1px solid #000',
-            }}>
-            <SideBar />
-          </Sider>
-        </Affix>
+        {/* <Affix> */}
+        {/* <Sider
+          style={{
+            // overflow: 'auto',
+            // paddingTop: '15px',
+            height: '100vh',
+            position: 'fixed',
+            // left: 0,
+            // width: '200px',
+            border: '1px solid #000',
+          }}> */}
+        <SideBar />
+        {/* </Sider> */}
+        {/* </Affix> */}
         <Layout className='layout' style={{ background: 'white', marginLeft: 200, minWidth: '750px', position: 'absolute', offset: '0, 0' }} >
           <Header />
           <Content style={{ margin: '24px 24px 0', overflow: 'initial', position: 'relative' }} >

@@ -118,7 +118,8 @@ class CreateTripPage extends React.Component {
       selectedPersonalities: localStorage.getItem('selectedPersonalities') ? JSON.parse((localStorage.getItem('selectedPersonalities')).toLowerCase()) : {},
       defaultPersonalities: [],
       tripName: "",
-      tripNameValidateStatus: { validateStatus: "", errorMsg: "" }
+      tripNameValidateStatus: { validateStatus: "", errorMsg: "" },
+      tripID: 0
     }
 
     this.onCheckConfirmDetails = this.onCheckConfirmDetails.bind(this)
@@ -168,22 +169,27 @@ class CreateTripPage extends React.Component {
 
 
   createTrip() {
+    var tripID = Math.floor((Math.random() * 1000) + 1);
+    this.state.tripID = tripID
 
-    var tripDetails = { name: this.state.tripName, selectedDest: this.state.selectedDest, selectedPersonalities: this.state.selectedPersonalities }
+    var tripDetails = { tripID: this.state.tripID, name: this.state.tripName, selectedDest: this.state.selectedDest, selectedPersonalities: this.state.selectedPersonalities }
     console.log(tripDetails)
-    postCreateTrip(tripDetails)
+    // postCreateTrip(tripDetails)
 
     var trips = JSON.parse(localStorage.getItem("trips"))
-    var newTrips = trips ? trips : []
-    newTrips.push(tripDetails)
+    var newTrips = trips ? trips : {}
+    // var newTrips = trips ? trips : []
+    // newTrips.push(tripDetails)
+    newTrips.tripID = tripDetails
+    console.log(newTrips.tripID)
     JSON.stringify(localStorage.setItem("trips", newTrips))
 
-    // this.clickNextPage()
+    this.clickNextPage()
   }
 
 
   clickNextPage() {
-    window.location = '/activities';
+    window.location = `/trip?id=${this.state.tripID}`;
   }
 
 

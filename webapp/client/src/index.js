@@ -12,8 +12,7 @@ import QuizPage1 from './pages/QuizPage1';
 import QuizSelectCityPage from './pages/QuizSelectCityPage';
 import QuizPage2 from './pages/QuizPage2';
 import CreateTripPage from './pages/CreateTripPage';
-import ActivitiesPage from './pages/ActivitiesPage';
-import SchedulePage from './pages/SchedulePage';
+import TripPage from './pages/TripPage';
 import 'antd/dist/antd.css';
 import './index.less';
 
@@ -59,14 +58,9 @@ ReactDOM.render(
             <CreateTripPage />
           )} />
         <Route exact
-          path="/activities"
+          path="/trip"
           render={() => (
-            <ActivitiesPage />
-          )} />
-        <Route exact
-          path="/schedule"
-          render={() => (
-            <SchedulePage />
+            <TripPage />
           )} />
       </Switch>
     </Router>
