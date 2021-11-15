@@ -59,17 +59,82 @@ class TabsCard extends React.Component {
       return null
     }
 
-    // const renderHeart = () => {
-    //   if (this.state.poiIsFavorite) {
-    //     return <Tooltip title="add to favorites">
-    //       <Button shape="circle" icon={<HeartFilled />} style={{ border: 'none', color: 'red' }} />
-
-    //     </Tooltip>
-    //   }
-    //   return <Tooltip title="add to favorites">
-    //     <Button shape="circle" icon={<HeartOutlined />} style={{ border: 'none', }} />
-    //   </Tooltip>
-    // }
+    const renderRadio = (POI, category) => {
+      if (category === 'attractions') {
+        return (
+          <Radio.Button
+            value={POI.pid}
+            style={{ borderRadius: '3px', width: '100%', height: '100%', padding: '0' }}>
+            <Row align='middle'>
+              <Col flex={1.5} style={{}}>
+                <Card style={{
+                  backgroundImage: `url(${POI.photo})`,
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
+                  position: 'relative',
+                  display: 'flex',
+                  alignItems: 'center'
+                }}>
+                </Card>
+              </Col >
+              <Col flex={3.5} style={{ justify: 'left' }}>
+                <div style={{ fontFamily: 'Work Sans', fontSize: '2vh', lineHeight: '15px' }}>{POI.name}</div>
+                <div style={{ fontSize: '1.5vh', lineHeight: '20px' }}>
+                  {POI.rating} stars &nbsp; &nbsp; {POI.durationHigh} hr
+                </div>
+              </Col>
+            </Row>
+          </Radio.Button>)
+      }
+      else if (category === 'trails') {
+        return (
+          <Radio.Button
+            value={POI.pid}
+            style={{ borderRadius: '3px', width: '100%', height: '100%', padding: '0' }}>
+            <Row align='middle'>
+              <Col flex={1.5} style={{}}>
+                <Card style={{
+                  backgroundImage: `url(${POI.photo})`,
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
+                  position: 'relative',
+                  display: 'flex',
+                  alignItems: 'center'
+                }}>
+                </Card>
+              </Col >
+              <Col flex={3.5} style={{ justify: 'left' }}>
+                <div style={{ fontFamily: 'Work Sans', fontSize: '2vh', lineHeight: '15px' }}>{POI.name}</div>
+                <div style={{ fontSize: '1.5vh', lineHeight: '20px' }}>
+                  {POI.rating} stars &nbsp; &nbsp; {POI.length} km &nbsp; &nbsp; {POI.durationHigh} hr
+                </div>
+              </Col>
+            </Row>
+          </Radio.Button>
+        )
+      }
+      else {
+        return (
+          <Radio.Button
+            value={POI.pid}
+            style={{ borderRadius: '3px', width: '100%', height: '100%', padding: '0' }}>
+            <Row align='middle'>
+              <Col flex={3.5} style={{ justify: 'left' }}>
+                <div style={{ fontFamily: 'Work Sans', fontSize: '2.5vh', lineHeight: '15px', marginTop: '5px' }}>{POI.name}</div>
+                <div style={{ fontSize: '1.5vh', lineHeight: '20px' }}>
+                  {POI.rating} stars &nbsp; &nbsp; {POI.durationHigh} hr
+                </div>
+                <div style={{ fontSize: '1.5vh', lineHeight: '15px', marginBottom: '5px' }}>
+                  {POI.tags.split(',').slice(0, 3).join(', ')}
+                </div>
+              </Col>
+            </Row>
+          </Radio.Button>
+        )
+      }
+    }
 
     const renderResults = (key) => {
 
@@ -94,37 +159,15 @@ class TabsCard extends React.Component {
           <Radio.Group
             buttonStyle="solid"
             onChange={this.onChangePOI}
-            style={{ border: '1px solid black' }
+            style={{}
             }>
             <Row gutter={[8, 8]} >
 
               {keyArr.slice(this.state.minValue, this.state.maxValue).map((POI) =>
-                <Col span={12} style={{ width: '100%', height: '150px' }}>
+                <Col span={12} style={{ width: '100%', height: '100%' }}>
 
-                  <Radio.Button
-                    value={POI.pid}
-                    style={{ borderRadius: '3px', width: '100%', height: '100%', padding: '0' }}>
-                    <Row justify='center' align='middle' gutter={[6]} >
-                      <Col flex="25px" span={12} style={{ border: '1px solid black' }}>
-                        <img src={(POI.photo)} alt="POI photo" style={{
-                          maxWidth: '10vh', padding: '5px', borderRadius: 20,
-                          overflow: 'hidden',
-                        }} />
-                      </Col >
+                  {renderRadio(POI, POI.category)}
 
-
-                      <Col flex="auto" span={12} style={{ border: '1px solid black' }}>
-                        <div style={{ fontSize: '1.5vh' }}>{POI.name}</div>
-                        <div style={{ fontSize: '1vh' }}>
-                          {/* <Rate disabled defaultValue={this.state.POIS[0].rating} style={{ color: '#006400' }} /> &nbsp; {this.state.POIS[0].numReviews} ratings */}
-                        </div>
-                        {POI.rating} out of 5 stars &nbsp;
-                        {/* <div style={{ fontSize: '1.5vh' }}>{this.state.POIS[0].description}</div> */}
-                        <br />
-                        {/* <div style={{ fontSize: '1.25vh' }}>Suggested duration: {this.state.POIS[0].durationLow}-{this.state.POIS[0].durationHigh} hours</div> */}
-                      </Col>
-                    </Row>
-                  </Radio.Button>
                 </Col>
 
               )}
@@ -175,7 +218,6 @@ class TabsCard extends React.Component {
               onTab2Change(key);
             }}
           >
-
             {contentListNoTitle[activeTabKey2]}
           </Card>
         </div>
@@ -184,68 +226,25 @@ class TabsCard extends React.Component {
 
     return (
       <>
-
-        {/* <Row justify='center' >
-          <Card>
-            <Row wrap={false} >
-              <Col flex="350px" >
-                <Card style={{
-                  // border: '1px solid #000',
-                  backgroundImage: `url(${this.state.bigPOI.photo})`,
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center',
-                  height: '200px',
-                  position: 'relative',
-                  display: 'flex',
-                  // justifyContent: 'left',
-                  // alignItems: 'center',
-                }}>
-                </Card>
-              </Col >
-              <Col flex="auto">
-                <Card style={{
-                  // border: '1px solid #000',
-                  marginLeft: 20,
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center',
-                  height: '25vh',
-                  position: 'relative',
-                  display: 'flex',
-                  justifyContent: 'left',
-                  alignItems: 'center',
-                }}>
-                  <div style={{ fontFamily: 'Work Sans', fontSize: '2.5vh' }}>{this.state.bigPOI.name}</div>
-                  <div style={{ fontSize: '1.5vh' }}>
-                    <Rate disabled defaultValue={this.state.bigPOI.rating} style={{ color: '#006400' }} /> &nbsp; {this.state.bigPOI.numReviews} ratings
-                  </div>
-                  <div style={{ fontSize: '1.5vh' }}>{this.state.bigPOI.description}</div>
-                  <br />
-                  <div style={{ fontSize: '1.25vh' }}>Suggested duration: {this.state.bigPOI.durationLow}-{this.state.bigPOI.durationHigh} hours</div>
-
-                </Card>
-              </Col>
-            </Row>
-          </Card>
-        </Row> */}
-        <Card>
+        < Card >
           <Row justify='center' align='middle' >
             <Col flex="1 1 200px">
               <TabsCard />
             </Col >
-            <Col flex="0 1 300px" >
+            <Col flex="400px" >
               <Card>
-                <Row>
-                  <Col flex="1 1 200px">
+                <Row >
+                  <Col flex=".5">
                     <img src={(this.state.bigPOI.photo)} alt="POI photo" style={{
-                      maxWidth: '50vh'
+                      maxWidth: '25vh'
                     }} />
                   </Col>
-                  <Col flex="0 1 300px">
-                    <Button type='primary' htmlType="submit" shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white' }}>Add to Favorites</Button>
-                    <Button type='primary' htmlType="submit" shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white' }}>Schedule</Button>
-
+                  <Col flex=".5">
+                    <div style={{ fontFamily: 'Work Sans', fontSize: '2.5vh' }}>
+                      <Button type='primary' htmlType="submit" shape='round' size='medium' style={{ wordWrap: 'break-word', border: 'none', background: 'black', color: 'white' }}>Add to Favorites</Button>
+                      <br /> <br />
+                      <Button type='primary' htmlType="submit" shape='round' size='medium' style={{ border: 'none', background: 'black', color: 'white', maxWidth: '15vh' }}>Schedule</Button>
+                    </div>
                   </Col>
                 </Row>
                 <Row>
@@ -258,28 +257,10 @@ class TabsCard extends React.Component {
                   <div style={{ fontSize: '1.25vh' }}>Suggested duration: {this.state.bigPOI.durationLow}-{this.state.bigPOI.durationHigh} hours</div>
                 </Row>
               </Card>
-              {/* <Card style={{
-                // border: '1px solid #000',
-                marginLeft: 20,
-                height: '25vh',
-                position: 'relative',
-                display: 'flex',
-                justifyContent: 'left',
-                alignItems: 'center',
-              }}>
-                <div style={{ fontFamily: 'Work Sans', fontSize: '2.5vh' }}>{this.state.bigPOI.name}</div>
-                <div style={{ fontSize: '1.5vh' }}>
-                  <Rate disabled defaultValue={this.state.bigPOI.rating} style={{ color: '#006400' }} /> &nbsp; {this.state.bigPOI.numReviews} ratings
-                </div>
-                <div style={{ fontSize: '1.5vh' }}>{this.state.bigPOI.description}</div>
-                <br />
-                <div style={{ fontSize: '1.25vh' }}>Suggested duration: {this.state.bigPOI.durationLow}-{this.state.bigPOI.durationHigh} hours</div>
-
-              </Card> */}
 
             </Col >
           </Row>
-        </Card>
+        </Card >
 
       </>
     );
