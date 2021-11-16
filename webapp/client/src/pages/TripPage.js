@@ -27,7 +27,7 @@ class TripPage extends React.Component {
       tripID: 0,
       tripName: ""
     }
-    this.changePage = this.changePage.bind(this)
+    // this.changePage = this.changePage.bind(this)
 
   }
 
@@ -35,7 +35,7 @@ class TripPage extends React.Component {
     getAllPOIs().then(res => {
       this.setState({ POIS: res })
       this.setState({ bigPOI: res[0] })
-      console.log(this.state.POIS[0].photo)
+      // console.log(this.state.POIS[0].photo)
     })
 
     var tripID = window.location.href.split('=')[1]
@@ -49,14 +49,23 @@ class TripPage extends React.Component {
   }
 
 
-  changePage(page, pageSize) {
+  // changePage(page, pageSize) {
 
-    if (page <= 1) {
-      this.setState({ minValue: 0, maxValue: 16 });
-    } else {
-      this.setState({ minValue: (page - 1) * (pageSize), maxValue: (page) * (pageSize) });
-    }
-  }
+  //   if (page <= 1) {
+  //     this.setState({ minValue: 0, maxValue: 16 });
+  //   } else {
+  //     this.setState({ minValue: (page - 1) * (pageSize), maxValue: (page) * (pageSize) });
+  //   }
+  // }
+
+  // changePage(page) {
+
+  //   if (page <= 1) {
+  //     this.setState({ minValue: 0, maxValue: 8 });
+  //   } else {
+  //     this.setState({ minValue: (page - 1) * 8, maxValue: page * 8 });
+  //   }
+  // }
 
 
   render() {

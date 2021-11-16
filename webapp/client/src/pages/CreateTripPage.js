@@ -8,6 +8,8 @@ import {
   Button,
   Cascader,
   Checkbox,
+  DatePicker,
+  Space
 } from 'antd';
 import {
   LeftSquareOutlined
@@ -17,9 +19,12 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { getAllCities } from '../fetcher';
 import { postCreateTrip } from '../fetcher'
+import moment from "moment";
+
 
 
 const { Content } = Layout;
+const { RangePicker } = DatePicker;
 
 
 const formItemLayout = {
@@ -119,7 +124,8 @@ class CreateTripPage extends React.Component {
       defaultPersonalities: [],
       tripName: "",
       tripNameValidateStatus: { validateStatus: "", errorMsg: "" },
-      tripID: 0
+      tripID: 0,
+      tripDates: []
     }
 
     this.onCheckConfirmDetails = this.onCheckConfirmDetails.bind(this)
@@ -135,9 +141,9 @@ class CreateTripPage extends React.Component {
     this.setState({ selectedDest: value });
   }
 
-
   onPersonalitiesChange(checkedValue) {
     this.setState({ selectedPersonalities: checkedValue });
+    console.log(this.state.tripDates)
   }
 
   onTripNameChange(e) {
@@ -172,7 +178,7 @@ class CreateTripPage extends React.Component {
     var tripID = Math.floor((Math.random() * 1000) + 1);
     this.state.tripID = tripID
 
-    var tripDetails = { tripID: this.state.tripID, name: this.state.tripName, selectedDest: this.state.selectedDest, selectedPersonalities: this.state.selectedPersonalities }
+    var tripDetails = { tripID: this.state.tripID, name: this.state.tripName, selectedDest: this.state.selectedDest, selectedPersonalities: this.state.selectedPersonalities, tripDates: this.state.tri }
     console.log(tripDetails)
     // postCreateTrip(tripDetails)
 
@@ -183,6 +189,7 @@ class CreateTripPage extends React.Component {
     newTrips.tripID = tripDetails
     console.log(newTrips.tripID)
     JSON.stringify(localStorage.setItem("trips", newTrips))
+    // JSON.stringify(localStorage.setItem("tripDates", newTrips))
 
     this.clickNextPage()
   }
@@ -283,6 +290,16 @@ class CreateTripPage extends React.Component {
                       ]}
                     >
                       <Cascader options={this.state.options} onChange={this.onDestChange} showSearch={{ filter }} placeholder="Select City" />
+                    </Form.Item>
+
+                    <Form.Item
+                      name="dates"
+                      label="Trip Dates"
+                      rules={[
+                        { required: true, message: 'Please select your trip dates!' },
+                      ]}
+                    >
+                      <RangePicker onChange={value => this.setState({ tripDates: value })} />
                     </Form.Item>
 
                     <Form.Item

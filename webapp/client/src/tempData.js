@@ -538,20 +538,6 @@ const tempPOIS = [
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
-    pid: 37,
-    name: "Mile Rock View Point",
-    city: "San Francisco",
-    state: "CA",
-    category: "trails",
-    description: "The Mile Rock Viewpoint features a stunning overlook of the Golden Gate Bridge, Marin Headlands, and even Point Reyes on a clear day. You can continue on the path down to a small rocky beach and the Pacific ocean. The cliffs are eroding badly here and are very dangerous, but the trail is wide and safe if you take your time.",
-    rating: 5,
-    numReviews: 6,
-    length: 1,
-    durationLow: .5,
-    durationHigh: 1,
-    photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
-  },
-  {
     pid: 38,
     name: "Mile Rock View Point",
     city: "San Francisco",
@@ -706,6 +692,20 @@ const tempPOIS = [
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
+    pid: 49,
+    name: "Mile Rock View Point",
+    city: "San Francisco",
+    state: "CA",
+    category: "trails",
+    description: "The Mile Rock Viewpoint features a stunning overlook of the Golden Gate Bridge, Marin Headlands, and even Point Reyes on a clear day. You can continue on the path down to a small rocky beach and the Pacific ocean. The cliffs are eroding badly here and are very dangerous, but the trail is wide and safe if you take your time.",
+    rating: 5,
+    numReviews: 6,
+    length: 1,
+    durationLow: .5,
+    durationHigh: 1,
+    photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
+  },
+  {
     pid: 50,
     name: "Mile Rock View Point",
     city: "San Francisco",
@@ -830,17 +830,6 @@ const tempAllCities = [
   },
 ]
 
-// // Temporary users
-// const tempUsers = [
-// 	{
-// 		username: "Admin",
-// 		status: true,
-// 	},
-// 	{
-// 		username: "Oprah",
-// 		status: false,
-// 	}
-// ];
 
 function tempGetPOIS() {
   return tempPOIS;

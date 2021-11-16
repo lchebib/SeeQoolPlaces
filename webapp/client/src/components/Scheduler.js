@@ -15,44 +15,36 @@ const { Content } = Layout;
 const DnDCalendar = withDragAndDrop(Calendar);
 const localizer = momentLocalizer(moment);
 
-const initialEvents = [
-  {
-    id: 0,
-    title: "All Day Event very long title",
-    allDay: true,
-    start: new Date(2015, 3, 0),
-    end: new Date(2015, 3, 1)
-  },
-  {
-    id: 1,
-    title: "Long Event",
-    start: new Date(2015, 3, 7),
-    end: new Date(2015, 3, 10)
-  },
+// const initialEvents = [
+//   {
+//     id: 0,
+//     title: "All Day Event very long title",
+//     allDay: true,
+//     start: new Date("11/19/21"),
+//     end: new Date("11/19/21")
+//   },
+//   {
+//     id: 1,
+//     title: "Long Event",
+//     start: new Date("11/19/21"),
+//     end: new Date("11/20/21")
+//   },
 
-  {
-    id: 2,
-    title: "DTS STARTS",
-    start: new Date(2016, 2, 13, 0, 0, 0),
-    end: new Date(2016, 2, 20, 0, 0, 0)
-  },
+//   {
+//     id: 2,
+//     title: "DTS STARTS",
+//     start: new Date(2016, 2, 13, 0, 0, 0),
+//     end: new Date(2016, 2, 20, 0, 0, 0)
+//   },
 
-  {
-    id: 3,
-    title: "DTS ENDS",
-    start: new Date(2016, 10, 6, 0, 0, 0),
-    end: new Date(2016, 10, 13, 0, 0, 0),
-    desc: "Description is shown here"
-  },
-
-  // {
-  //   id: 4,
-  //   title: "Leave",
-  //   start: new Date(new Date().setHours(new Date().getHours() - 3)),
-  //   end: new Date(new Date().setHours(new Date().getHours() + 3)),
-  //   desc: "Description is shown here"
-  // }
-];
+//   {
+//     id: 3,
+//     title: "DTS ENDS",
+//     start: new Date(2016, 10, 6, 0, 0, 0),
+//     end: new Date(2016, 10, 13, 0, 0, 0),
+//     desc: "Description is shown here"
+//   },
+// ];
 
 
 class Scheduler extends React.Component {
@@ -60,15 +52,20 @@ class Scheduler extends React.Component {
     super(props)
 
     this.state = {
-      events: []
+      events: [{
+        id: 0,
+        title: "All Day Event very long title",
+        allDay: true,
+        start: moment().toDate(),
+        end: new Date("11/19/21")
+      }],
+      // startDate: JSON.parse(localStorage.getItem("trips"))
 
     }
 
     this.addEvent = this.addEvent.bind(this)
     this.onEventDrop = this.onEventDrop.bind(this)
   }
-
-
 
   addEvent(event, start, end, allDay) {
     var newEvent = {
@@ -91,8 +88,33 @@ class Scheduler extends React.Component {
     console.log(start, event, end, allDay);
   };
 
+  moveEvent({ event, start, end }) {
+    const { events } = this.state;
 
+    const idx = events.indexOf(event);
+    const updatedEvent = { ...event, start, end };
 
+    const nextEvents = [...events];
+    nextEvents.splice(idx, 1, updatedEvent);
+
+    this.setState({
+      events: nextEvents
+    });
+  }
+
+  resizeEvent = (resizeType, { event, start, end }) => {
+    const { events } = this.state;
+
+    const nextEvents = events.map(existingEvent => {
+      return existingEvent.id == event.id
+        ? { ...existingEvent, start, end }
+        : existingEvent;
+    });
+
+    this.setState({
+      events: nextEvents
+    });
+  };
 
   render() {
 
@@ -118,27 +140,31 @@ class Scheduler extends React.Component {
 
     return (
       <Col span={24}>
-        <div className="wrapper" style={{ maxHeight: "40vh" }}>
-          <DnDCalendar
-            selectable
-            events={initialEvents}
-            startAccessor="start"
-            endAccessor="end"
-            defaultDate={moment().toDate()}
-            localizer={localizer}
-            toolbar
-            resizable
-            onEventDrop={this.onEventDrop}
-            components={{
-              event: EventComponent,
-              agenda: {
-                event: EventAgenda
-              }
-            }}
-            onSelectSlot={this.addEvent}
-            onSelectEvent={event => alert(event.desc)}
-          />
-        </div>
+        <Card>
+          <div className="wrapper" style={{ fontFamily: 'Work Sans', maxHeight: "40vh" }}>
+            <DnDCalendar
+              selectable
+              defaultView='week'
+              views={['week', 'day', 'agenda']}
+              events={this.state.events}
+              startAccessor="start"
+              endAccessor="end"
+              defaultDate={moment().toDate()}
+              localizer={localizer}
+              toolbar
+              resizable
+              onEventDrop={this.moveEvent}
+              components={{
+                event: EventComponent,
+                agenda: {
+                  event: EventAgenda
+                }
+              }}
+              onSelectSlot={this.addEvent}
+              onSelectEvent={event => alert(event.desc)}
+            />
+          </div>
+        </Card>
       </Col>
     );
   }
