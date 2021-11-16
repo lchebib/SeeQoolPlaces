@@ -12,6 +12,8 @@ const { Content } = Layout;
 
 const likePOI = 0;
 
+let bigPOI = {};
+
 class TabsCard extends React.Component {
 
   constructor(props) {
@@ -31,17 +33,16 @@ class TabsCard extends React.Component {
 
   async componentDidMount() {
     this.state.POIS = this.props.POIS
-    this.state.bigPOI = this.state.POIS[0]
+    this.state.bigPOI = this.state.POIS.find(POI => POI.category === 'trails')
 
   }
 
   onChangePOI(e) {
-
     var POIS = this.state.POIS
     var newBigPOI = POIS.find(POI => (POI.pid === e.target.value))
     console.log(newBigPOI)
     this.setState({ bigPOI: newBigPOI })
-
+    // this.state.bigPOI = newBigPOI;
   }
 
   changePage(page, pageSize) {
@@ -78,7 +79,7 @@ class TabsCard extends React.Component {
                 }}>
                 </Card>
               </Col >
-              <Col flex={3.5} style={{ justify: 'left' }}>
+              <Col flex={3.5} style={{}}>
                 <div style={{ fontFamily: 'Work Sans', fontSize: '2vh', lineHeight: '15px' }}>{POI.name}</div>
                 <div style={{ fontSize: '1.5vh', lineHeight: '20px' }}>
                   {POI.rating} stars &nbsp; &nbsp; {POI.durationHigh} hr
@@ -136,6 +137,64 @@ class TabsCard extends React.Component {
       }
     }
 
+    const renderBigPOI = () => {
+      if (this.state.bigPOI.category === 'restaurants') {
+        return (
+          <Card style={{ fontSize: '1.5vh', border: 'none' }}>
+
+            <Row>
+              <div style={{ fontFamily: 'Work Sans', fontSize: '2.5vh' }}>{this.state.bigPOI.name}</div>
+              <div style={{ fontSize: '1.5vh' }}>
+                <Rate disabled defaultValue={this.state.bigPOI.rating} style={{ color: '#006400', transform: 'scale(0.81)' }} />  {this.state.bigPOI.numReviews} reviews
+              </div>
+              <div style={{ fontSize: '1.5vh', lineHeight: '15px', marginBottom: '5px' }}>
+                {this.state.bigPOI.tags.split(',').join(', ')}
+              </div>
+
+              <div style={{ fontSize: '1.25vh', lineHeight: '30px', fontWeight: 'bold' }}>Suggested duration: {this.state.bigPOI.durationLow}-{this.state.bigPOI.durationHigh} hours</div>
+            </Row>
+            <Row >
+              <Col>
+                <div style={{ fontFamily: 'Work Sans', fontSize: '2.5vh' }}>
+                  <Button type='primary' htmlType="submit" shape='round' size='medium' style={{ marginLeft: '30px', marginTop: '30px', wordWrap: 'break-word', border: 'none', background: 'black', color: 'white' }}>Add to Favorites</Button>
+                  <Button type='primary' htmlType="submit" shape='round' size='medium' style={{ marginLeft: '30px', border: 'none', background: 'black', color: 'white', maxWidth: '15vh' }}>Schedule</Button>
+                </div>
+              </Col>
+            </Row>
+          </Card>
+        )
+      } else {
+        return (
+          <Card style={{ fontSize: '1.5vh', border: 'none' }}>
+            <Row >
+              <Col flex=".5">
+                <img src={(this.state.bigPOI.photo)} alt="POI photo" style={{
+                  maxWidth: '25vh'
+                }} />
+              </Col>
+              <Col flex=".5">
+                <div style={{ fontFamily: 'Work Sans', fontSize: '2.5vh' }}>
+                  <Button type='primary' htmlType="submit" shape='round' size='medium' style={{ marginLeft: '5px', marginTop: '30px', wordWrap: 'break-word', border: 'none', background: 'black', color: 'white' }}>Add to Favorites</Button>
+                  <br /> <br />
+                  <Button type='primary' htmlType="submit" shape='round' size='medium' style={{ marginLeft: '30px', border: 'none', background: 'black', color: 'white', maxWidth: '15vh' }}>Schedule</Button>
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <div style={{ fontFamily: 'Work Sans', fontSize: '2.5vh' }}>{this.state.bigPOI.name}</div>
+              <div style={{ fontSize: '1.5vh' }}>
+                <Rate disabled defaultValue={this.state.bigPOI.rating} style={{ color: '#006400', transform: 'scale(0.81)' }} />  {this.state.bigPOI.numReviews} reviews
+              </div>
+              <div style={{ fontSize: '1.5vh' }}>{this.state.bigPOI.description}</div>
+
+              <div style={{ fontSize: '1.25vh', lineHeight: '30px', fontWeight: 'bold' }}>Suggested duration: {this.state.bigPOI.durationLow}-{this.state.bigPOI.durationHigh} hours</div>
+            </Row>
+          </Card>
+
+        )
+      }
+    }
+
     const renderResults = (key) => {
 
       let keyArr = this.state.POIS.filter(obj => {
@@ -162,16 +221,11 @@ class TabsCard extends React.Component {
             style={{}
             }>
             <Row gutter={[8, 8]} >
-
               {keyArr.slice(this.state.minValue, this.state.maxValue).map((POI) =>
                 <Col span={12} style={{ width: '100%', height: '100%' }}>
-
                   {renderRadio(POI, POI.category)}
-
                 </Col>
-
               )}
-
             </Row>
 
           </Radio.Group >
@@ -231,8 +285,10 @@ class TabsCard extends React.Component {
             <Col flex="1 1 200px">
               <TabsCard />
             </Col >
+
             <Col flex="400px" >
-              <Card>
+              {renderBigPOI()}
+              {/* <Card style={{ fontSize: '1.5vh', border: 'none' }}>
                 <Row >
                   <Col flex=".5">
                     <img src={(this.state.bigPOI.photo)} alt="POI photo" style={{
@@ -241,22 +297,22 @@ class TabsCard extends React.Component {
                   </Col>
                   <Col flex=".5">
                     <div style={{ fontFamily: 'Work Sans', fontSize: '2.5vh' }}>
-                      <Button type='primary' htmlType="submit" shape='round' size='medium' style={{ wordWrap: 'break-word', border: 'none', background: 'black', color: 'white' }}>Add to Favorites</Button>
+                      <Button type='primary' htmlType="submit" shape='round' size='medium' style={{ marginLeft: '5px', marginTop: '30px', wordWrap: 'break-word', border: 'none', background: 'black', color: 'white' }}>Add to Favorites</Button>
                       <br /> <br />
-                      <Button type='primary' htmlType="submit" shape='round' size='medium' style={{ border: 'none', background: 'black', color: 'white', maxWidth: '15vh' }}>Schedule</Button>
+                      <Button type='primary' htmlType="submit" shape='round' size='medium' style={{ marginLeft: '30px', border: 'none', background: 'black', color: 'white', maxWidth: '15vh' }}>Schedule</Button>
                     </div>
                   </Col>
                 </Row>
                 <Row>
                   <div style={{ fontFamily: 'Work Sans', fontSize: '2.5vh' }}>{this.state.bigPOI.name}</div>
                   <div style={{ fontSize: '1.5vh' }}>
-                    <Rate disabled defaultValue={this.state.bigPOI.rating} style={{ color: '#006400' }} /> &nbsp; {this.state.bigPOI.numReviews} ratings
+                    <Rate disabled defaultValue={this.state.bigPOI.rating} style={{ color: '#006400', transform: 'scale(0.81)' }} />  {this.state.bigPOI.numReviews} reviews
                   </div>
                   <div style={{ fontSize: '1.5vh' }}>{this.state.bigPOI.description}</div>
-                  <br />
-                  <div style={{ fontSize: '1.25vh' }}>Suggested duration: {this.state.bigPOI.durationLow}-{this.state.bigPOI.durationHigh} hours</div>
+
+                  <div style={{ fontSize: '1.25vh', lineHeight: '30px', fontWeight: 'bold' }}>Suggested duration: {this.state.bigPOI.durationLow}-{this.state.bigPOI.durationHigh} hours</div>
                 </Row>
-              </Card>
+              </Card> */}
 
             </Col >
           </Row>
