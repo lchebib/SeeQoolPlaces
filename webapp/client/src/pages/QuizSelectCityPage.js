@@ -1,8 +1,6 @@
 import React from 'react';
-import { Layout, Row, Col, Card, Button, Divider, Cascader, ArrowLeftOutlined } from 'antd';
-import {
-  LeftSquareOutlined
-} from '@ant-design/icons';
+import { Layout, Row, Col, Card, Button, Cascader } from 'antd';
+import { LeftSquareOutlined } from '@ant-design/icons';
 import SideBar from '../components/SideBar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -58,7 +56,6 @@ class QuizSelectCityPage extends React.Component {
     }
     this.onChange = this.onChange.bind(this);
     this.onClickNextPage = this.onClickNextPage.bind(this);
-    // this.filter = this.filter.bind(this);
 
   }
   onClickNextPage() {
@@ -93,13 +90,9 @@ class QuizSelectCityPage extends React.Component {
         <SideBar />
         <Layout className='layout' style={{ background: 'white', marginLeft: 200 }}>
           <Header />
-
           <Content align='middle' justify='center' style={{ margin: '24px 24px 0', overflow: 'initial', textAlign: 'center' }}>
-
             <Row align='middle' justify='center'>
-
               <Col>
-
                 <div style={{ fontFamily: 'Work Sans', fontSize: '4vh' }}>Find city.</div>
                 <Card style={{
                   border: '1px solid #000',
@@ -123,7 +116,6 @@ class QuizSelectCityPage extends React.Component {
                   <Cascader options={this.state.options} onChange={this.onChange} showSearch={{ filter }} placeholder="Select City" style={{ width: '60%' }} />
                   <br />
                   <br />
-                  {/* <Button {...this.state.buttonStatus} href={"/quiz2"} size='large' shape='round' style={{ background: 'white', color: 'black', border: 'none' }}>Done</Button> */}
                   {enableButton()}
                 </Card>
                 <a href="./quiz" style={{ color: "black" }}>
@@ -131,16 +123,13 @@ class QuizSelectCityPage extends React.Component {
                 </a>
                 <br />
                 <br />
-
               </Col>
             </Row>
           </Content>
-
           <Footer />
         </Layout>
       </Layout >
     );
   }
 }
-
 export default QuizSelectCityPage

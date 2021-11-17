@@ -9,7 +9,6 @@ import {
   Cascader,
   Checkbox,
   DatePicker,
-  Space
 } from 'antd';
 import {
   LeftSquareOutlined
@@ -18,9 +17,8 @@ import SideBar from '../components/SideBar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { getAllCities } from '../fetcher';
-import { postCreateTrip } from '../fetcher'
-import moment from "moment";
-
+// import { postCreateTrip } from '../fetcher'
+// import moment from "moment";
 
 
 const { Content } = Layout;
@@ -39,14 +37,14 @@ const formItemLayout = {
 };
 
 
-const personalities = [
-  { label: 'coolCat', value: 'coolCat' },
-  { label: 'adventurer', value: 'Adventurer' },
-  { label: 'entertainer', value: 'Entertainer' },
-  { label: 'family', value: 'Family' },
-  { label: 'enthusiast', value: 'Enthusiast' },
-  { label: 'investigator', value: 'Investigator' },
-];
+// const personalities = [
+//   { label: 'coolCat', value: 'coolCat' },
+//   { label: 'adventurer', value: 'Adventurer' },
+//   { label: 'entertainer', value: 'Entertainer' },
+//   { label: 'family', value: 'Family' },
+//   { label: 'enthusiast', value: 'Enthusiast' },
+//   { label: 'investigator', value: 'Investigator' },
+// ];
 
 
 const personalityTooltip = "Let us get to know you so we can recommend some activities you're guaranteed to enjoy. Take the Trip Quiz to find out your travel personality!"
@@ -178,34 +176,29 @@ class CreateTripPage extends React.Component {
     var tripID = Math.floor((Math.random() * 1000) + 1);
     this.state.tripID = tripID
 
-    var tripDetails = { tripID: this.state.tripID, name: this.state.tripName, selectedDest: this.state.selectedDest, selectedPersonalities: this.state.selectedPersonalities, tripDates: this.state.tri }
-    console.log(tripDetails)
+    var tripDetails = {
+      id: this.state.tripID,
+      name: this.state.tripName,
+      selectedDest: this.state.selectedDest,
+      selectedPersonalities: this.state.selectedPersonalities,
+      tripDates: this.state.tripDates,
+      favoritePOIS: [],
+      scheduledPOIS: []
+    }
     // postCreateTrip(tripDetails)
 
-    var trips = JSON.parse(localStorage.getItem("trips"))
-    var newTrips = trips ? trips : {}
-    // var newTrips = trips ? trips : []
-    // newTrips.push(tripDetails)
-    newTrips.tripID = tripDetails
-    console.log(newTrips.tripID)
-    JSON.stringify(localStorage.setItem("trips", newTrips))
-    // JSON.stringify(localStorage.setItem("tripDates", newTrips))
-
+    localStorage.setItem(tripID, JSON.stringify(tripDetails))
     this.clickNextPage()
   }
-
 
   clickNextPage() {
     window.location = `/trip?id=${this.state.tripID}`;
   }
 
-
   componentDidMount() {
     getAllCities().then(res => {
       this.setState({ options: makeOptions(res) })
-
     })
-
 
     if (localStorage.getItem('selectedPersonalities')) {
       this.setState({ selectedPersonalities: JSON.parse(localStorage.getItem('selectedPersonalities')) })
@@ -217,7 +210,6 @@ class CreateTripPage extends React.Component {
       }
       this.setState({ defaultPersonalities: persArray })
     }
-
   }
 
   onCheckConfirmDetails = e => {
@@ -225,7 +217,6 @@ class CreateTripPage extends React.Component {
       buttonStatus: e.target.checked,
     });
   };
-
 
 
   render() {
@@ -236,7 +227,6 @@ class CreateTripPage extends React.Component {
       }
       return <Button disabled type='primary' shape='round' size='large' style={{ border: 'none', }}>Create Trip</Button>
     }
-
 
 
     return (
@@ -250,16 +240,12 @@ class CreateTripPage extends React.Component {
             <Row justify='center'>
 
               <Col>
-
                 <div style={{ fontFamily: 'Work Sans', textAlign: 'center' }}>
                   <div style={{ fontSize: '4vw' }}>Create trip.</div>
                   <br />
                   <div style={{ fontSize: '2vw' }}>Enter in details below to describe your trip.</div>
                 </div>
-
-
                 <div style={{ marginTop: '50px' }}>
-
                   <Form
                     {...formItemLayout}
                     onFinish={this.createTrip}
@@ -281,7 +267,6 @@ class CreateTripPage extends React.Component {
                     >
                       <Input onChange={this.onTripNameChange} />
                     </Form.Item>
-
                     <Form.Item
                       name="destination"
                       label="Destination"
@@ -336,7 +321,6 @@ class CreateTripPage extends React.Component {
                         </Row>
                       </Checkbox.Group>
                     </Form.Item>
-
                     <Row justify="space-around" align="middle" style={{ textAlign: 'center' }}>
                       <Col>
                         <Form.Item
@@ -357,7 +341,6 @@ class CreateTripPage extends React.Component {
                         <Form.Item
                         >
                           {enableButton()}
-
                         </Form.Item>
                         <Form.Item
                         >
@@ -368,18 +351,15 @@ class CreateTripPage extends React.Component {
                       </Col>
                     </Row>
                   </Form>
-
                 </div>
               </Col>
             </Row>
           </Content>
-
           <Footer />
         </Layout>
       </Layout >
     );
   }
 }
-
 export default CreateTripPage
 

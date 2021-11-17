@@ -10,6 +10,8 @@ const tempPOIS = [
     city: "San Francisco",
     state: "CA",
     category: "attractions",
+    subcategory: "Points of Interest & Landmarks",
+    tags: "Architectural Buildings,Observation Decks & Towers,Monuments & Statues",
     description: "Monument tower overlooking San Francisco. Tower includes murals from 1934 showing California business, agriculture and home life of the period. 360 Degree viewing platform at top of 212 ft tower.",
     rating: 4,
     numReviews: 4500,
@@ -23,6 +25,8 @@ const tempPOIS = [
     city: "San Francisco",
     state: "CA",
     category: "attractions",
+    subcategory: "Points of Interest & Landmarks",
+    tags: "Architectural Buildings,Observation Decks & Towers,Monuments & Statues",
     description: "Monument tower overlooking San Francisco. Tower includes murals from 1934 showing California business, agriculture and home life of the period. 360 Degree viewing platform at top of 212 ft tower.",
     rating: 4,
     numReviews: 4500,
@@ -36,6 +40,8 @@ const tempPOIS = [
     city: "San Francisco",
     state: "CA",
     category: "attractions",
+    subcategory: "Points of Interest & Landmarks",
+    tags: "Architectural Buildings,Observation Decks & Towers,Monuments & Statues",
     description: "Monument tower overlooking San Francisco. Tower includes murals from 1934 showing California business, agriculture and home life of the period. 360 Degree viewing platform at top of 212 ft tower.",
     rating: 4,
     numReviews: 4500,
@@ -49,6 +55,8 @@ const tempPOIS = [
     city: "San Francisco",
     state: "CA",
     category: "attractions",
+    subcategory: "Points of Interest & Landmarks",
+    tags: "Architectural Buildings,Observation Decks & Towers,Monuments & Statues",
     description: "Monument tower overlooking San Francisco. Tower includes murals from 1934 showing California business, agriculture and home life of the period. 360 Degree viewing platform at top of 212 ft tower.",
     rating: 4,
     numReviews: 4500,
@@ -62,6 +70,8 @@ const tempPOIS = [
     city: "San Francisco",
     state: "CA",
     category: "attractions",
+    subcategory: "Points of Interest & Landmarks",
+    tags: "Architectural Buildings,Observation Decks & Towers,Monuments & Statues",
     description: "Monument tower overlooking San Francisco. Tower includes murals from 1934 showing California business, agriculture and home life of the period. 360 Degree viewing platform at top of 212 ft tower.",
     rating: 4,
     numReviews: 4500,
@@ -75,6 +85,8 @@ const tempPOIS = [
     city: "San Francisco",
     state: "CA",
     category: "attractions",
+    subcategory: "Points of Interest & Landmarks",
+    tags: "Architectural Buildings,Observation Decks & Towers,Monuments & Statues",
     description: "Monument tower overlooking San Francisco. Tower includes murals from 1934 showing California business, agriculture and home life of the period. 360 Degree viewing platform at top of 212 ft tower.",
     rating: 4,
     numReviews: 4500,
@@ -88,6 +100,8 @@ const tempPOIS = [
     city: "San Francisco",
     state: "CA",
     category: "attractions",
+    subcategory: "Points of Interest & Landmarks",
+    tags: "Architectural Buildings,Observation Decks & Towers,Monuments & Statues",
     description: "Monument tower overlooking San Francisco. Tower includes murals from 1934 showing California business, agriculture and home life of the period. 360 Degree viewing platform at top of 212 ft tower.",
     rating: 4,
     numReviews: 4500,
@@ -101,6 +115,8 @@ const tempPOIS = [
     city: "San Francisco",
     state: "CA",
     category: "attractions",
+    subcategory: "Points of Interest & Landmarks",
+    tags: "Architectural Buildings,Observation Decks & Towers,Monuments & Statues",
     description: "Monument tower overlooking San Francisco. Tower includes murals from 1934 showing California business, agriculture and home life of the period. 360 Degree viewing platform at top of 212 ft tower.",
     rating: 4,
     numReviews: 4500,
@@ -114,6 +130,8 @@ const tempPOIS = [
     city: "San Francisco",
     state: "CA",
     category: "attractions",
+    subcategory: "Points of Interest & Landmarks",
+    tags: "Architectural Buildings,Observation Decks & Towers,Monuments & Statues",
     description: "Monument tower overlooking San Francisco. Tower includes murals from 1934 showing California business, agriculture and home life of the period. 360 Degree viewing platform at top of 212 ft tower.",
     rating: 4,
     numReviews: 4500,
@@ -127,6 +145,8 @@ const tempPOIS = [
     city: "San Francisco",
     state: "CA",
     category: "attractions",
+    subcategory: "Points of Interest & Landmarks",
+    tags: "Architectural Buildings,Observation Decks & Towers,Monuments & Statues",
     description: "Monument tower overlooking San Francisco. Tower includes murals from 1934 showing California business, agriculture and home life of the period. 360 Degree viewing platform at top of 212 ft tower.",
     rating: 4,
     numReviews: 4500,
@@ -140,6 +160,8 @@ const tempPOIS = [
     city: "San Francisco",
     state: "CA",
     category: "attractions",
+    subcategory: "Points of Interest & Landmarks",
+    tags: "Architectural Buildings,Observation Decks & Towers,Monuments & Statues",
     description: "Monument tower overlooking San Francisco. Tower includes murals from 1934 showing California business, agriculture and home life of the period. 360 Degree viewing platform at top of 212 ft tower.",
     rating: 4,
     numReviews: 4500,
@@ -153,6 +175,8 @@ const tempPOIS = [
     city: "San Francisco",
     state: "CA",
     category: "attractions",
+    subcategory: "Points of Interest & Landmarks",
+    tags: "Architectural Buildings,Observation Decks & Towers,Monuments & Statues",
     description: "Monument tower overlooking San Francisco. Tower includes murals from 1934 showing California business, agriculture and home life of the period. 360 Degree viewing platform at top of 212 ft tower.",
     rating: 4,
     numReviews: 4500,
@@ -166,6 +190,8 @@ const tempPOIS = [
     city: "San Francisco",
     state: "CA",
     category: "attractions",
+    subcategory: "Points of Interest & Landmarks",
+    tags: "Architectural Buildings,Observation Decks & Towers,Monuments & Statues",
     description: "Monument tower overlooking San Francisco. Tower includes murals from 1934 showing California business, agriculture and home life of the period. 360 Degree viewing platform at top of 212 ft tower.",
     rating: 4,
     numReviews: 4500,
@@ -179,6 +205,8 @@ const tempPOIS = [
     city: "San Francisco",
     state: "CA",
     category: "attractions",
+    subcategory: "Points of Interest & Landmarks",
+    tags: "Architectural Buildings,Observation Decks & Towers,Monuments & Statues",
     description: "Monument tower overlooking San Francisco. Tower includes murals from 1934 showing California business, agriculture and home life of the period. 360 Degree viewing platform at top of 212 ft tower.",
     rating: 4,
     numReviews: 4500,
@@ -192,6 +220,8 @@ const tempPOIS = [
     city: "San Francisco",
     state: "CA",
     category: "attractions",
+    subcategory: "Points of Interest & Landmarks",
+    tags: "Architectural Buildings,Observation Decks & Towers,Monuments & Statues",
     description: "Monument tower overlooking San Francisco. Tower includes murals from 1934 showing California business, agriculture and home life of the period. 360 Degree viewing platform at top of 212 ft tower.",
     rating: 4,
     numReviews: 4500,
@@ -205,6 +235,8 @@ const tempPOIS = [
     city: "San Francisco",
     state: "CA",
     category: "attractions",
+    subcategory: "Points of Interest & Landmarks",
+    tags: "Architectural Buildings,Observation Decks & Towers,Monuments & Statues",
     description: "Monument tower overlooking San Francisco. Tower includes murals from 1934 showing California business, agriculture and home life of the period. 360 Degree viewing platform at top of 212 ft tower.",
     rating: 4,
     numReviews: 4500,
@@ -218,6 +250,8 @@ const tempPOIS = [
     city: "San Francisco",
     state: "CA",
     category: "attractions",
+    subcategory: "Points of Interest & Landmarks",
+    tags: "Architectural Buildings,Observation Decks & Towers,Monuments & Statues",
     description: "Monument tower overlooking San Francisco. Tower includes murals from 1934 showing California business, agriculture and home life of the period. 360 Degree viewing platform at top of 212 ft tower.",
     rating: 4,
     numReviews: 4500,
@@ -507,6 +541,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
@@ -521,6 +559,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
@@ -535,6 +577,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
@@ -549,6 +595,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
@@ -563,6 +613,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
@@ -577,6 +631,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
@@ -591,6 +649,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
@@ -605,6 +667,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
@@ -619,6 +685,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
@@ -633,6 +703,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
@@ -647,6 +721,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
@@ -661,6 +739,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
@@ -675,6 +757,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
@@ -689,6 +775,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
@@ -703,6 +793,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
@@ -717,6 +811,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
@@ -731,6 +829,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   },
   {
@@ -745,6 +847,10 @@ const tempPOIS = [
     length: 1,
     durationLow: .5,
     durationHigh: 1,
+    elevationHigh: 1500,
+    elevationLow: 500,
+    routeType: "Loop",
+    difficulty: "easy",
     photo: "https://cdn2.apstatic.com/photos/hike/7007902_large_1554323814.jpg"
   }
 ];
@@ -896,23 +1002,23 @@ function tempLogin(username) {
   }
 }
 
-function tempUserExists(username) {
-  var all_users = localStorage.getItem("all_users");
+// function tempUserExists(username) {
+//   var all_users = localStorage.getItem("all_users");
 
-  if (all_users.length > 0) {
+//   if (all_users.length > 0) {
 
-    all_users.forEach(user => {
+//     all_users.forEach(user => {
 
-      if (user.username === username) {
+//       if (user.username === username) {
 
-        return true;
-      }
-    })
-  }
+//         return true;
+//       }
+//     })
+//   }
 
-  return false;
+//   return false;
 
-}
+// }
 
 function tempSignUp(username) {
   // tempUsers.findIndex((user, index) => {

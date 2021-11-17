@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageHeader, Avatar, Input, Space, Dropdown, Menu, Button, Row, Col } from 'antd';
+import { PageHeader, Avatar, Input, Space, Button, Row, Col } from 'antd';
 import { UserOutlined, SearchOutlined } from '@ant-design/icons';
 import { getLoggedInUser, logout } from '../fetcher'
 // import '../style/customAntDesign.less'
@@ -7,8 +7,6 @@ import { getLoggedInUser, logout } from '../fetcher'
 
 // import '~antd/lib/style/themes/default.less';
 // import '~antd/dist/antd.less';
-
-const { Search } = Input;
 
 class Header extends React.Component {
 

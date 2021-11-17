@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Menu, Space, Affix } from 'antd';
+import { Menu } from 'antd';
 import { getAllTrips } from '../fetcher'
 
 const { SubMenu } = Menu;

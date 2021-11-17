@@ -5,12 +5,9 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { BuzzFeedQuiz } from "react-buzzfeed-quiz";
 import "react-buzzfeed-quiz/lib/styles.css";
-import * as Scroll from 'react-scroll';
+// import * as Scroll from 'react-scroll';
 import { animateScroll as scroll } from 'react-scroll'
-import {
-  LeftSquareOutlined
-} from '@ant-design/icons';
-
+import { LeftSquareOutlined } from '@ant-design/icons';
 
 const { Content } = Layout;
 
@@ -33,56 +30,56 @@ const answers = [
   },
 ]
 
-const questions = [
-  {
-    text: "Check out local breweries or drink the best coffee the city has to offer.",
-    personality: "coolCat"
-  },
-  {
-    text: "Enjoy being in nature and going on hikes.",
-    personality: "adventurer"
-  },
-  {
-    text: "Sip on a tasty drink beachside, or by a fancy hotel pool.",
-    personality: "entertainer"
-  },
-  {
-    text: "Steep in the history and culture of the city by visiting museums and landmarks.",
-    personality: "investigator"
-  },
-  {
-    text: "Do fun activities that the whole family can enjoy.",
-    personality: "family"
-  },
-  {
-    text: "Go with the flow and find the best local spots.",
-    personality: "enthusiast"
-  },
-  {
-    text: "Do outdoor sports, like skiing, surfing, or boating.",
-    personality: "adventurer"
-  },
-  {
-    text: "Do a little bit of everything.",
-    personality: "enthusiast"
-  },
-  {
-    text: "Shop for vintage clothing or visit cool record stores.",
-    personality: "coolCat"
-  },
-  {
-    text: "Get dressed up and go out on the town.",
-    personality: "entertainer"
-  },
-  {
-    text: "Make lasting memories with my children.",
-    personality: "family"
-  },
-  {
-    text: "Occupy a cozy corner of a quiet cafe or bar with a good book.",
-    personality: "investigator"
-  },
-]
+// const questions = [
+//   {
+//     text: "Check out local breweries or drink the best coffee the city has to offer.",
+//     personality: "coolCat"
+//   },
+//   {
+//     text: "Enjoy being in nature and going on hikes.",
+//     personality: "adventurer"
+//   },
+//   {
+//     text: "Sip on a tasty drink beachside, or by a fancy hotel pool.",
+//     personality: "entertainer"
+//   },
+//   {
+//     text: "Steep in the history and culture of the city by visiting museums and landmarks.",
+//     personality: "investigator"
+//   },
+//   {
+//     text: "Do fun activities that the whole family can enjoy.",
+//     personality: "family"
+//   },
+//   {
+//     text: "Go with the flow and find the best local spots.",
+//     personality: "enthusiast"
+//   },
+//   {
+//     text: "Do outdoor sports, like skiing, surfing, or boating.",
+//     personality: "adventurer"
+//   },
+//   {
+//     text: "Do a little bit of everything.",
+//     personality: "enthusiast"
+//   },
+//   {
+//     text: "Shop for vintage clothing or visit cool record stores.",
+//     personality: "coolCat"
+//   },
+//   {
+//     text: "Get dressed up and go out on the town.",
+//     personality: "entertainer"
+//   },
+//   {
+//     text: "Make lasting memories with my children.",
+//     personality: "family"
+//   },
+//   {
+//     text: "Occupy a cozy corner of a quiet cafe or bar with a good book.",
+//     personality: "investigator"
+//   },
+// ]
 
 // const descriptions =
 // {
@@ -93,7 +90,6 @@ const questions = [
 //   enthusiast: "You go with the flow, and are up for anything. ",
 //   investigator: "You're happy when you're learning. "
 // }
-
 
 const descriptions =
 {
@@ -116,7 +112,6 @@ function scrollToTop() {
 // function scrollTo() {
 //   scroll.scrollTo();
 // }
-
 
 class QuizPage1 extends React.Component {
 
@@ -151,11 +146,6 @@ class QuizPage1 extends React.Component {
     this.pushQuizResults = this.pushQuizResults.bind(this)
   }
 
-  retakeQuiz() {
-    this.setState(this.baseState)
-
-    scrollToTop()
-  }
 
   // onButtonClick(personality, score) {
   //   switch (personality) {
@@ -184,7 +174,7 @@ class QuizPage1 extends React.Component {
   // }
 
   retakeQuiz() {
-
+    this.setState(this.baseState)
     scrollToTop()
 
     // this.state = {
@@ -247,8 +237,6 @@ class QuizPage1 extends React.Component {
 
 
   onResult() {
-
-
     this.state.quizResults = { city: false, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false }
     this.state.description = ""
 
@@ -262,11 +250,10 @@ class QuizPage1 extends React.Component {
       }
     }
 
-    if (numPersonalities == 0 || numPersonalities == 6) {
+    if (numPersonalities === 0 || numPersonalities === 6) {
       this.setState({ quizResults: { city: false, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: true, investigator: false } })
       this.setState({ description: descriptions.enthusiast });
     }
-
 
     this.state.personalityScore = { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 };
     this.setState({ renderResults: true });
@@ -276,12 +263,9 @@ class QuizPage1 extends React.Component {
   }
 
   setSelectedDest(e) {
-
     var index = parseInt(e.target.value);
     var destObj = this.state.destResults[index];
-
     this.state.selectedDest = [destObj.state, destObj.city];
-
     this.setState({ buttonStatus: true });
   }
 
@@ -291,10 +275,8 @@ class QuizPage1 extends React.Component {
   }
 
   pushQuizResults() {
-
     var selectedDest = this.state.selectedDest;
     localStorage.setItem('selectedDest', selectedDest);
-
     var selectedPersonalities = { ...this.state.quizResults }
     delete selectedPersonalities["population"];
     localStorage.setItem('selectedPersonalities', JSON.stringify(selectedPersonalities));
@@ -315,14 +297,12 @@ class QuizPage1 extends React.Component {
         return (
           <Row type="flex" style={{ alignItems: 'center', justifyContent: 'center' }}>
             <Col>
-
               <Card ref='res' style={{
                 backgroundImage: 'linear-gradient(#ff0080, #ff4000, #ff0080)',
                 padding: '10px',
                 borderRadius: '3px',
                 maxWidth: '52vw',
-              }
-              }>
+              }}>
                 <div style={{ fontSize: '4vw', color: 'white' }}>Your results are in! </div>
                 <br />
                 <div style={{ fontSize: '3vw', }}> From what we've gathered, we think... </div>
@@ -333,7 +313,6 @@ class QuizPage1 extends React.Component {
                 <br />
                 <div style={{ fontSize: '3vw', }}> Your perfect cities are... </div>
                 <br />
-
                 <Radio.Group buttonStyle="solid" onChange={(e) => this.setSelectedDest(e)}>
                   <Radio.Button value="0" style={{ padding: '2vh', borderRadius: '3px', marginTop: '20px', width: '80%', height: '8vh', fontSize: '2vw', fontFamily: 'sans-serif bold', border: 'none' }}>
                     {this.state.destResults[0].city}, {this.state.destResults[0].state}
@@ -345,19 +324,15 @@ class QuizPage1 extends React.Component {
                     {this.state.destResults[2].city}, {this.state.destResults[2].state}
                   </Radio.Button>
                 </Radio.Group>
-
                 {enableButton()}
                 <br />
                 <Button onClick={this.retakeQuiz} type='primary' shape='round' size='large' style={{ margin: '20px', border: 'none', background: '#5c1b4d' }}>Retake Quiz</Button>
-
               </Card >
             </Col>
           </Row>
-
         )
       }
     }
-
 
     return (
       <Layout>
@@ -368,34 +343,27 @@ class QuizPage1 extends React.Component {
 
             <Row align='middle' justify='center'>
               <Col>
-
                 <div style={{ fontSize: '8vh', }}>On this trip, I want to... </div>
-
                 {/* <Row type="flex" style={{ alignItems: "center", justifyContent: 'center' }}>
               <Col>
-
                 {questions.map((question) =>
                   <div style={{ width: '54vw', marginBottom: '20vw' }}>
                     <Card
                       style={{ margin: '1vw', marginBottom: '10px', background: 'black', width: '52vw', padding: '10px', borderRadius: '4px', color: 'white', fontSize: '3vmin' }}>
                       {question.text}
                     </Card >
-
                     <div style={{ width: '54vw' }}>
                       {answers.map((answer) =>
                         <Button
                           type='ghost'
                           style={{ margin: '1vw', marginTop: '5px', borderRadius: '4px', marginBottom: '5px', width: '25vw', height: '18vw', fontSize: '2vw', fontFamily: 'sans-serif bold' }}
                           onclick={() => this.onButtonClick(question.personality, answer.score)}>
-
                           {answer.text}
                         </Button>
                       )}
                     </div>
-
                   </div>
                 )}
-
               </Col>
             </Row> */}
 
@@ -776,12 +744,10 @@ class QuizPage1 extends React.Component {
                   ]}
                 />
                 {renderResults()}
-
                 <br />
                 <a href="./quiz" style={{ color: "black" }}>
                   <LeftSquareOutlined /> Go Back
                 </a>
-
               </Col>
             </Row>
           </Content>
@@ -791,5 +757,4 @@ class QuizPage1 extends React.Component {
     );
   }
 }
-
 export default QuizPage1

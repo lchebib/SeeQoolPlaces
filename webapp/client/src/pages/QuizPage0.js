@@ -1,16 +1,12 @@
 import React from 'react';
-import { Layout, Row, Col, Card, Button, Divider } from 'antd';
+import { Layout, Row, Col, Card } from 'antd';
 import SideBar from '../components/SideBar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { BuzzFeedQuiz } from "react-buzzfeed-quiz";
 import "react-buzzfeed-quiz/lib/styles.css";
 
 const { Content } = Layout;
-
-
 class QuizPage0 extends React.Component {
-
 
   render() {
     return (
@@ -18,13 +14,9 @@ class QuizPage0 extends React.Component {
         <SideBar />
         <Layout className='layout' style={{ background: 'white', marginLeft: 200 }}>
           <Header />
-
           <Content align='middle' justify='center' style={{ margin: '24px 24px 0', overflow: 'initial', textAlign: 'center' }}>
-
             <Row align='middle' justify='center'>
-
               <Col>
-
                 <div style={{ fontFamily: 'Work Sans', fontSize: '4vh' }}>Choose one.</div>
                 <a href="./quiz1">
                   <Card style={{
@@ -45,7 +37,6 @@ class QuizPage0 extends React.Component {
                     </div>
                   </Card>
                 </a>
-
                 <a href="./selectcity">
                   <Card style={{
                     border: '1px solid #000',
@@ -68,12 +59,10 @@ class QuizPage0 extends React.Component {
               </Col>
             </Row>
           </Content>
-
           <Footer />
         </Layout>
       </Layout >
     );
   }
 }
-
 export default QuizPage0

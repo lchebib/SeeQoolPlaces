@@ -1,16 +1,11 @@
 import React from 'react';
-import { Layout, Row, Col, Card, Button, Divider } from 'antd';
-import SideBar from '../components/SideBar';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import { Col, Card } from 'antd';
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import '../style/calendar.css'
-
-const { Content } = Layout;
 
 const DnDCalendar = withDragAndDrop(Calendar);
 const localizer = momentLocalizer(moment);
@@ -106,7 +101,7 @@ class Scheduler extends React.Component {
     const { events } = this.state;
 
     const nextEvents = events.map(existingEvent => {
-      return existingEvent.id == event.id
+      return existingEvent.id === event.id
         ? { ...existingEvent, start, end }
         : existingEvent;
     });
@@ -140,7 +135,7 @@ class Scheduler extends React.Component {
 
     return (
       <Col span={24}>
-        <Card>
+        <Card style={{ borderBottom: 'none' }}>
           <div className="wrapper" style={{ fontFamily: 'Work Sans', maxHeight: "40vh" }}>
             <DnDCalendar
               selectable

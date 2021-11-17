@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { Layout, Row, Col, Card, Button, Radio, Rate, Tooltip, Pagination } from 'antd';
-import { SmileTwoTone, HeartTwoTone, CheckCircleTwoTone, HeartOutlined, SearchOutlined, HeartFilled } from '@ant-design/icons';
+import React from 'react';
+import { Layout, Row, Col } from 'antd';
 import SideBar from '../components/SideBar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -8,11 +7,7 @@ import TabsCard from '../components/TabsCard';
 import Scheduler from '../components/Scheduler';
 import { getAllPOIs } from '../fetcher';
 
-
-
 const { Content } = Layout;
-
-const likePOI = 0;
 
 class TripPage extends React.Component {
 
@@ -25,47 +20,46 @@ class TripPage extends React.Component {
       maxValue: 16,
       poiIsFavorite: true,
       tripID: 0,
-      tripName: ""
+      tripName: "",
+      scheduledPOIS: [],
+      favoritePOIS: []
     }
-    // this.changePage = this.changePage.bind(this)
 
+    this.onSchedule = this.onSchedule.bind(this)
+    this.onFavorite = this.onFavorite.bind(this)
   }
 
   async componentDidMount() {
     getAllPOIs().then(res => {
       this.setState({ POIS: res })
       this.setState({ bigPOI: res[0] })
-      // console.log(this.state.POIS[0].photo)
     })
 
     var tripID = window.location.href.split('=')[1]
-    console.log(tripID)
     this.state.tripID = tripID
-    var trips = JSON.parse(localStorage.getItem("trips"))
-    var trip = trips.tripID
-    console.log(trip)
-    // this.state.tripName = trip.name
+    var trip = JSON.parse(localStorage.getItem(tripID))
 
+    console.log(`tripID: ${trip.id}`)
+    console.log(`tripName: ${trip.name}`)
+
+    this.setState({ tripID: trip.id })
+    this.setState({ tripName: trip.name })
+    this.setState({ scheduledPOIS: trip.scheduledPOIS })
+    this.setState({ favoritePOIS: trip.favoritePOIS })
   }
 
 
-  // changePage(page, pageSize) {
+  onSchedule(POI) {
+    var scheduledPOIS = this.state.scheduledPOIS
+    scheduledPOIS.push(POI)
+    this.setState({ scheduledPOIS: scheduledPOIS })
+  }
 
-  //   if (page <= 1) {
-  //     this.setState({ minValue: 0, maxValue: 16 });
-  //   } else {
-  //     this.setState({ minValue: (page - 1) * (pageSize), maxValue: (page) * (pageSize) });
-  //   }
-  // }
-
-  // changePage(page) {
-
-  //   if (page <= 1) {
-  //     this.setState({ minValue: 0, maxValue: 8 });
-  //   } else {
-  //     this.setState({ minValue: (page - 1) * 8, maxValue: page * 8 });
-  //   }
-  // }
+  onFavorite(POI) {
+    var favoritePOIS = this.state.favoritePOIS
+    favoritePOIS.push(POI)
+    this.setState({ favoritePOIS: favoritePOIS })
+  }
 
 
   render() {
@@ -73,17 +67,12 @@ class TripPage extends React.Component {
       return null
     }
 
-
-
     return (
       <Layout>
         <SideBar />
         <Layout className='layout' style={{ background: 'white', marginLeft: 200 }}>
           <Header />
-          {/* <img src={(this.state.POIS[0].photo)} alt="" style={{ maxWidth: '30vw', padding: '20px' }} /> */}
-
           <Content style={{ margin: '24px 24px 0', overflow: 'initial' }}>
-
             <Row justify='center' >
               <Col >
                 <div style={{ fontFamily: 'Work Sans', textAlign: 'center' }}>
@@ -92,25 +81,19 @@ class TripPage extends React.Component {
                 </div>
               </Col >
             </Row>
-
             <Row justify='center'>
               <Scheduler />
             </Row>
-
-
             <Row justify='center' >
-              <TabsCard POIS={this.state.POIS} />
+              <TabsCard POIS={this.state.POIS} onSchedule={this.onSchedule} onFavorite={this.onFavorite} />
             </Row>
-
           </Content>
-
           <Footer />
         </Layout>
       </Layout >
     );
   }
 }
-
 export default TripPage
 
 

@@ -1,11 +1,11 @@
 import React from 'react';
-import { Layout, Row, Col, Card, Button, Divider, Space, Affix } from 'antd';
+import { Layout, Row, Col, Card, Button, Divider, Space } from 'antd';
 import SideBar from '../components/SideBar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { getRandomCity } from '../fetcher'
 
-const { Content, Sider } = Layout;
+const { Content } = Layout;
 
 class HomePage extends React.Component {
 
