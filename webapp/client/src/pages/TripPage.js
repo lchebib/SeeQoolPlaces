@@ -15,57 +15,105 @@ class TripPage extends React.Component {
     super(props)
 
     this.state = {
-      POIS: [],
-      minValue: 0,
-      maxValue: 16,
-      poiIsFavorite: true,
-      tripID: 0,
-      tripName: "",
-      scheduledPOIS: [],
-      favoritePOIS: []
+      tripID: window.location.href.split('=')[1],
+      POIS: []
+      // tripID: null,
+      // tripName: "",
+      // events: {},
+      // favoritePOIS: {},
+      // tripStartDate: null,
+      // tripEndDate: null
     }
 
-    this.onSchedule = this.onSchedule.bind(this)
-    this.onFavorite = this.onFavorite.bind(this)
+    // this.addEvent = this.addEvent.bind(this)
+    // this.removeEvent = this.removeEvent.bind(this)
+    // this.addFavorite = this.addFavorite.bind(this)
+    // this.removeFavorite = this.removeFavorite.bind(this)
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     getAllPOIs().then(res => {
       this.setState({ POIS: res })
-      this.setState({ bigPOI: res[0] })
+      // this.setState({ bigPOI: res[0] })
     })
 
-    var tripID = window.location.href.split('=')[1]
-    this.state.tripID = tripID
-    var trip = JSON.parse(localStorage.getItem(tripID))
+    // var tripID = window.location.href.split('=')[1]
+    // var trip = JSON.parse(localStorage.getItem(tripID))
 
-    console.log(`tripID: ${trip.id}`)
-    console.log(`tripName: ${trip.name}`)
+    // // this.setState({ trip: trip })
 
-    this.setState({ tripID: trip.id })
-    this.setState({ tripName: trip.name })
-    this.setState({ scheduledPOIS: trip.scheduledPOIS })
-    this.setState({ favoritePOIS: trip.favoritePOIS })
+    // // console.log(`tripID: ${trip.id}`)
+    // // console.log(`tripName: ${trip.name}`)
+
+    // this.setState({ tripID: trip.id })
+    // console.log(`tripID: ${trip.id}`)
+    // console.log(`tripID: ${this.state.tripID}`)
+
+    // this.setState({ tripName: trip.name })
+    // this.setState({ events: trip.events })
+    // this.setState({ favoritePOIS: trip.favoritePOIS })
+    // this.setState({ tripStartDate: trip.tripDates[0] })
+    // this.setState({ tripEndDate: trip.tripDates[1] })
   }
 
+  // addEvent(POI) {
+  //   this.setState({ newEvent: POI })
+  // console.log(POI)
+  // var events = this.state.events
+  // var eid = 1
+  // if (Object.keys(this.state.events).length > 0) {
+  //   eid = this.state.events[0].eid + 1
+  // }
+  // var start = this.state.tripStartDate
+  // var duration = POI.duration
 
-  onSchedule(POI) {
-    var scheduledPOIS = this.state.scheduledPOIS
-    scheduledPOIS.push(POI)
-    this.setState({ scheduledPOIS: scheduledPOIS })
-  }
 
-  onFavorite(POI) {
-    var favoritePOIS = this.state.favoritePOIS
-    favoritePOIS.push(POI)
-    this.setState({ favoritePOIS: favoritePOIS })
-  }
+  // var event = {
+  //   pid: POI.id,
+  //   eid: eid,
+  //   title: POI.name,
+  //   start: start,
+  //   duration: duration,
+  // }
+
+  // var event = {
+  //   title: POI.name,
+  //   start: start,
+  //   end: start.getHours() + POI.duration,
+  //   allDay: false,
+  //   resource: [{ pid: POI.id, eid: eid }]
+  // }
+
+  // events[eid] = event
+  // this.setState({ events: events })
+  // }
+
+  // removeEvent(eid) {
+  //   console.log(eid)
+  //   var events = this.state.events
+  //   delete events[eid]
+  //   this.setState({ events: events })
+  // }
+
+  // addFavorite(POI) {
+  //   console.log(POI)
+  //   var favoritePOIS = this.state.favoritePOIS
+  //   favoritePOIS[POI.id] = POI
+  //   this.setState({ favoritePOIS: favoritePOIS })
+  // }
+
+  // removeFavorite(pid) {
+  //   console.log(pid)
+  //   var favoritePOIS = this.state.favoritePOIS
+  //   delete favoritePOIS[pid]
+  //   this.setState({ favoritePOIS: favoritePOIS })
+  // }
 
 
   render() {
-    if (this.state.POIS.length === 0) {
-      return null
-    }
+    // if (this.state.POIS.length === 0) {
+    //   return null
+    // }
 
     return (
       <Layout>
@@ -82,10 +130,13 @@ class TripPage extends React.Component {
               </Col >
             </Row>
             <Row justify='center'>
-              <Scheduler />
+              {/* <Scheduler trip={this.state.trip} newEvent={this.state.events} /> */}
+              <Scheduler tripID={this.state.tripID} />
             </Row>
             <Row justify='center' >
-              <TabsCard POIS={this.state.POIS} onSchedule={this.onSchedule} onFavorite={this.onFavorite} />
+              {/* <TabsCard POIS={this.state.POIS} onSchedule={this.addEvent} onFavorite={this.addFavorite} onRemoveFavorite={this.removeFavorite} /> */}
+              <TabsCard tripID={this.state.tripID} POIS={this.state.POIS} />
+
             </Row>
           </Content>
           <Footer />

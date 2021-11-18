@@ -179,14 +179,13 @@ class CreateTripPage extends React.Component {
     var tripDetails = {
       id: this.state.tripID,
       name: this.state.tripName,
-      selectedDest: this.state.selectedDest,
-      selectedPersonalities: this.state.selectedPersonalities,
+      destination: this.state.selectedDest,
+      personalities: this.state.selectedPersonalities,
       tripDates: this.state.tripDates,
       favoritePOIS: [],
       scheduledPOIS: []
     }
     // postCreateTrip(tripDetails)
-
     localStorage.setItem(tripID, JSON.stringify(tripDetails))
     this.clickNextPage()
   }
@@ -234,11 +233,8 @@ class CreateTripPage extends React.Component {
         <SideBar />
         <Layout className='layout' style={{ background: 'white', marginLeft: 200 }}>
           <Header />
-
           <Content style={{ margin: '24px 24px 0', overflow: 'initial' }}>
-
             <Row justify='center'>
-
               <Col>
                 <div style={{ fontFamily: 'Work Sans', textAlign: 'center' }}>
                   <div style={{ fontSize: '4vw' }}>Create trip.</div>

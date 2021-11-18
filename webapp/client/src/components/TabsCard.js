@@ -1,18 +1,18 @@
 import React from 'react';
-import { Row, Col, Card, Button, Radio, Rate, Pagination, Space, Typography } from 'antd';
+import { Row, Col, Card, Button, Radio, Rate, Pagination, Space } from 'antd';
+import { getAllPOIs } from '../fetcher';
 
-const { Text, Title } = Typography;
 class TabsCard extends React.Component {
 
   constructor(props) {
     super(props)
 
     this.state = {
+      tripID: null,
       POIS: [],
-      minValue: 0,
-      poiIsFavorite: true,
       bigPOI: {},
       currentTab: "",
+      minValue: 0,
       currentPage: 1,
       pageSize: 9,
       keyArr: []
@@ -22,23 +22,36 @@ class TabsCard extends React.Component {
     this.onChangeTab = this.onChangeTab.bind(this)
     this.onSchedule = this.onSchedule.bind(this)
     this.onFavorite = this.onFavorite.bind(this)
+    // this.isFavorited = this.isFavorited.bind(this)
+    // this.isScheduled = this.isScheduled.bind(this)
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+
+    var tripID = this.props.tripID
+    this.setState({ tripID: tripID })
+    // var trip = JSON.parse(localStorage.getItem(tripID))
+
+    // getAllPOIs(this.state.tripID).then(res => {
+    //   this.setState({ POIS: res })
+    //   this.setState({ bigPOI: res[0] })
+    // })
+
     this.state.POIS = this.props.POIS
     this.state.bigPOI = this.state.POIS.find(POI => POI.category === 'trails')
+    // console.log(this.state.POIS.find(POI => POI.category === 'trails'))
     this.state.currentTab = "trails"
     this.setKeyArr(this.state.currentTab)
   }
 
-  onSchedule(e) {
-    console.log(e)
-    // return e.target.value
+  onSchedule() {
+    // this.props.onSchedule(this.state.bigPOI)
+    localStorage.setItem("newEvent", JSON.stringify(this.state.bigPOI))
   }
 
-  onFavorite(e) {
-    console.log(e)
-    // return e.target.value
+  onFavorite() {
+    // this.props.onFavorite(this.state.bigPOI)
+    var favorites = localStorage.getItem()
   }
 
   setKeyArr(key) {
@@ -58,7 +71,6 @@ class TabsCard extends React.Component {
   onChangePOI(e) {
     var POIS = this.state.POIS
     var newBigPOI = POIS.find(POI => (POI.pid === e.target.value))
-    console.log(newBigPOI)
     this.setState({ bigPOI: newBigPOI })
   }
 
@@ -66,7 +78,6 @@ class TabsCard extends React.Component {
     this.setState({ minValue: (page - 1), pageSize: size });
     this.setState({ currentPage: page })
   }
-
 
 
   render() {
@@ -178,13 +189,6 @@ class TabsCard extends React.Component {
             <Space direction='vertical'>
               <Row align='middle'>
                 <Col span={14}>
-                  {/* <Row justify='center' align='middle' style={{ fontFamily: 'Work Sans' }}>
-                  <Button type='primary' shape='round' size='medium' style={{ wordWrap: 'break-word', border: 'none', background: 'black', color: 'white', width: '15vh' }}>Add to Favorites</Button>
-                </Row>
-                <br />
-                <Row justify='center' align='middle' style={{ fontFamily: 'Work Sans' }}>
-                  <Button type='primary' shape='round' size='medium' style={{ border: 'none', background: 'black', color: 'white', width: '15vh' }}>Schedule</Button>
-                </Row> */}
                   <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
                     bigPOI.name}
                   </div>
@@ -206,16 +210,6 @@ class TabsCard extends React.Component {
               </Row>
               <Row align='middle' >
                 <Space wrap='true'>
-                  {/* <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
-                  bigPOI.name}
-                </div>
-                <div>
-                  <Rate disabled defaultValue={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
-                  {bigPOI.numReviews} reviews
-                </div> */}
-                  {/* <div>
-                  <span style={{ fontSize: '110%' }}>{bigPOI.subcategory} • {bigPOI.tags.split(',').join(' • ')}</span>
-                </div> */}
                   <div >
                     {bigPOI.description}
                   </div>
@@ -226,12 +220,12 @@ class TabsCard extends React.Component {
                 </Space>
               </Row>
               <Row align='middle' justify='center' gutter={[60]} style={{ fontFamily: 'Work Sans', fontSize: '100%', marginTop: '15px' }}>
-                <Col span={12}>
-                  <Button type='primary' onClick={this.onFavorite} value={bigPOI.pid} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Add to Favorites</Button>
+                {/* <Col span={12}>
+                  <Button type='primary' onClick={this.onFavorite} key={bigPOI.pid} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Add to Favorites</Button>
                 </Col>
                 <Col span={12}>
-                  <Button type='primary' onClick={this.onSchedule} value={bigPOI.pid} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Schedule</Button>
-                </Col>
+                  <Button type='primary' onClick={this.onSchedule} key={bigPOI.pid} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Schedule</Button>
+                </Col> */}
               </Row>
             </Space>
           </Card >
@@ -242,13 +236,7 @@ class TabsCard extends React.Component {
             <Space direction='vertical'>
               <Row align='middle'>
                 <Col span={14}>
-                  {/* <Row justify='center' align='middle' style={{ fontFamily: 'Work Sans' }}>
-                  <Button type='primary' shape='round' size='medium' style={{ wordWrap: 'break-word', border: 'none', background: 'black', color: 'white', width: '15vh' }}>Add to Favorites</Button>
-                </Row>
-                <br />
-                <Row justify='center' align='middle' style={{ fontFamily: 'Work Sans' }}>
-                  <Button type='primary' shape='round' size='medium' style={{ border: 'none', background: 'black', color: 'white', width: '15vh' }}>Schedule</Button>
-                </Row> */}
+
                   <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
                     bigPOI.name}
                   </div>
@@ -267,13 +255,6 @@ class TabsCard extends React.Component {
               </Row>
               <Row align='middle' >
                 <Space wrap='true'>
-                  {/* <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
-                  bigPOI.name}
-                </div>
-                <div>
-                  <Rate disabled defaultValue={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
-                  {bigPOI.numReviews} reviews
-                </div> */}
                   <div >
                     {bigPOI.description}
                   </div>
@@ -301,10 +282,10 @@ class TabsCard extends React.Component {
               </Row>
               <Row align='middle' justify='center' gutter={[60]} style={{ fontFamily: 'Work Sans', marginTop: '15px' }}>
                 <Col span={12}>
-                  <Button type='primary' shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Add to Favorites</Button>
+                  <Button type='primary' onClick={this.onFavorite} key={bigPOI.pid} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Add to Favorites</Button>
                 </Col>
                 <Col span={12}>
-                  <Button type='primary' shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Schedule</Button>
+                  <Button type='primary' onClick={this.onSchedule} key={bigPOI.pid} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Schedule</Button>
                 </Col>
               </Row>
             </Space>
@@ -315,7 +296,6 @@ class TabsCard extends React.Component {
           <Card>
             <Space direction='vertical'>
               <Row>
-                {/* <Col span={16}> */}
                 <Space wrap='true'>
                   <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
                     bigPOI.name}
@@ -332,29 +312,14 @@ class TabsCard extends React.Component {
                     {bigPOI.durationLow}-{bigPOI.durationHigh} hours
                   </div>
                 </Space>
-                {/* </Col> */}
-                {/* <Col span={8}>
-                  <Row justify='center' align='middle' gutter={[0, 20]} >
-                    <Button type='primary' shape='round' size='medium' style={{ wordWrap: 'break-word', border: 'none', background: 'black', color: 'white', width: '15vh' }}>Add to Favorites</Button>
-                    <Button type='primary' shape='round' size='medium' style={{ border: 'none', background: 'black', color: 'white', width: '15vh' }}>Schedule</Button>
-                  </Row>
-                </Col>
               </Row>
               <Row align='middle' justify='center' gutter={[60]} style={{ fontFamily: 'Work Sans', marginTop: '15px' }}>
-                <Col span={12}>
-                  <Button type='primary' shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Add to Favorites</Button>
+                {/* <Col span={12}>
+                  <Button type='primary' onClick={this.onFavorite} key={bigPOI.pid} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Add to Favorites</Button>
                 </Col>
                 <Col span={12}>
-                  <Button type='primary' shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Schedule</Button>
+                  <Button type='primary' onClick={this.onSchedule} key={bigPOI.pid} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Schedule</Button>
                 </Col> */}
-              </Row>
-              <Row align='middle' justify='center' gutter={[60]} style={{ fontFamily: 'Work Sans', marginTop: '15px' }}>
-                <Col span={12}>
-                  <Button type='primary' shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Add to Favorites</Button>
-                </Col>
-                <Col span={12}>
-                  <Button type='primary' shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Schedule</Button>
-                </Col>
               </Row>
             </Space>
           </Card>

@@ -114,7 +114,7 @@ const getQuizCities = async (size, p0, p1, p2, p3, p4, p5) => {
 //             QuizPage2 Fetchers
 // ********************************************
 
-const getAllPOIs = async () => {
+const getAllPOIs = async (tripID) => {
   // TODO
   // var res = await fetch(`http://${config.server_host}:${config.server_port}/cities`, {
   //     method: 'GET',
