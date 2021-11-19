@@ -9,6 +9,8 @@ import "react-buzzfeed-quiz/lib/styles.css";
 
 const { Content } = Layout;
 
+
+
 const makeOptions = (arr) => {
   if (!Array.isArray(arr)) {
     return [];
@@ -17,11 +19,13 @@ const makeOptions = (arr) => {
     {
       value: 'california',
       label: 'California',
+      code: 'CA',
       children: []
     },
     {
       value: 'british columbia',
       label: 'British Columbia',
+      code: 'CA',
       children: []
     }];
   arr.forEach(obj => {

@@ -321,7 +321,7 @@ class QuizPage2 extends React.Component {
           <Content style={{ margin: '24px 24px 0', overflow: 'initial', textAlign: 'center', fontFamily: 'Work Sans', alignItems: 'center' }}>
             <Row align='middle' justify='center' style={{ marginBottom: '100px' }}>
               <Col>
-                <div style={{ fontSize: '6vw', }}>On this trip, I want to... </div>
+                <div style={{ fontSize: '6vw', }}>When I visit {this.state.selectedDest[1]}, I want to... </div>
               </Col>
             </Row>
 

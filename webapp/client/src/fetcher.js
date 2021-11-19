@@ -11,6 +11,11 @@ const getAllTrips = async () => {
   // })
   // return res.json()
   var res = { results: tempMyTrips }
+
+  res.results.map(trip => {
+    localStorage.setItem(trip.id, JSON.stringify(trip))
+  })
+
   return res;
 }
 
@@ -58,12 +63,12 @@ const signUp = async (username) => {
 
 
 const getRandomCity = async () => {
-  // var res = await fetch(`http://${config.server_host}:${config.server_port}/random`, {
-  //     method: 'GET',
-  // })
-  // return res.json()
-  var res = { results: tempGetRandomCity() }
-  return res;
+  var res = await fetch(`http://${config.server_host}:${config.server_port}/random_city`, {
+    method: 'GET',
+  })
+  return res.json()
+  // var res = { results: tempGetRandomCity() }
+  // return res;
 }
 
 

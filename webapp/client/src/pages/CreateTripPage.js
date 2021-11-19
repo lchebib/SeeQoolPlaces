@@ -60,20 +60,6 @@ const personalityTooltip = "Let us get to know you so we can recommend some acti
 // }
 
 
-// const makeAutoFill = (str) => {
-//   // if ()
-//   let arr = str.split(',');
-//   let state;
-//   let city = arr[1].toLowerCase();
-//   if (arr[0] == 'california') {
-//     state = 'california';
-//   } else {
-//     state = 'british columbia';
-//   }
-//   arr = [state, city];
-//   return arr;
-// }
-
 const makeOptions = (arr) => {
   if (!Array.isArray(arr)) {
     return [];
@@ -101,14 +87,9 @@ const makeOptions = (arr) => {
   return result;
 }
 
-// const options2 = makeOptions(getAllCities());
-
 function filter(inputValue, path) {
   return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
 }
-
-
-
 class CreateTripPage extends React.Component {
   constructor(props) {
     super(props)
@@ -116,7 +97,8 @@ class CreateTripPage extends React.Component {
     this.state = {
       buttonStatus: false,
       options: [],
-      selectedDest: localStorage.getItem('selectedDest') ? JSON.parse(localStorage.getItem('selectedDest')) : [],
+      selectedDest: [],
+      // defaultDest: [JSON.parse(localStorage.getItem('selectedDest'))[0], JSON.parse(localStorage.getItem('selectedDest')[0]).toLowerCase()],
       defaultDest: localStorage.getItem('selectedDest') ? JSON.parse((localStorage.getItem('selectedDest')).toLowerCase()) : [],
       selectedPersonalities: localStorage.getItem('selectedPersonalities') ? JSON.parse((localStorage.getItem('selectedPersonalities')).toLowerCase()) : {},
       defaultPersonalities: [],
@@ -181,9 +163,7 @@ class CreateTripPage extends React.Component {
       name: this.state.tripName,
       destination: this.state.selectedDest,
       personalities: this.state.selectedPersonalities,
-      tripDates: this.state.tripDates,
-      favoritePOIS: [],
-      scheduledPOIS: []
+      dates: this.state.tripDates,
     }
     // postCreateTrip(tripDetails)
     localStorage.setItem(tripID, JSON.stringify(tripDetails))
@@ -200,22 +180,33 @@ class CreateTripPage extends React.Component {
     })
 
     if (localStorage.getItem('selectedPersonalities')) {
-      this.setState({ selectedPersonalities: JSON.parse(localStorage.getItem('selectedPersonalities')) })
+      var selectedPers = JSON.parse(localStorage.getItem('selectedPersonalities'))
+      this.setState({ selectedPersonalities: selectedPers })
       var persArray = []
-      for (const [key, value] of Object.entries(this.state.selectedPersonalities)) {
+
+      for (const [key, value] of Object.entries(selectedPers)) {
         if (value === true) {
           persArray.push(key)
         }
       }
       this.setState({ defaultPersonalities: persArray })
     }
+
+    //   if (localStorage.getItem('selectedDest')) {
+    //     var selectedDest = JSON.parse(localStorage.getItem('selectedDest'))
+    //     // localStorage.getItem('selectedDest') ? JSON.parse((localStorage.getItem('selectedDest')).toLowerCase()) : [],
+    //     this.setState({ selectedDest: selectedDest })
+    //     this.setState({ defaultDest: [selectedDest[0].toLowerCase(), selectedDest[1]] })
+    //   }
+    console.log(this.state.defaultDest[1].toLowerCase());
+
   }
 
   onCheckConfirmDetails = e => {
     this.setState({
       buttonStatus: e.target.checked,
     });
-  };
+  }
 
 
   render() {

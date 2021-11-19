@@ -2,9 +2,8 @@
     "rds_host": "cis550-groupproject.cmnyi6tdsaqq.ap-northeast-1.rds.amazonaws.com",
     "rds_port": "3306",
     "rds_user": "admin",
-    "rds_password" : "cis550DBA",
+    "rds_password": "cis550DBA",
     "rds_db": "SeeQoolPlaces",
     "server_host": "127.0.0.1",
-    "server_port":"8080"
-
+    "server_port": "8080"
 }

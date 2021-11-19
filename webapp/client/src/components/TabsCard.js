@@ -8,10 +8,11 @@ class TabsCard extends React.Component {
     super(props)
 
     this.state = {
-      tripID: null,
-      POIS: [],
-      bigPOI: {},
-      currentTab: "",
+      trip: this.props.trip,
+      POIS: this.props.POIS,
+      bigPOI: this.props.POIS.find(POI => POI.category === 'trails'),
+      favorites: [],
+      currentTab: "trails",
       minValue: 0,
       currentPage: 1,
       pageSize: 9,
@@ -21,37 +22,54 @@ class TabsCard extends React.Component {
     this.onChangePOI = this.onChangePOI.bind(this)
     this.onChangeTab = this.onChangeTab.bind(this)
     this.onSchedule = this.onSchedule.bind(this)
-    this.onFavorite = this.onFavorite.bind(this)
+    this.onAddFavorite = this.onAddFavorite.bind(this)
+    this.onRemoveFavorite = this.onRemoveFavorite.bind(this)
+
     // this.isFavorited = this.isFavorited.bind(this)
     // this.isScheduled = this.isScheduled.bind(this)
   }
 
-  componentDidMount() {
+  componentWillMount() {
 
-    var tripID = this.props.tripID
-    this.setState({ tripID: tripID })
+    // var POIS = []
+    // getAllPOIs().then(res => {
+    //   POIS = res
+    // })
+    // this.POIS = POIS
+    // this.setSt ate({ POIS: POIS })
+    // this.setState({ POIS: this.props.POIS })
+    // this.setState({ bigPOI: this.props.POIS.find(POI => POI.category === 'trails') })
+    // this.setState({ trip: this.props.trip })
+    // this.setState({ currentTab: "trails" })
+    this.setKeyArr(this.state.currentTab)
+
+
+    // var tripID = this.props.tripID
+    // this.setState({ tripID: tripID })
     // var trip = JSON.parse(localStorage.getItem(tripID))
 
-    // getAllPOIs(this.state.tripID).then(res => {
-    //   this.setState({ POIS: res })
-    //   this.setState({ bigPOI: res[0] })
-    // })
-
-    this.state.POIS = this.props.POIS
-    this.state.bigPOI = this.state.POIS.find(POI => POI.category === 'trails')
-    // console.log(this.state.POIS.find(POI => POI.category === 'trails'))
-    this.state.currentTab = "trails"
-    this.setKeyArr(this.state.currentTab)
+    // this.state.POIS = this.props.POIS
+    // this.state.bigPOI = this.state.POIS.find(POI => POI.category === 'trails')
+    // this.state.currentTab = "trails"
   }
 
   onSchedule() {
-    // this.props.onSchedule(this.state.bigPOI)
-    localStorage.setItem("newEvent", JSON.stringify(this.state.bigPOI))
+    this.props.onSchedule(this.state.bigPOI)
+    // localStorage.setItem("newEvent", JSON.stringify(this.state.bigPOI))
   }
 
-  onFavorite() {
-    // this.props.onFavorite(this.state.bigPOI)
-    var favorites = localStorage.getItem()
+  onAddFavorite() {
+    var favs = [...this.state.favorites]
+    favs.push(this.state.bigPOI)
+    this.props.onFavorite(this.state.bigPOI)
+    // var favorites = localStorage.getItem()
+  }
+
+  onRemoveFavorite() {
+    var favs = [...this.state.favorites]
+    let idx = favs.findIndex(this.state.bigPOI)
+    this.props.onFavorite(this.state.bigPOI)
+    // var favorites = localStorage.getItem()
   }
 
   setKeyArr(key) {
@@ -69,8 +87,7 @@ class TabsCard extends React.Component {
   }
 
   onChangePOI(e) {
-    var POIS = this.state.POIS
-    var newBigPOI = POIS.find(POI => (POI.pid === e.target.value))
+    var newBigPOI = this.state.POIS.find(POI => (POI.pid === e.target.value))
     this.setState({ bigPOI: newBigPOI })
   }
 
@@ -81,8 +98,13 @@ class TabsCard extends React.Component {
 
 
   render() {
-    if (this.state.POIS.length === 0) {
-      return null
+
+    const favoritesButton = () => {
+      let pid = this.state.bigPOI.pid
+      if (this.state.favorites.includes(pid)) {
+        return <Button type='primary' onClick={this.onRemoveFavorite} key={pid} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Remove from Favorites</Button>
+      }
+      return <Button type='primary' onClick={this.onFavorite} key={pid} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Add to Favorites</Button>
     }
 
     const renderRadio = (POI, category) => {
@@ -282,10 +304,10 @@ class TabsCard extends React.Component {
               </Row>
               <Row align='middle' justify='center' gutter={[60]} style={{ fontFamily: 'Work Sans', marginTop: '15px' }}>
                 <Col span={12}>
-                  <Button type='primary' onClick={this.onFavorite} key={bigPOI.pid} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Add to Favorites</Button>
+                  <Button type='primary' onClick={this.onSchedule} key={bigPOI.pid} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Schedule</Button>
                 </Col>
                 <Col span={12}>
-                  <Button type='primary' onClick={this.onSchedule} key={bigPOI.pid} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Schedule</Button>
+                  {favoritesButton()}
                 </Col>
               </Row>
             </Space>

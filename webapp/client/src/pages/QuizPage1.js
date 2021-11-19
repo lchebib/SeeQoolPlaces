@@ -276,9 +276,9 @@ class QuizPage1 extends React.Component {
 
   pushQuizResults() {
     var selectedDest = this.state.selectedDest;
-    localStorage.setItem('selectedDest', selectedDest);
+    localStorage.setItem('selectedDest', JSON.stringify(selectedDest));
     var selectedPersonalities = { ...this.state.quizResults }
-    delete selectedPersonalities["population"];
+    delete selectedPersonalities.population
     localStorage.setItem('selectedPersonalities', JSON.stringify(selectedPersonalities));
   }
 

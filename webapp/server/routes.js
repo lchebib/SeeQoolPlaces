@@ -30,32 +30,24 @@ async function hello(req, res) {
 //             Landing Page Routes
 // ********************************************
 
+
+
+
+
 // Route 2 (handler) - return a random city, and a photo of an attraction or hike
 async function random(req, res) {
-  // top 24 'random' cities that we we select from database to show on landing page
-  // BC ideas from here: https://www.planetware.com/canada/best-cities-in-british-columbia-cdn-1-284.htm
-  // CA ideas from here: https://travel.usnews.com/rankings/best-places-to-visit-in-california/ 
-  const randomCities = [['Vancouver', 'BC'], ['Victoria', 'BC'], ['Kelowna', 'BC'], ['Penticton', 'BC'], ['Whistler', 'BC'], ['Nanaimo', 'BC'], ['Squamish', 'BC'],
-  ['Nelson', 'BC'], ['Revelstoke', 'BC'], ['Kamloops', 'BC'], ['Vernon', 'BC'], ['Yosemite Valley', 'CA'], ['San Francisco', 'CA'], ['San Diego', 'CA'], ['Big Sur', 'CA'],
-  ['Three Rivers', 'CA'], ['Santa Monica', 'CA'], ['Los Angeles', 'CA'], ['Laguna Beach', 'CA'], ['Sonoma', 'CA'], ['Joshua Tree', 'CA'], ['Sausalito', 'CA'],
-  ['Malibu', 'CA'], ['Mammoth Lakes', 'CA']];
-  // returns a random number 0-25
-  const randomIndex = Math.floor(Math.random() * 25);
-  // random city to use for query 
-  const randomCity = randomCities[randomIndex][0];
-  const randomState = randomCities[randomIndex][1];
 
-  // TODO: 
-  // Xulei -- this query is really just a placeholder! we need a query to use to test our DB
-  // once it it up and running
-  // right now this query will (I hope) return the attraction and photo from the attraction
-  // with the most reviews in the randomCity
-  connection.query(`SELECT name, photo 
-        FROM POI p JOIN Attraction a ON p.PID=a.PID
-        WHERE city = ${randomCity} AND NumRevews >= ALL (SELECT NumReviews
-                    FROM Attractions
-                    WHERE city = ${randomCity} AND state = ${randomState} AND photo NOT NULL)
-        LIMIT 1`, function (error, results, fields) {
+  const randomCities = ['Vancouver', 'Victoria', 'Kelowna', 'Penticton', 'Nanaimo', 'Vernon', 'San Francisco', 'San Diego',
+    'Santa Cruz', 'Los Angeles', 'Yosemite Lakes', 'South Lake Tahoe'];
+  // returns a random number 0-11
+  const randomIndex = Math.floor(Math.random() * 12);
+  // random city to use for query 
+  const randomCityName = randomCities[randomIndex];
+  // const randomCityState = randomCities[randomIndex][1];
+
+  connection.query(`SELECT state, city, photo
+        FROM LandingPagePhoto
+        WHERE city = '${randomCityName}'`, function (error, results, fields) {
     if (error) {
       console.log(error)
       res.json({ error: error })
@@ -70,7 +62,7 @@ async function random(req, res) {
 async function all_trips(req, res) {
   connection.query(
     `SELECT *
-    FROM Trips`
+  FROM Trips`
     , function (error, results, fields) {
       if (error) {
         console.log(error)
@@ -114,14 +106,14 @@ module.exports = {
 
 //   if (req.params.choice === 'number') {
 //     // TODO: TASK 1: inspect for issues and correct 
-//     res.json({ message: `Hello, ${name}!`, jersey_number: jersey_number })
+//     res.json({ message: `Hello, ${ name }!`, jersey_number: jersey_number })
 //   } else if (req.params.choice === 'color') {
 //     var lucky_color_index = Math.round(Math.random());
 //     // TODO: TASK 2: change this or any variables above to return only 'red' or 'blue' at random (go Quakers!)
-//     res.json({ message: `Hello, ${name}!`, jersey_color: colors[lucky_color_index] })
+//     res.json({ message: `Hello, ${ name }!`, jersey_color: colors[lucky_color_index] })
 //   } else {
 //     // TODO: TASK 3: inspect for issues and correct
-//     res.json({ message: `Hello, ${name}, we like your jersey!` })
+//     res.json({ message: `Hello, ${ name }, we like your jersey!` })
 //   }
 // }
 
@@ -147,8 +139,8 @@ module.exports = {
 //     // TODO: query and return results here:
 
 //     let offset = (limit * pageNo) - limit;
-//     connection.query(`SELECT MatchId, Date, Time, HomeTeam AS Home, AwayTeam AS Away, FullTimeGoalsH AS HomeGoals, FullTimeGoalsA AS AwayGoals  
-//         FROM Matches 
+//     connection.query(`SELECT MatchId, Date, Time, HomeTeam AS Home, AwayTeam AS Away, FullTimeGoalsH AS HomeGoals, FullTimeGoalsA AS AwayGoals
+//         FROM Matches
 //         WHERE Division = '${league}'
 //         ORDER BY HomeTeam, AwayTeam
 //         LIMIT ${limit} OFFSET ${offset}`, function (error, results, fields) {

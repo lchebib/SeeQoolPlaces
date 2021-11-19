@@ -859,16 +859,31 @@ const tempPOIS = [
 // Temporary trips
 const tempMyTrips = [
   {
-    id: "100",
+    id: 100,
     name: "San Francisco",
+    destination: ["california", "san francisco"],
+    personalities: ["adventurer"],
+    dates: ["2021-12-01T22:41:46.197Z", "2021-12-08T22:41:46.197Z"],
+    favoritePOIS: [],
+    scheduledPOIS: []
   },
   {
-    id: "101",
+    id: 101,
     name: "Surf Trip to Malibu",
+    destination: ["california", "malibu"],
+    personalities: ["entertainer"],
+    dates: ["2021-12-01T22:41:46.197Z", "2021-12-08T22:41:46.197Z"],
+    favoritePOIS: [],
+    scheduledPOIS: []
   },
   {
-    id: "102",
+    id: 102,
     name: "Christmas in Victoria",
+    destination: ["british columbia", "victora"],
+    personalities: ["investigator"],
+    dates: ["2021-12-01T22:41:46.197Z", "2021-12-08T22:41:46.197Z"],
+    favoritePOIS: [],
+    scheduledPOIS: []
   }
 ];
 

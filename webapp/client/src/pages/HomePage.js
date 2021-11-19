@@ -7,6 +7,15 @@ import { getRandomCity } from '../fetcher'
 
 const { Content } = Layout;
 
+// const parseState = (state) => {
+//   if (state == 'BC') {
+//     return 'british columbia'
+
+//   } else {
+//     return 'california'
+//   }
+// }
+
 class HomePage extends React.Component {
 
   constructor(props) {
@@ -17,23 +26,38 @@ class HomePage extends React.Component {
     }
 
     this.onSurpriseMe = this.onSurpriseMe.bind(this)
+    this.onVisitRandomCity = this.onVisitRandomCity.bind(this)
   }
 
   onSurpriseMe() {
     getRandomCity().then(res => {
-      this.setState({ randomCity: res.results })
+      this.setState({ randomCity: res.results[0] })
     })
+  }
+
+  onVisitRandomCity() {
+    var dest = [this.state.randomCity.state, this.state.randomCity.city]
+    localStorage.setItem('selectedDest', JSON.stringify(dest))
   }
 
 
   componentDidMount() {
     getRandomCity().then(res => {
-      this.setState({ randomCity: res.results })
+
+      this.setState({ randomCity: res.results[0] })
+      console.log(res);
+
     })
+    // console.log(res);
   }
 
 
   render() {
+
+    // if (!this.state.randomCity) {
+    //   return null
+    // }
+
     return (
       <Layout style={{
         background: 'white'
@@ -94,7 +118,7 @@ class HomePage extends React.Component {
                   }}>
                     <div>
                       <div style={{ fontFamily: 'Work Sans', fontSize: '30px', color: 'white' }}>Discover</div>
-                      <Divider />
+                      <Divider style={{ border: 'none' }} />
                       <Button href={"/quiz"} size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Take Trip Quiz</Button>
                     </div>
                   </Card>
@@ -127,10 +151,10 @@ class HomePage extends React.Component {
                     border: 'none'
                   }}>
                     <div style={{ fontFamily: 'Work Sans', fontSize: '30px', color: 'white' }}>{this.state.randomCity.city}</div>
-                    <Divider />
+                    <Divider style={{ border: 'none' }} />
                     <Space>
                       <Button onClick={this.onSurpriseMe} size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Surprise Me!</Button>
-                      <Button href={`/activities?city=${this.state.randomCity.city}&state=${this.state.randomCity.state}`} size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Visit {this.state.randomCity.city}</Button>
+                      <Button onClick={this.onVisitRandomCity} href={"./quiz2"} size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Visit {this.state.randomCity.city}</Button>
                     </Space>
                   </Card>
                 </Col>
@@ -145,4 +169,5 @@ class HomePage extends React.Component {
 }
 
 export default HomePage
+
 
