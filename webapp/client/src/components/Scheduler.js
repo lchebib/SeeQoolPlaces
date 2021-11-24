@@ -20,7 +20,8 @@ const initialEvents = [
     allDay: false,
     start: new Date('December 1, 2021 0:00:00'),
     end: new Date("December 1, 2021 6:00:00"),
-    resource: { duration: 6 }
+    resource: { duration: 6 },
+    category: 'trails'
   },
   {
     id: 20,
@@ -131,19 +132,26 @@ class Scheduler extends React.Component {
 
   eventStyleGetter(event, start, end, isSelected) {
     console.log(event);
-    var backgroundColor = '#' + event.hexColor;
+    var backgroundColor;
+    if (event.category === 'trails') {
+      backgroundColor = '#9CDA86';
+    } else if (event.category === 'attractions') {
+      backgroundColor = '#FFC93F';
+    } else {
+      backgroundColor = '#EC7878';
+    }
     var style = {
-        backgroundColor: backgroundColor,
-        borderRadius: '0px',
-        opacity: 0.8,
-        color: 'black',
-        border: '0px',
-        display: 'block'
+      backgroundColor: backgroundColor,
+      borderRadius: '0px',
+      opacity: 0.8,
+      color: 'black',
+      border: '0px',
+      display: 'block'
     };
     return {
-        style: style
+      style: style
     };
-}
+  }
 
 
   addEvent(POI) {
@@ -162,6 +170,7 @@ class Scheduler extends React.Component {
     var end = new Date(start)
     end.setHours(end.getHours() + duration)
     // var end = new Date(this.state.trip.dates[0])
+    var category = POI.category
 
     var event = {
       title: POI.name,
@@ -169,7 +178,8 @@ class Scheduler extends React.Component {
       start: start,
       end: end,
       allDay: false,
-      resource: [{ pid: POI.pid, duration: duration }]
+      resource: [{ pid: POI.pid, duration: duration }],
+      category: category
     }
 
     newEvents.push(event)

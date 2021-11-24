@@ -22,13 +22,13 @@ class FilterBar extends React.Component {
     const favoriteButton = (POI) => {
       if (POI.category === "trails") {
         console.log(POI)
-        return <Button style={{ background: 'green' }}>{POI.name}</Button>
+        return <Button style={{ background: '#9CDA86' }}>{POI.name}</Button>
       } else if (POI.category === "attractions") {
         console.log(POI)
-        return <Button style={{ background: 'yellow' }}>{POI.name}</Button>
+        return <Button style={{ background: '#FFC93F' }}>{POI.name}</Button>
       } else {
         console.log(POI)
-        return <Button style={{ background: 'red' }}>{POI.name}</Button>
+        return <Button style={{ background: '#EC7878' }}>{POI.name}</Button>
       }
     }
 
