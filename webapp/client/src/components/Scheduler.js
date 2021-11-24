@@ -18,7 +18,7 @@ const initialEvents = [
     id: 0,
     title: "Event very long title",
     allDay: false,
-    start: new Date('December 1, 2021 0:00:00'),
+    start: new Date('December 1, 2021 3:00:00'),
     end: new Date("December 1, 2021 6:00:00"),
     resource: { duration: 6 },
     category: 'trails'
@@ -164,7 +164,7 @@ class Scheduler extends React.Component {
     }
 
     var start = new Date(this.state.trip.dates[0])
-    start.setHours(7, 0, 0, 0)
+    start.setHours(0, 0, 0, 0)
     // var start = new Date(this.state.trip.dates[0])
     var duration = POI.durationHigh
     var end = new Date(start)
