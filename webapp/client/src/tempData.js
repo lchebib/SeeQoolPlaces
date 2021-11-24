@@ -887,6 +887,22 @@ const tempMyTrips = [
   }
 ];
 
+// Temporary top 3 destinations from quiz
+const tempQuizCities = [
+  {
+    'city': 'Los Angeles',
+    'state': 'CA'
+  },
+  {
+    'city': 'San Diego',
+    'state': 'CA'
+  },
+  {
+    'city': 'Vancouver',
+    'state': 'BC'
+  }
+];
+
 
 // Temporary cities
 const tempRandomCities = [
@@ -951,6 +967,10 @@ const tempAllCities = [
   },
 ]
 
+
+function tempGetQuizCities() {
+  return tempQuizCities;
+}
 
 function tempGetPOIS() {
   return tempPOIS;
@@ -1054,4 +1074,4 @@ function tempSignUp(username) {
   }
 }
 
-export { tempMyTrips, tempGetRandomCity, tempGetLoggedInUser, tempLogout, tempLogin, tempSignUp, tempGetAllCities, tempGetPOIS };
+export { tempGetQuizCities, tempMyTrips, tempGetRandomCity, tempGetLoggedInUser, tempLogout, tempLogin, tempSignUp, tempGetAllCities, tempGetPOIS };

@@ -82,8 +82,12 @@ class HomePage extends React.Component {
             <div style={{ textAlign: 'center' }}>
               <Row >
                 <Col span={24}>
-                  <Card style={{ margin: '10px', border: 'none' }}>
-                    <h1 style={{ fontFamily: 'Work Sans', fontSize: '40px' }}>Plan the perfect trip.</h1>
+                  <Card style={{
+                    margin: '10px',
+                    // border: 'none',
+                    // boxShadow: '1px 1px 5px #D3D3D3'
+                  }}>
+                    <h1 style={{ fontFamily: 'Work Sans', fontSize: '30px' }}>Plan the perfect trip.</h1>
                     <img src={(process.env.PUBLIC_URL + "/instructions.jpg")} alt="" style={{ maxWidth: '700px' }} />
                   </Card>
                 </Col >
@@ -92,8 +96,9 @@ class HomePage extends React.Component {
                 <Col span={12} >
                   <Card style={{
                     margin: '10px',
-                    backgroundImage: `url(${process.env.PUBLIC_URL + "/travel.jpg"})`,
-                    opacity: '0.9',
+                    backgroundImage: `linear-gradient(rgba(80, 80, 80, 0.3),
+                    rgba(80, 80, 80, 0.3)), url(${process.env.PUBLIC_URL + "/travel.jpg"})`,
+                    // opacity: '0.8',
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
@@ -104,7 +109,8 @@ class HomePage extends React.Component {
                     bottom: '0px',
                     left: '0px',
                     content: '',
-                    border: 'none'
+                    // border: 'none',
+                    // boxShadow: '1px 1px 5px #D3D3D3'
                   }} />
                   <Card style={{
                     margin: '10px',
@@ -114,10 +120,10 @@ class HomePage extends React.Component {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    border: 'none'
+                    border: 'none',
                   }}>
                     <div>
-                      <div style={{ fontFamily: 'Work Sans', fontSize: '30px', color: 'white' }}>Discover</div>
+                      <div style={{ fontFamily: 'Work Sans', fontSize: '30px', color: 'white' }}>Find your city.</div>
                       <Divider style={{ border: 'none' }} />
                       <Button href={"/quiz"} size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Take Trip Quiz</Button>
                     </div>
@@ -126,8 +132,9 @@ class HomePage extends React.Component {
                 <Col span={12} >
                   <Card style={{
                     margin: '10px',
-                    backgroundImage: `url(${this.state.randomCity.photo})`,
-                    opacity: '0.9',
+                    backgroundImage: `linear-gradient(rgba(80, 80, 80, 0.3),
+                    rgba(80, 80, 80, 0.3)), url(${this.state.randomCity.photo})`,
+                    // opacity: '1',
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
@@ -138,7 +145,8 @@ class HomePage extends React.Component {
                     bottom: '0px',
                     left: '0px',
                     content: '',
-                    border: 'none'
+                    // border: 'none',
+                    // boxShadow: '1px 1px 5px #D3D3D3'
                   }} />
                   <Card style={{
                     margin: '10px',

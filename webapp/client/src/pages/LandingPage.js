@@ -19,7 +19,7 @@ class LandingPage extends React.Component {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-            <img src={(process.env.PUBLIC_URL + "/Login_Logo.svg")} alt="See Qool Places Logo" style={{ maxWidth: '60vw', padding: '20px' }} />
+            <img src={(process.env.PUBLIC_URL + "/login_logo.svg")} alt="See Qool Places Logo" style={{ maxWidth: '60vw', padding: '20px' }} />
           </div>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <a href="/home">

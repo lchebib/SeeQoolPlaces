@@ -1,5 +1,5 @@
 import config from './config.json'
-import { tempGetRandomCity, tempGetLoggedInUser, tempMyTrips, tempLogout, tempLogin, tempSignUp, tempGetAllCities, tempGetPOIS } from './tempData'
+import { tempGetQuizCities, tempGetRandomCity, tempGetLoggedInUser, tempMyTrips, tempLogout, tempLogin, tempSignUp, tempGetAllCities, tempGetPOIS } from './tempData'
 
 // ********************************************
 //             All Page Fetchers
@@ -97,22 +97,13 @@ const getAllCities = async () => {
 //             QuizPage1 Fetchers
 // ********************************************
 
-// ********************************************
-//             QuizPage2 Fetchers
-// ********************************************
-
-// const getQuizCities = async (size, p0, p1, p2, p3, p4, p5) => {
-//   var res = await fetch(`http://${config.server_host}:${config.server_port}/quiz?size=${size}&p0=${p0}&p1=${p1}&p2=${p2}&p3=${p3}&p4=${p4}&p5=${p5}`, {
-//     method: 'GET',
-//   })
-//   return res.json()
-// }
-
-const getQuizCities = async (size, p0, p1, p2, p3, p4, p5) => {
-  var res = await fetch(`http://${config.server_host}:${config.server_port}/quiz?size=${size}&p0=${p0}&p1=${p1}&p2=${p2}&p3=${p3}&p4=${p4}&p5=${p5}`, {
-    method: 'GET',
-  })
-  return res.json()
+const getQuizCities = async (population, p1, p2, p3, p4, p5, p6) => {
+  // var res = await fetch(`http://${config.server_host}:${config.server_port}/quiz?population=${population}&p1=${p1}&p2=${p2}&p3=${p3}&p4=${p4}&p5=${p5}&p6=${p6}`, {
+  //   method: 'GET',
+  // })
+  // return res.json()
+  var res = tempGetQuizCities();
+  return res;
 }
 
 // ********************************************

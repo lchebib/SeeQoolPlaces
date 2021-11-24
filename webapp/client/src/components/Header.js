@@ -109,7 +109,8 @@ class Header extends React.Component {
           background: 'white',
           textAlign: 'right',
           borderBottom: '1px solid #eee',
-          position: 'relative'
+          position: 'relative',
+          // width: '100vw'
         }}>
           <Row justify='center' align='middle'>
             <Col span={8} offset={8}>
