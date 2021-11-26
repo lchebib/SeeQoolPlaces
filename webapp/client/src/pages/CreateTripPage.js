@@ -123,7 +123,7 @@ class CreateTripPage extends React.Component {
 
   onPersonalitiesChange(checkedValue) {
     this.setState({ selectedPersonalities: checkedValue });
-    console.log(this.state.tripDates)
+    // console.log(this.state.tripDates)
   }
 
   onTripNameChange(e) {
@@ -198,7 +198,7 @@ class CreateTripPage extends React.Component {
     //     this.setState({ selectedDest: selectedDest })
     //     this.setState({ defaultDest: [selectedDest[0].toLowerCase(), selectedDest[1]] })
     //   }
-    console.log(this.state.defaultDest[1].toLowerCase());
+    // console.log(this.state.defaultDest[1].toLowerCase());
 
   }
 

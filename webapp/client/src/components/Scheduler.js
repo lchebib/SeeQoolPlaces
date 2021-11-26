@@ -131,7 +131,7 @@ class Scheduler extends React.Component {
   }
 
   eventStyleGetter(event, start, end, isSelected) {
-    console.log(event);
+    // console.log(event);
     var backgroundColor;
     if (event.category === 'trails') {
       backgroundColor = '#9CDA86';
@@ -156,7 +156,7 @@ class Scheduler extends React.Component {
 
   addEvent(POI) {
 
-    console.log(POI)
+    // console.log(POI)
     var newEvents = [...this.state.events]
     var eid = 1
     if (this.state.events.length > 0) {
@@ -184,7 +184,7 @@ class Scheduler extends React.Component {
 
     newEvents.push(event)
     this.setState({ events: newEvents })
-    console.log(event)
+    // console.log(event)
   }
 
 

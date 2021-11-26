@@ -54,7 +54,6 @@ class Header extends React.Component {
   componentDidMount() {
     getLoggedInUser().then(res => {
       if (res.results) {
-        console.log(res.results)
         this.setState({ isLoggedIn: true })
         this.setState({ user: res.results })
       }

@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { getRandomCity } from '../fetcher'
 
-const { Content } = Layout;
+const { Content, Sider } = Layout;
 
 // const parseState = (state) => {
 //   if (state == 'BC') {
@@ -60,18 +60,20 @@ class HomePage extends React.Component {
 
     return (
       <Layout style={{
-        background: 'white'
+        background: 'white',
+        minWidth: '750px'
       }}>
         {/* <Affix> */}
         {/* <Sider
           style={{
-            // overflow: 'auto',
+            overflow: 'auto',
             // paddingTop: '15px',
             height: '100vh',
             position: 'fixed',
-            // left: 0,
-            // width: '200px',
+            left: 0,
+            width: '200px',
             border: '1px solid #000',
+            zIndex: 1
           }}> */}
         <SideBar />
         {/* </Sider> */}

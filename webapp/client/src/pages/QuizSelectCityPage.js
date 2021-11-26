@@ -31,8 +31,8 @@ const makeOptions = (arr) => {
   arr.forEach(obj => {
     let cityArr = Object.entries(obj);
     let cityObj = { value: cityArr[1][1], label: cityArr[1][1] };
-    console.log(cityObj['value']);
-    console.log(cityObj['label']);
+    // console.log(cityObj['value']);
+    // console.log(cityObj['label']);
     if (cityArr[0][1] === "CA") {
       result[0].children.push(cityObj);
     } else {

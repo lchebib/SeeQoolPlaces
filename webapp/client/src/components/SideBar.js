@@ -50,6 +50,7 @@ class SideBar extends React.Component {
             width: '200px',
             height: '100vh',
             // border: '1px solid #000',
+            zIndex: 1
           }}
         >
           <a href="/">
