@@ -160,6 +160,7 @@ class QuizPage2 extends React.Component {
 
 
   onResult() {
+    console.log("Pressed Last Quiz Button")
     this.state.quizResults = { city: false, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false }
     this.state.description = ""
     var numPersonalities = 0
