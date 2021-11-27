@@ -1,24 +1,23 @@
 const config = require('./config.json')
-const mysql = require('mysql');
-const e = require('express');
+const mysql = require('mysql')
+const e = require('express')
+const { all } = require('./server')
 
-// TODO: fill in your connection details here
 const connection = mysql.createConnection({
   host: config.rds_host,
   user: config.rds_user,
   password: config.rds_password,
   port: config.rds_port,
   database: config.rds_db
-});
-connection.connect();
+})
+connection.connect()
 
 // ********************************************
 //            SIMPLE TEST ROUTE EXAMPLE
 // ********************************************
 
 // Route 1 (handler)
-async function hello(req, res) {
-  // a GET request to /hello?name=Steve
+async function hello (req, res) {
   if (req.query.name) {
     res.send(`Hello, ${req.query.name}! Welcome to the SeeQoolPlaces server!`)
   } else {
@@ -30,51 +29,272 @@ async function hello(req, res) {
 //             Landing Page Routes
 // ********************************************
 
-
-
-
-
 // Route 2 (handler) - return a random city, and a photo of an attraction or hike
-async function random(req, res) {
+async function random (req, res) {
+  // top 24 'random' cities that we we select from database to show on landing page
+  // BC ideas from here: https://www.planetware.com/canada/best-cities-in-british-columbia-cdn-1-284.htm
+  // CA ideas from here: https://www.planetware.com/california/best-places-to-visit-in-california-us-ca-138.htm
+  const randomCities = [
+    ['Vancouver', 'BC'],
+    ['Victoria', 'BC'],
+    ['Kelowna', 'BC'],
+    ['Penticton', 'BC'],
+    ['Nanaimo', 'BC'],
+    ['Vernon', 'BC'],
+    ['San Francisco', 'CA'],
+    ['San Diego', 'CA'],
+    ['South Lake Tahoe', 'CA'],
+    ['Santa Cruz', 'CA'],
+    ['Los Angeles', 'CA'],
+    ['Yosemite Lake', 'CA']
+  ]
 
-  const randomCities = ['Vancouver', 'Victoria', 'Kelowna', 'Penticton', 'Nanaimo', 'Vernon', 'San Francisco', 'San Diego',
-    'Santa Cruz', 'Los Angeles', 'Yosemite Lakes', 'South Lake Tahoe'];
-  // returns a random number 0-11
-  const randomIndex = Math.floor(Math.random() * 12);
-  // random city to use for query 
-  const randomCityName = randomCities[randomIndex];
-  // const randomCityState = randomCities[randomIndex][1];
+  const randomIndex = Math.floor(Math.random() * 11)
+  const randomCityName = randomCities[randomIndex][0]
+  const randomCityState = randomCities[randomIndex][1]
 
-  connection.query(`SELECT state, city, photo
+  var myQuery = `
+        SELECT *
         FROM LandingPagePhoto
-        WHERE city = '${randomCityName}'`, function (error, results, fields) {
+        WHERE city = "${randomCityName}"
+          AND state = "${randomCityState}"
+  `
+
+  connection.query(myQuery, function (error, results, fields) {
     if (error) {
+      console.log('Error getting random city')
       console.log(error)
       res.json({ error: error })
     } else if (results) {
       res.json({ results: results })
     }
-  });
+  })
 }
 
 // Route 3 (handler) - Return names of existing user-made trips to be displayed in sidebar
 // TODO: Placeholder. Update query once Trips schema is confirmed.
-async function all_trips(req, res) {
+async function all_trips (req, res) {
   connection.query(
     `SELECT *
-  FROM Trips`
-    , function (error, results, fields) {
+    FROM Trips`,
+    function (error, results, fields) {
       if (error) {
         console.log(error)
         res.json({ error: error })
       } else if (results) {
         res.json({ results: results })
       }
-    });
+    }
+  )
 }
 
-// Route 4 (handler) - This posts a city to the database in a temporary table
-// TODO: Placeholder. Update query once Trips schema is confirmed.
+// Route 5 (handler) - Returns the list of all cities
+async function all_cities (req, res) {
+  var myQuery = `
+    SELECT DISTINCT state, city
+    FROM POI
+    ORDER BY city  
+  `
+
+  connection.query(myQuery, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      console.log('Got all cities')
+      res.json({ results: results })
+    }
+  })
+}
+
+// Route 4 (handler) - Returns top 3 cities based on desired city size and travel personalities
+function quizCities (req, res) {
+  createPersonalityViews()
+  var personalitiesQuery = createPersonalitiesQuery(
+    req.query.p0,
+    req.query.p1,
+    req.query.p2,
+    req.query.p3,
+    req.query.p4,
+    req.query.p5
+  )
+
+  var populationQuery = createPopulationQuery(req.query.population)
+
+  var myQuery = `
+    ${personalitiesQuery}
+    ${populationQuery}
+    SELECT DISTINCT POI.city AS city, POI.state AS state
+    FROM POI JOIN filteredCities ON (POI.city, POI.state) = (filteredCities.city, filteredCities.state)
+    JOIN personalityPID ON (POI.pid = personalityPID.pid)
+    WHERE POI.city IS NOT NULL AND POI.state IS NOT NULL
+    GROUP BY POI.city
+    ORDER BY COUNT(POI.pid) DESC
+    LIMIT 3
+    `
+  console.log(myQuery)
+
+  connection.query(myQuery, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      console.log('Got top 3 cities')
+      res.json({ results: results })
+    }
+  })
+}
+
+// Route 10 (handler) - Returns trip POIs based on city, state, and travel personalities
+async function trip_pois (req, res) {
+  const username = req.params.username ? req.params.username : 'admin'
+  const tripID = req.params.tid ? req.params.tid : 0
+  const tripTable = username + 'Trip' + tripID.toString()
+
+  const city = req.params.city ? req.params.city : 'Vancouver'
+  const state = req.params.state ? req.params.state : 'BC'
+
+  const p0 = req.query.p0 ? req.query.p0 : 'false'
+  const p1 = req.query.p1 ? req.query.p1 : 'false'
+  const p2 = req.query.p2 ? req.query.p2 : 'false'
+  const p3 = req.query.p3 ? req.query.p3 : 'false'
+  const p4 = req.query.p4 ? req.query.p4 : 'true'
+  const p5 = req.query.p5 ? req.query.p5 : 'false'
+
+  createPersonalityViews()
+  var personalitiesQuery = createPersonalitiesQuery(p0, p1, p2, p3, p4, p5)
+
+  var myQuery = `
+    ${personalitiesQuery}
+    SELECT *
+    FROM personalityPID NATURAL JOIN POI;
+    `
+  console.log(myQuery)
+
+  connection.query(myQuery, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      console.log('Got POIs based on city, state, and personalities')
+      res.json({ results: results })
+    }
+  })
+
+  // var myQuery = `
+  //   CREATE OR REPLACE VIEW ${tripTable} AS
+  //   ${personalitiesQuery}
+  //   SELECT '${username}' AS username, ${tripID} AS tid, POI.pid AS pid
+  //   FROM personalityPID JOIN POI ON personalityPID.pid = POI.pid
+  //   WHERE POI.city = '${city}' AND POI.state = '${state}';
+  //   `
+  // console.log(myQuery)
+
+  // connection.query(myQuery, function (error, results, fields) {
+  //   if (error) {
+  //     console.log(error)
+  //     res.json({ error: error })
+  //   } else if (results) {
+  //     console.log('Got POIs based on city, state, and personalities')
+  //   }
+  // })
+
+  // myQuery = `
+  //   SELECT *
+  //   FROM ${tripTable};
+  //   `
+  // console.log(myQuery)
+
+  // connection.query(myQuery, function (error, results, fields) {
+  //   if (error) {
+  //     console.log(error)
+  //     res.json({ error: error })
+  //   } else if (results) {
+  //     res.json({ results: results })
+  //   }
+  // })
+}
+
+// Route 6 (handler) - Returns the top city after quiz
+async function quiz_topcity (req, res) {
+  var myQuery = `
+  SELECT POI.city, POI.state, COUNT(*) as count
+  FROM selectedPOI NATURAL JOIN POI
+  WHERE selectedPOI.pid IS NOT NULL
+  GROUP BY POI.city, POI.state
+  ORDER BY count DESC
+  LIMIT 3;  
+  `
+
+  connection.query(myQuery, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      res.json({ results: results })
+    }
+  })
+}
+
+// Route 7 (handler) - Returns the attractions after quiz
+async function quiz_attraction (req, res) {
+  const name = req.params.state ? req.params.state : 'CA'
+  //
+  var myQuery = `
+  SELECT *
+  FROM selectedPOI NATURAL JOIN POI
+  WHERE POI.category = 'Attractions';  
+  `
+
+  connection.query(myQuery, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      res.json({ results: results })
+    }
+  })
+}
+
+// Route 8 (handler) - Returns the restaurants after quiz
+async function quiz_restaurant (req, res) {
+  const name = req.params.state ? req.params.state : 'CA'
+  //
+  var myQuery = `
+  SELECT *
+  FROM selectedPOI NATURAL JOIN POI
+  WHERE POI.category = 'Restaurants';  
+  `
+
+  connection.query(myQuery, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      res.json({ results: results })
+    }
+  })
+}
+
+// Route 9 (handler) - Returns the trails after quiz
+async function quiz_trail (req, res) {
+  const name = req.params.state ? req.params.state : 'CA'
+  //
+  var myQuery = `
+  SELECT *
+  FROM selectedPOI NATURAL JOIN POI
+  WHERE POI.category = 'Trails';  
+  `
+
+  connection.query(myQuery, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      res.json({ results: results })
+    }
+  })
+}
 
 // ********************************************
 //             Save Trip Route
@@ -84,325 +304,301 @@ async function all_trips(req, res) {
 //             Remove Trip Route
 // ********************************************
 
+// ********************************************
+//             Filter POIs
+// ********************************************
 
+async function createPersonalityViews () {
+  // Case 1: Cool Cat
+  var CoolCat = `
+    CREATE OR REPLACE VIEW CoolCat AS
+      WITH CoolCat_Attraction AS (
+      SELECT pid
+      FROM Attraction
+      WHERE tags REGEXP 'Art|Music'
+      ),
+      CoolCat_Restaurant AS (
+      SELECT pid
+      FROM Restaurant
+      WHERE subcategory REGEXP 'Brewery|Cafe|Quick Bites'
+      ),
+      CoolCat_Trail AS (
+      SELECT pid
+      FROM (SELECT pid FROM POI WHERE duration_high <= 3 AND Category = 'trails') A NATURAL JOIN Trail
+      WHERE Trail.difficulty <= 3
+      )
+      SELECT *
+      FROM CoolCat_Attraction 
+      UNION
+      SELECT *
+      FROM CoolCat_Restaurant 
+      UNION
+      SELECT *
+      FROM CoolCat_Trail    
+  `
+
+  connection.query(CoolCat, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      // console.log('Created view for Cool Cat')
+    }
+  })
+
+  // Case 2: Adventurer
+  var Adventurer = `
+    CREATE OR REPLACE VIEW Adventurer AS
+      WITH Adventurer_Attraction AS (
+      SELECT pid
+      FROM Attraction
+      WHERE tags REGEXP 'Sports'
+      ),
+      Adventurer_Restaurant AS (
+      SELECT pid
+      FROM Restaurant
+      WHERE costHigh <= 2
+      ),
+      Adventurer_Trail AS (
+      SELECT pid
+      FROM Trail
+      )
+      SELECT *
+      FROM Adventurer_Attraction 
+      UNION
+      SELECT *
+      FROM Adventurer_Restaurant 
+      UNION
+      SELECT *
+      FROM Adventurer_Trail    
+`
+
+  connection.query(Adventurer, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      // console.log('Created view for Adventurer')
+    }
+  })
+
+  // Case 3: Entertainer
+  var Entertainer = `
+    CREATE OR REPLACE VIEW Entertainer AS
+      WITH Entertainer_Attraction AS (
+      SELECT pid
+      FROM Attraction
+      WHERE tags REGEXP 'Clubs|Bars|Spa|Museums|Art|Opera'
+      ),
+      Entertainer_Restaurant AS (
+      SELECT pid
+      FROM Restaurant
+      WHERE costLow >= 3
+      ),
+      Entertainer_Trail AS (
+      SELECT pid
+      FROM (SELECT pid FROM POI WHERE duration_high <= 1 AND Category = 'trails') A NATURAL JOIN Trail
+      WHERE Trail.difficulty = 1
+      )
+      SELECT *
+      FROM Entertainer_Attraction 
+      UNION
+      SELECT *
+      FROM Entertainer_Restaurant 
+      UNION
+      SELECT *
+      FROM Entertainer_Trail  
+`
+
+  connection.query(Entertainer, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      // console.log('Created view for Entertainer')
+    }
+  })
+
+  // Case 4: Family
+  var Family = `
+    CREATE OR REPLACE VIEW Family AS
+      WITH Family_Attraction AS (
+      SELECT pid
+      FROM Attraction
+      WHERE tags REGEXP 'Theme Parks|Beaches|Children|Parks'
+      ),
+      Family_Restaurant AS (
+      SELECT pid
+      FROM Restaurant
+      WHERE costHigh <= 2
+      ),
+      Family_Trail AS (
+      SELECT pid
+      FROM (SELECT pid FROM POI WHERE duration_high <= 2 AND Category = 'trails') A NATURAL JOIN Trail
+      WHERE Trail.difficulty = 1
+      )
+      SELECT *
+      FROM Family_Attraction 
+      UNION
+      SELECT *
+      FROM Family_Restaurant 
+      UNION
+      SELECT *
+      FROM Family_Trail       
+`
+
+  connection.query(Family, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      // console.log('Created view for Family')
+    }
+  })
+
+  // Case 5: Enthusiast
+  var Enthusiast = `
+    CREATE OR REPLACE VIEW Enthusiast AS
+      WITH Enthusiast_Attraction AS (
+      SELECT pid
+      FROM POI
+      WHERE Category = 'attractions'
+      ORDER BY num_reviews DESC
+      LIMIT 48
+      ),
+      Enthusiast_Restaurant AS (
+      SELECT pid
+      FROM POI
+      WHERE Category = 'restaurants'
+      ORDER BY num_reviews DESC
+      LIMIT 48
+      ),
+      Enthusiast_Trail AS (
+      SELECT pid
+      FROM POI
+      WHERE Category = 'trails'
+      ORDER BY num_reviews DESC
+      LIMIT 48
+      )
+      SELECT *
+      FROM Enthusiast_Attraction 
+      UNION
+      SELECT *
+      FROM Enthusiast_Restaurant 
+      UNION
+      SELECT *
+      FROM Enthusiast_Trail  
+`
+
+  connection.query(Enthusiast, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      // console.log('Created view for Enthusiast')
+    }
+  })
+
+  // Case 6: Investigator
+  var Investigator = `
+    CREATE OR REPLACE VIEW Investigator AS
+      WITH Investigator_Attraction AS (
+      SELECT pid
+      FROM Attraction
+      WHERE tags REGEXP 'Museums|Landmarks|Historic|History|Science'
+      ),
+      Investigator_Restaurant AS (
+      SELECT pid
+      FROM Restaurant
+      WHERE subcategory REGEXP 'Brewery|Cafe'
+      ),
+      Investigator_Trail AS (
+      SELECT pid
+      FROM (SELECT pid FROM POI WHERE duration_high <= 5 AND Category = 'trails') A NATURAL JOIN Trail
+      WHERE Trail.difficulty <= 3
+      )
+      SELECT *
+      FROM Investigator_Attraction 
+      UNION
+      SELECT *
+      FROM Investigator_Restaurant 
+      UNION
+      SELECT *
+      FROM Investigator_Trail
+`
+
+  connection.query(Investigator, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      // console.log('Created view for Investigator')
+    }
+  })
+}
+
+function createPersonalitiesQuery (p0, p1, p2, p3, p4, p5) {
+  var personalities = new Array()
+  personalities[0] = new Array(p0, 'CoolCat')
+  personalities[1] = new Array(p1, 'Adventurer')
+  personalities[2] = new Array(p2, 'Entertainer')
+  personalities[3] = new Array(p3, 'Family')
+  personalities[4] = new Array(p4, 'Enthusiast')
+  personalities[5] = new Array(p5, 'Investigator')
+
+  var firstPersonality = true
+  var personalitiesQuery = 'WITH personalityPID AS ('
+
+  for (let p of personalities) {
+    if (p[0] === 'true') {
+      if (firstPersonality) {
+        personalitiesQuery += 'SELECT * FROM ' + p[1]
+        firstPersonality = false
+      } else {
+        personalitiesQuery += ' UNION ALL SELECT * FROM ' + p[1]
+      }
+    }
+  }
+  personalitiesQuery += ') '
+
+  return personalitiesQuery
+}
+
+function createPopulationQuery (population) {
+  // city size based on https://data.oecd.org/popregion/urban-population-by-city-size.htm
+  var citySize = new Array()
+  citySize[0] = new Array(0, '1') // any city
+  citySize[1] = new Array(1, '500000') // (large) metropolitan
+  citySize[2] = new Array(2, '200000') // mid-size urban area
+  citySize[3] = new Array(3, '500000') // small urban area
+
+  var populationQuery = ''
+
+  if (population > 1) {
+    ', filteredCities AS (SELECT city, state FROM City WHERE population >= ' +
+      citySize[population][1] +
+      ' AND population < ' +
+      citySize[population - 1][1] +
+      ') '
+  } else {
+    populationQuery +=
+      ', filteredCities AS (SELECT city, state FROM City WHERE population >= ' +
+      citySize[population][1] +
+      ') '
+  }
+
+  return populationQuery
+}
 
 module.exports = {
   hello,
   random,
-  all_trips
+  all_trips,
+  quizCities,
+  all_cities,
+  quiz_topcity,
+  quiz_attraction,
+  quiz_restaurant,
+  quiz_trail,
+  trip_pois
 }
-
-
-
-// ********************************************
-//             EXAMPLES FROM HW 
-// ********************************************
-
-// // Route 2 (handler)
-// async function jersey(req, res) {
-//   const colors = ['red', 'blue', 'white']
-//   const jersey_number = Math.floor(Math.random() * 20) + 1
-//   const name = req.query.name ? req.query.name : "player"
-
-//   if (req.params.choice === 'number') {
-//     // TODO: TASK 1: inspect for issues and correct 
-//     res.json({ message: `Hello, ${ name }!`, jersey_number: jersey_number })
-//   } else if (req.params.choice === 'color') {
-//     var lucky_color_index = Math.round(Math.random());
-//     // TODO: TASK 2: change this or any variables above to return only 'red' or 'blue' at random (go Quakers!)
-//     res.json({ message: `Hello, ${ name }!`, jersey_color: colors[lucky_color_index] })
-//   } else {
-//     // TODO: TASK 3: inspect for issues and correct
-//     res.json({ message: `Hello, ${ name }, we like your jersey!` })
-//   }
-// }
-
-// // ********************************************
-// //               GENERAL ROUTES
-// // ********************************************
-
-
-// // Route 3 (handler)
-// async function all_matches(req, res) {
-//   // TODO: TASK 4: implement and test, potentially writing your own (ungraded) tests
-//   // We have partially implemented this function for you to 
-//   // parse in the league encoding - this is how you would use the ternary operator to set a variable to a default value
-//   // we didn't specify this default value for league, and you could change it if you want! 
-//   // use this league encoding in your query to furnish the correct results
-//   const league = req.params.league ? req.params.league : 'D1'
-//   const pageNo = req.query.page ? parseInt(req.query.page) : 1;
-//   const limit = req.query.pagesize ? parseInt(req.query.pagesize) : 10;
-
-//   if (req.query.page && !isNaN(req.query.page)) {
-//     // This is the case where page is defined.
-//     // The SQL schema has the attribute OverallRating, but modify it to match spec! 
-//     // TODO: query and return results here:
-
-//     let offset = (limit * pageNo) - limit;
-//     connection.query(`SELECT MatchId, Date, Time, HomeTeam AS Home, AwayTeam AS Away, FullTimeGoalsH AS HomeGoals, FullTimeGoalsA AS AwayGoals
-//         FROM Matches
-//         WHERE Division = '${league}'
-//         ORDER BY HomeTeam, AwayTeam
-//         LIMIT ${limit} OFFSET ${offset}`, function (error, results, fields) {
-
-//       if (error) {
-//         console.log(error)
-//         res.json({ error: error })
-//       } else if (results) {
-//         res.json({ results: results })
-//       }
-//     });
-
-//   } else {
-//     // The SQL schema has the attribute OverallRating, but modify it to match spec! 
-//     // we have implemented this for you to see how to return results by querying the database
-//     connection.query(`SELECT MatchId, Date, Time, HomeTeam AS Home, AwayTeam AS Away, FullTimeGoalsH AS HomeGoals, FullTimeGoalsA AS AwayGoals  
-//         FROM Matches 
-//         WHERE Division = '${league}'
-//         ORDER BY HomeTeam, AwayTeam`, function (error, results, fields) {
-
-//       if (error) {
-//         console.log(error)
-//         res.json({ error: error })
-//       } else if (results) {
-//         res.json({ results: results })
-//       }
-//     });
-//   }
-// }
-
-// // Route 4 (handler)
-// async function all_players(req, res) {
-//   const pageNo = req.query.page ? parseInt(req.query.page) : 1;
-//   const limit = req.query.pagesize ? parseInt(req.query.pagesize) : 10;
-
-//   if (req.query.page && !isNaN(req.query.page)) {
-//     // This is the case where page is defined.
-//     // The SQL schema has the attribute OverallRating, but modify it to match spec! 
-//     // TODO: query and return results here:
-
-//     let offset = (limit * pageNo) - limit;
-//     connection.query(`SELECT PlayerId, Name, Nationality, OverallRating AS Rating, Potential, Club, Value 
-//         FROM Players 
-//         ORDER BY Name
-//         LIMIT ${limit} OFFSET ${offset}`, function (error, results, fields) {
-
-//       if (error) {
-//         console.log(error)
-//         res.json({ error: error })
-//       } else if (results) {
-//         res.json({ results: results })
-//       }
-//     });
-
-//   } else {
-//     // The SQL schema has the attribute OverallRating, but modify it to match spec! 
-//     // we have implemented this for you to see how to return results by querying the database
-//     connection.query(`SELECT PlayerId, Name, Nationality, OverallRating AS Rating, Potential, Club, Value 
-//         FROM Players 
-//         ORDER BY Name`, function (error, results, fields) {
-
-//       if (error) {
-//         console.log(error)
-//         res.json({ error: error })
-//       } else if (results) {
-//         res.json({ results: results })
-//       }
-//     });
-//   }
-// }
-
-
-
-// // ********************************************
-// //             MATCH-SPECIFIC ROUTES
-// // ********************************************
-
-// // Route 5 (handler)
-// async function match(req, res) {
-
-//   //const id = req.query.id ? parseInt(req.query.id) : 1;
-//   const id = parseInt(req.query.id);
-
-//   connection.query(`SELECT MatchId, Date, Time, HomeTeam as Home, AwayTeam as Away, FullTimeGoalsH as HomeGoals, 
-//     FullTimeGoalsA as AwayGoals, HalfTimeGoalsH as HTHomeGoals, HalfTimeGoalsA as HTAwayGoals, ShotsH as ShotsHome,
-//     ShotsA as ShotsAway, ShotsOnTargetH as ShotsOnTargetHome, ShotsOnTargetA as ShotsOnTargetAway, FoulsH as FoulsHome,
-//     FoulsA as FoulsAway, CornersH as CornersHome, CornersA as CornersAway, YellowCardsH as YCHome, YellowCardsA as YCAway,
-//     RedCardsH as RCHome, RedCardsA as RCAway
-//         FROM Matches
-//         WHERE MatchId = ${id}`, function (error, results, fields) {
-
-//     if (error) {
-//       console.log(error)
-//       res.json({ error: error })
-//     } else if (results) {
-//       res.json({ results: results })
-//     }
-//   });
-// }
-
-// // ********************************************
-// //            PLAYER-SPECIFIC ROUTES
-// // ********************************************
-
-// // Route 6 (handler)
-// async function player(req, res) {
-//   // player id
-//   const id = parseInt(req.query.id);
-//   const bestPosObject = connection.query(`SELECT BestPosition
-//   FROM Players 
-//   WHERE PlayerId = ${id}`, function (error, results, fields) {
-
-//     if (error) {
-//       console.log(error);
-//       res.json({ results: results })
-//     }
-//     //res.end(JSON.stringify(results));
-//     let bestPosition;
-//     try {
-//       bestPosition = results[0].BestPosition;
-//     }
-//     catch (err) {
-//       bestPosition = 0;
-//     }
-//     //console.log(bestPosition);
-
-//     if (bestPosition === 'GK') {
-//       connection.query(`SELECT PlayerId, Name, Age, Photo, Nationality, Flag, OverallRating as Rating, 
-//       Potential, Club, ClubLogo, Value, Wage, InternationalReputation, Skill, JerseyNumber, 
-//       ContractValidUntil, Height, Weight, BestPosition, BestOverallRating, ReleaseClause, 
-//       GKPenalties, GKDiving, GKHandling, GKKicking, GKPositioning, GKReflexes 
-//              FROM Players
-//              WHERE PlayerId = ${id}`, function (error, results, fields) {
-
-//         if (error) {
-//           console.log(error)
-//           res.json({ error: error })
-//         } else if (results) {
-//           res.json({ results: results })
-//         }
-//       });
-//     } else {
-//       connection.query(`SELECT PlayerId, Name, Age, Photo, Nationality, Flag, OverallRating as Rating, 
-//       Potential, Club, ClubLogo, Value, Wage, InternationalReputation, Skill, JerseyNumber, 
-//       ContractValidUntil, Height, Weight, BestPosition, BestOverallRating, ReleaseClause, 
-//       NPassing, NBallControl, NAdjustedAgility, NStamina, NStrength, NPositioning 
-//              FROM Players
-//              WHERE PlayerId = ${id}`, function (error, results, fields) {
-
-//         if (error) {
-//           console.log(error)
-//           res.json({ error: error })
-//         } else if (results) {
-//           res.json({ results: results })
-//         }
-//       });
-//     }
-
-//   });
-// }
-
-
-// // ********************************************
-// //             SEARCH ROUTES
-// // ********************************************
-
-// // Route 7 (handler)
-// async function search_matches(req, res) {
-//   // TODO: TASK 8: implement and test, potentially writing your own (ungraded) tests
-//   // IMPORTANT: in your SQL LIKE matching, use the %query% format to match the search query to substrings, not just the entire string
-//   const home = req.query.Home ? req.query.Home : '';
-//   const away = req.query.Away ? req.query.Away : '';
-//   const pageNo = req.query.page ? parseInt(req.query.page) : 1;
-//   const limit = req.query.pagesize ? parseInt(req.query.pagesize) : 10;
-
-//   if (req.query.page && !isNaN(req.query.page)) {
-//     // This is the case where page is defined.
-
-//     let offset = (limit * pageNo) - limit;
-//     connection.query(`SELECT  MatchId, Date, Time, HomeTeam as Home, AwayTeam as Away, FullTimeGoalsH AS HomeGoals, FullTimeGoalsH AS AwayGoals
-//         FROM Matches
-//         WHERE HomeTeam LIKE '%${home}%' and AwayTeam LIKE '%${away}%'
-//         ORDER BY HomeTeam, AwayTeam
-//         LIMIT ${limit} OFFSET ${offset}`, function (error, results, fields) {
-
-//       if (error) {
-//         console.log(error)
-//         res.json({ error: error })
-//       } else if (results) {
-//         res.json({ results: results })
-//       }
-//     });
-
-//   } else {
-
-//     connection.query(`SELECT  MatchId, Date, Time, HomeTeam as Home, AwayTeam as Away, FullTimeGoalsH AS HomeGoals, FullTimeGoalsH AS AwayGoals
-//     FROM Matches
-//     WHERE HomeTeam LIKE '%${home}%' and AwayTeam LIKE '%${away}%'
-//     ORDER BY HomeTeam, AwayTeam`, function (error, results, fields) {
-
-//       if (error) {
-//         console.log(error)
-//         res.json({ error: error })
-//       } else if (results) {
-//         res.json({ results: results })
-//       }
-//     });
-//   }
-// }
-
-// // Route 8 (handler)
-// async function search_players(req, res) {
-//   // TODO: TASK 9: implement and test, potentially writing your own (ungraded) tests
-//   // IMPORTANT: in your SQL LIKE matching, use the %query% format to match the search query to substrings, not just the entire string
-//   const name = req.query.Name ? req.query.Name : '';
-//   const nationality = req.query.Nationality ? req.query.Nationality : '';
-//   const club = req.query.Club ? req.query.Club : '';
-//   const ratingLow = req.query.RatingLow ? parseInt(req.query.RatingLow) : 0;
-//   const ratingHigh = req.query.RatingHigh ? parseInt(req.query.RatingHigh) : 100;
-//   const potentialLow = req.query.PotentialLow ? parseInt(req.query.PotentialLow) : 0;
-//   const potentialHigh = req.query.PotentialHigh ? parseInt(req.query.PotentialHigh) : 100;
-//   const pageNo = req.query.page ? parseInt(req.query.page) : 1;
-//   const limit = req.query.pagesize ? parseInt(req.query.pagesize) : 10;
-
-//   if (req.query.page && !isNaN(req.query.page)) {
-//     // This is the case where page is defined.
-
-//     let offset = (limit * pageNo) - limit;
-//     connection.query(`SELECT  PlayerId, Name, Nationality, OverallRating AS Rating, 
-//     Potential, Club, Value
-//         FROM Players
-//         WHERE (Name LIKE '%${name}%') and (Nationality LIKE '%${nationality}%') and (Club LIKE '%${club}%')
-//         and (OverallRating BETWEEN ${ratingLow} and ${ratingHigh}) and (Potential BETWEEN ${potentialLow}
-//         and ${potentialHigh})
-//         ORDER BY Name
-//         LIMIT ${limit} OFFSET ${offset}`, function (error, results, fields) {
-
-//       if (error) {
-//         console.log(error)
-//         res.json({ error: error })
-//       } else if (results) {
-//         res.json({ results: results })
-//       }
-//     });
-
-//   } else {
-
-//     connection.query(`SELECT  PlayerId, Name, Nationality, OverallRating AS Rating, 
-//     Potential, Club, Value
-//         FROM Players
-//         WHERE (Name LIKE '%${name}%') and (Nationality LIKE '%${nationality}%') and (Club LIKE '%${club}%')
-//         and (OverallRating BETWEEN ${ratingLow} and ${ratingHigh}) and (Potential BETWEEN ${potentialLow}
-//         and ${potentialHigh})
-//         ORDER BY Name`, function (error, results, fields) {
-
-//       if (error) {
-//         console.log(error)
-//         res.json({ error: error })
-//       } else if (results) {
-//         res.json({ results: results })
-//       }
-//     });
-//   }
-// }
-
