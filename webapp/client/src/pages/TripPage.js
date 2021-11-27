@@ -103,9 +103,8 @@ class TripPage extends React.Component {
       POIS: [],
       // tripName: "",
       events: [],
-      favorites: favorites,
-      events: [],
-      bigPOI: {}
+      favoritePOIS: {},
+      scheduledPOIS: [],
       // tripStartDate: null,
       // tripEndDate: null
       // newEvent: null
@@ -116,24 +115,15 @@ class TripPage extends React.Component {
     this.addFavorite = this.addFavorite.bind(this)
     this.removeFavorite = this.removeFavorite.bind(this)
     this.updateEvents = this.updateEvents.bind(this)
-    this.changeBigPOI = this.changeBigPOI.bind(this)
   }
 
   componentWillMount() {
     getAllTrips()
 
     getAllPOIs().then(res => {
-      this.setState({ POIS: res })
-      this.setState({ bigPOI: this.state.POIS.find(POI => POI.category === 'trails') })
+      // this.setState({ POIS: res })
+      this.setState({ POIS: res.results })
     })
-
-    // this.setState({ bigPOI: this.state.POIS.find(POI => POI.category === 'trails') })
-    this.setState({ bigPOI: this.state.POIS[0] })
-
-
-    // get favorites
-
-    // get events
 
     var tripID = window.location.href.split('=')[1]
 
@@ -143,13 +133,29 @@ class TripPage extends React.Component {
 
     var trip = JSON.parse(localStorage.getItem(tripID))
     this.setState({ trip: trip })
+    // this.setState({ tripID: tripID })
+    // this.setState({ tripName: trip.name })
 
+    // // this.setState({ trip: trip })
+
+    // // console.log(`tripID: ${trip.id}`)
+    // console.log(`tripName: ${trip.name}`)
+
+    // this.setState({ tripID: trip.id })
+    // console.log(`tripID: ${trip.id}`)
+    // console.log(`tripID: ${this.state.tripID}`)
+
+    // this.setState({ events: trip.events })
+    // this.setState({ favoritePOIS: trip.favoritePOIS })
+    // this.setState({ tripStartDate: trip.tripDates[0] })
+    // this.setState({ tripEndDate: trip.tripDates[1] })
+    // console.log(this.state.events)
   }
 
   updateEvents(events) {
     this.setState({ events: events })
-    // console.log(this.state.events)
-    // console.log(events)
+    console.log(this.state.events)
+    console.log(events)
   }
 
   addEvent(POI) {
@@ -180,40 +186,31 @@ class TripPage extends React.Component {
 
     // events.push(event)
     // this.setState({ events: events })
-    var events = [...this.state.events]
-    events.push(POI)
-    this.setState({ events: events })
+    var scheduledPOIS = [...this.state.scheduledPOIS]
+    scheduledPOIS.push(POI)
+    this.setState({ scheduledPOIS: scheduledPOIS })
     // this.setState({ newEvent: POI })
   }
 
-  removeEvent(POI) {
-    var events = [...this.state.events]
-    const index = events.indexOf(POI);
-    if (index > -1) {
-      events.splice(index, 1);
-    }
-    // delete events[eid]
+  removeEvent(eid) {
+    console.log(eid)
+    var events = this.state.events
+    delete events[eid]
     this.setState({ events: events })
   }
 
   addFavorite(POI) {
-    var favorites = [...this.state.favorites]
-    favorites.push(POI)
-    this.setState({ favorites: favorites })
+    console.log(POI)
+    var favoritePOIS = this.state.favoritePOIS
+    favoritePOIS[POI.id] = POI
+    this.setState({ favoritePOIS: favoritePOIS })
   }
 
-  removeFavorite(POI) {
-    var favorites = [...this.state.favorites]
-    const index = favorites.indexOf(POI);
-    if (index > -1) {
-      favorites.splice(index, 1);
-    }
-    // delete favorites[pid]
-    this.setState({ favorites: favorites })
-  }
-
-  changeBigPOI(POI) {
-    this.setState({ bigPOI: POI })
+  removeFavorite(pid) {
+    console.log(pid)
+    var favoritePOIS = this.state.favoritePOIS
+    delete favoritePOIS[pid]
+    this.setState({ favoritePOIS: favoritePOIS })
   }
 
 
@@ -222,16 +219,12 @@ class TripPage extends React.Component {
       return null
     }
 
-    if (!this.state.bigPOI) {
-      return null
-    }
-
     if (!this.state.trip) {
       return null
     }
 
     return (
-      <Layout style={{ minWidth: 1100 }}>
+      <Layout>
         <SideBar />
         <Layout className='layout' style={{ background: 'white', marginLeft: 200 }}>
           <Header />
@@ -246,39 +239,31 @@ class TripPage extends React.Component {
                 </Col >
               </Row>
               <Row justify='center'>
-                <Scheduler
-                  trip={this.state.trip}
-                  events={this.state.events}
-                  updateEvents={this.updateEvents} />
+                <Scheduler trip={this.state.trip} scheduledPOIS={this.state.scheduledPOIS} updateEvents={this.updateEvents} />
               </Row>
               <Row justify='center' >
-                <TabsCard
-                  trip={this.state.trip}
-                  favorites={this.state.favorites}
-                  POIS={this.state.POIS}
-                  bigPOI={this.state.bigPOI}
-                  onSchedule={this.addEvent}
-                  onAddFavorite={this.addFavorite}
-                  onRemoveFavorite={this.removeFavorite}
-                  onClickPOI={this.changeBigPOI}
-                />
+                <TabsCard trip={this.state.trip} POIS={this.state.POIS} onSchedule={this.addEvent} onFavorite={this.addFavorite} onRemoveFavorite={this.removeFavorite} />
+                {/* <TabsCard tripID={this.state.tripID} POIS={this.state.POIS} /> */}
+                {/* <TabsCard trip={this.state.trip} onSchedule={this.addEvent} onAddFavorite={this.addFavorite} onRemoveFavorite={this.removeFavorite} /> */}
               </Row>
             </Content>
-            <Sider style={{ background: 'white', border: '1px solid #F0F0F0' }}>
-              <FilterBar
-                favorites={this.state.favorites}
-                onClick={this.changeBigPOI}
-              />
+            <Sider
+              style={{
+                background: 'white',
+                height: '100vh',
+                width: '200px',
+                border: '1px solid #000',
+              }}>
+              <FilterBar favorites={favorites} />
             </Sider>
           </Layout>
           <Footer />
+          {/* <Sider>right sidebar</Sider> */}
+
         </Layout>
+        {/* <Footer /> */}
       </Layout >
     );
   }
 }
 export default TripPage
-
-
-
-
