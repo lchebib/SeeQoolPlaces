@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   Layout,
   Row,
@@ -8,34 +8,29 @@ import {
   Button,
   Cascader,
   Checkbox,
-  DatePicker,
-} from 'antd';
-import {
-  LeftSquareOutlined
-} from '@ant-design/icons';
-import SideBar from '../components/SideBar';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import { getAllCities } from '../fetcher';
+  DatePicker
+} from 'antd'
+import { LeftSquareOutlined } from '@ant-design/icons'
+import SideBar from '../components/SideBar'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+import { getAllCities } from '../fetcher'
 // import { postCreateTrip } from '../fetcher'
 // import moment from "moment";
 
-
-const { Content } = Layout;
-const { RangePicker } = DatePicker;
-
+const { Content } = Layout
+const { RangePicker } = DatePicker
 
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 8 },
+    sm: { span: 8 }
   },
   wrapperCol: {
     xs: { span: 24 },
-    sm: { span: 24 },
-  },
-};
-
+    sm: { span: 24 }
+  }
+}
 
 // const personalities = [
 //   { label: 'coolCat', value: 'coolCat' },
@@ -46,8 +41,8 @@ const formItemLayout = {
 //   { label: 'investigator', value: 'Investigator' },
 // ];
 
-
-const personalityTooltip = "Let us get to know you so we can recommend some activities you're guaranteed to enjoy. Take the Trip Quiz to find out your travel personality!"
+const personalityTooltip =
+  "Let us get to know you so we can recommend some activities you're guaranteed to enjoy. Take the Trip Quiz to find out your travel personality!"
 
 // const descriptions =
 // {
@@ -59,39 +54,73 @@ const personalityTooltip = "Let us get to know you so we can recommend some acti
 //   investigator: "You get to know a city by the stories of it's past. You're just happy when you're learning. "
 // }
 
+// const makeOptions = (arr) => {
+// let result = [
+//   {
+//     value: 'california',
+//     label: 'California',
+//     children: []
+//   },
+//   {
+//     value: 'british columbia',
+//     label: 'British Columbia',
+//     children: []
+//   }];
 
-const makeOptions = (arr) => {
+// for (let i = 0; i < arr.results.length; i++) {
+//   let cityArr = Object.values(arr.results[i]);
+//   if (cityArr[1] !== null) {
+//     let cityObj = { value: cityArr[1].toLowerCase(), label: cityArr[1] };
+//     if (cityArr[0] === "CA") {
+//       result[0].children.push(cityObj);
+//     } else {
+//       result[1].children.push(cityObj);
+//     }
+//   }
+// }
+// return result;
+
+const makeOptions = res => {
+  var arr = res.results
+
   if (!Array.isArray(arr)) {
-    return [];
+    return []
   }
   let result = [
     {
       value: 'california',
       label: 'California',
+      code: 'CA',
       children: []
     },
     {
       value: 'british columbia',
       label: 'British Columbia',
+      code: 'CA',
       children: []
-    }];
-  arr.forEach(obj => {
-    let cityArr = Object.entries(obj);
-    let cityObj = { value: cityArr[1][1].toLowerCase(), label: cityArr[1][1] };
-    if (cityArr[0][1] === "CA") {
-      result[0].children.push(cityObj);
-    } else {
-      result[1].children.push(cityObj);
     }
-  });
-  return result;
+  ]
+  arr.forEach(obj => {
+    let cityArr = Object.entries(obj)
+    let cityObj = { value: cityArr[1][1], label: cityArr[1][1] }
+    console.log(cityObj['value'])
+    console.log(cityObj['label'])
+    if (cityArr[0][1] === 'CA') {
+      result[0].children.push(cityObj)
+    } else {
+      result[1].children.push(cityObj)
+    }
+  })
+  return result
 }
 
-function filter(inputValue, path) {
-  return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
+function filter (inputValue, path) {
+  return path.some(
+    option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+  )
 }
 class CreateTripPage extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -99,11 +128,17 @@ class CreateTripPage extends React.Component {
       options: [],
       selectedDest: [],
       // defaultDest: [JSON.parse(localStorage.getItem('selectedDest'))[0], JSON.parse(localStorage.getItem('selectedDest')[0]).toLowerCase()],
-      defaultDest: localStorage.getItem('selectedDest') ? JSON.parse((localStorage.getItem('selectedDest')).toLowerCase()) : [],
-      selectedPersonalities: localStorage.getItem('selectedPersonalities') ? JSON.parse((localStorage.getItem('selectedPersonalities')).toLowerCase()) : {},
+      defaultDest: localStorage.getItem('selectedDest')
+        ? JSON.parse(localStorage.getItem('selectedDest').toLowerCase())
+        : [],
+      selectedPersonalities: localStorage.getItem('selectedPersonalities')
+        ? JSON.parse(
+            localStorage.getItem('selectedPersonalities').toLowerCase()
+          )
+        : {},
       defaultPersonalities: [],
-      tripName: "",
-      tripNameValidateStatus: { validateStatus: "", errorMsg: "" },
+      tripName: '',
+      tripNameValidateStatus: { validateStatus: '', errorMsg: '' },
       tripID: 0,
       tripDates: []
     }
@@ -114,20 +149,18 @@ class CreateTripPage extends React.Component {
     this.onPersonalitiesChange = this.onPersonalitiesChange.bind(this)
     this.onDestChange = this.onDestChange.bind(this)
     this.onTripNameChange = this.onTripNameChange.bind(this)
-
   }
 
-  onDestChange(value) {
-    this.setState({ selectedDest: value });
+  onDestChange (value) {
+    this.setState({ selectedDest: value })
   }
 
-  onPersonalitiesChange(checkedValue) {
-    this.setState({ selectedPersonalities: checkedValue });
-    // console.log(this.state.tripDates)
+  onPersonalitiesChange (checkedValue) {
+    this.setState({ selectedPersonalities: checkedValue })
+    console.log(this.state.tripDates)
   }
 
-  onTripNameChange(e) {
-
+  onTripNameChange (e) {
     // var storedTrips = localStorage.getItem("trips")
     // console.log(typeof storedTrips)
     // if (typeof storedTrips === "string") {
@@ -153,9 +186,8 @@ class CreateTripPage extends React.Component {
     this.state.tripName = name
   }
 
-
-  createTrip() {
-    var tripID = Math.floor((Math.random() * 1000) + 1);
+  createTrip () {
+    var tripID = Math.floor(Math.random() * 1000 + 1)
     this.state.tripID = tripID
 
     var tripDetails = {
@@ -163,24 +195,26 @@ class CreateTripPage extends React.Component {
       name: this.state.tripName,
       destination: this.state.selectedDest,
       personalities: this.state.selectedPersonalities,
-      dates: this.state.tripDates,
+      dates: this.state.tripDates
     }
     // postCreateTrip(tripDetails)
     localStorage.setItem(tripID, JSON.stringify(tripDetails))
     this.clickNextPage()
   }
 
-  clickNextPage() {
-    window.location = `/trip?id=${this.state.tripID}`;
+  clickNextPage () {
+    window.location = `/trip?id=${this.state.tripID}`
   }
 
-  componentDidMount() {
+  componentDidMount () {
     getAllCities().then(res => {
       this.setState({ options: makeOptions(res) })
     })
 
     if (localStorage.getItem('selectedPersonalities')) {
-      var selectedPers = JSON.parse(localStorage.getItem('selectedPersonalities'))
+      var selectedPers = JSON.parse(
+        localStorage.getItem('selectedPersonalities')
+      )
       this.setState({ selectedPersonalities: selectedPers })
       var persArray = []
 
@@ -199,30 +233,50 @@ class CreateTripPage extends React.Component {
     //     this.setState({ defaultDest: [selectedDest[0].toLowerCase(), selectedDest[1]] })
     //   }
     // console.log(this.state.defaultDest[1].toLowerCase());
-
+    console.log(this.state.defaultDest[1])
   }
 
   onCheckConfirmDetails = e => {
     this.setState({
-      buttonStatus: e.target.checked,
-    });
+      buttonStatus: e.target.checked
+    })
   }
 
-
-  render() {
-
+  render () {
     const enableButton = () => {
       if (this.state.buttonStatus === true) {
-        return <Button type='primary' htmlType="submit" shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white' }}>Create Trip</Button>
+        return (
+          <Button
+            type='primary'
+            htmlType='submit'
+            shape='round'
+            size='large'
+            style={{ border: 'none', background: 'black', color: 'white' }}
+          >
+            Create Trip
+          </Button>
+        )
       }
-      return <Button disabled type='primary' shape='round' size='large' style={{ border: 'none', }}>Create Trip</Button>
+      return (
+        <Button
+          disabled
+          type='primary'
+          shape='round'
+          size='large'
+          style={{ border: 'none' }}
+        >
+          Create Trip
+        </Button>
+      )
     }
-
 
     return (
       <Layout>
         <SideBar />
-        <Layout className='layout' style={{ background: 'white', marginLeft: 200 }}>
+        <Layout
+          className='layout'
+          style={{ background: 'white', marginLeft: 200 }}
+        >
           <Header />
           <Content style={{ margin: '24px 24px 0', overflow: 'initial' }}>
             <Row justify='center'>
@@ -230,7 +284,9 @@ class CreateTripPage extends React.Component {
                 <div style={{ fontFamily: 'Work Sans', textAlign: 'center' }}>
                   <div style={{ fontSize: '4vw' }}>Create trip.</div>
                   <br />
-                  <div style={{ fontSize: '2vw' }}>Enter in details below to describe your trip.</div>
+                  <div style={{ fontSize: '2vw' }}>
+                    Enter in details below to describe your trip.
+                  </div>
                 </div>
                 <div style={{ marginTop: '50px' }}>
                   <Form
@@ -242,96 +298,126 @@ class CreateTripPage extends React.Component {
                     }}
                   >
                     <Form.Item
-                      name="name"
-                      label="Trip Name"
-                      validateStatus={this.state.tripNameValidateStatus.errorMsg}
+                      name='name'
+                      label='Trip Name'
+                      validateStatus={
+                        this.state.tripNameValidateStatus.errorMsg
+                      }
                       rules={[
                         {
                           required: true,
-                          message: 'Please enter a trip name!',
-                        },
+                          message: 'Please enter a trip name!'
+                        }
                       ]}
                     >
                       <Input onChange={this.onTripNameChange} />
                     </Form.Item>
                     <Form.Item
-                      name="destination"
-                      label="Destination"
+                      name='destination'
+                      label='Destination'
                       rules={[
-                        { type: 'array', required: true, message: 'Please select your destination!' },
+                        {
+                          type: 'array',
+                          required: true,
+                          message: 'Please select your destination!'
+                        }
                       ]}
                     >
-                      <Cascader options={this.state.options} onChange={this.onDestChange} showSearch={{ filter }} placeholder="Select City" />
+                      <Cascader
+                        options={this.state.options}
+                        onChange={this.onDestChange}
+                        showSearch={{ filter }}
+                        placeholder='Select City'
+                      />
                     </Form.Item>
 
                     <Form.Item
-                      name="dates"
-                      label="Trip Dates"
+                      name='dates'
+                      label='Trip Dates'
                       rules={[
-                        { required: true, message: 'Please select your trip dates!' },
+                        {
+                          required: true,
+                          message: 'Please select your trip dates!'
+                        }
                       ]}
                     >
-                      <RangePicker onChange={value => this.setState({ tripDates: value })} />
+                      <RangePicker
+                        onChange={value => this.setState({ tripDates: value })}
+                      />
                     </Form.Item>
 
                     <Form.Item
-                      name="personalities"
-                      label="Travel Personality"
+                      name='personalities'
+                      label='Travel Personality'
                       tooltip={personalityTooltip}
                     >
-
                       <Checkbox.Group
                         style={{ width: '100%' }}
                         onChange={this.onPersonalitiesChange}
                       >
                         <Row>
                           <Col span={8}>
-                            <Checkbox value="coolCat">Cool Cat</Checkbox>
+                            <Checkbox value='coolCat'>Cool Cat</Checkbox>
                           </Col>
                           <Col span={8}>
-                            <Checkbox value="entertainer">Entertainer</Checkbox>
+                            <Checkbox value='entertainer'>Entertainer</Checkbox>
                           </Col>
                           <Col span={8}>
-                            <Checkbox value="enthusiast">Enthusiast</Checkbox>
+                            <Checkbox value='enthusiast'>Enthusiast</Checkbox>
                           </Col>
                         </Row>
                         <Row>
                           <Col span={8}>
-                            <Checkbox value="adventurer">Adventurer</Checkbox>
+                            <Checkbox value='adventurer'>Adventurer</Checkbox>
                           </Col>
                           <Col span={8}>
-                            <Checkbox value="family">Family</Checkbox>
+                            <Checkbox value='family'>Family</Checkbox>
                           </Col>
                           <Col span={8}>
-                            <Checkbox value="investigator">Investigator</Checkbox>
+                            <Checkbox value='investigator'>
+                              Investigator
+                            </Checkbox>
                           </Col>
                         </Row>
                       </Checkbox.Group>
                     </Form.Item>
-                    <Row justify="space-around" align="middle" style={{ textAlign: 'center' }}>
+                    <Row
+                      justify='space-around'
+                      align='middle'
+                      style={{ textAlign: 'center' }}
+                    >
                       <Col>
                         <Form.Item
-                          name="confirm"
-                          valuePropName="checked"
+                          name='confirm'
+                          valuePropName='checked'
                           rules={[
                             {
                               validator: (_, value) =>
-                                value ? Promise.resolve() : Promise.reject(new Error('Check me to confirm your trip details!')),
-                            },
+                                value
+                                  ? Promise.resolve()
+                                  : Promise.reject(
+                                      new Error(
+                                        'Check me to confirm your trip details!'
+                                      )
+                                    )
+                            }
                           ]}
                         >
-                          <Checkbox onChange={this.onCheckConfirmDetails} >
+                          <Checkbox onChange={this.onCheckConfirmDetails}>
                             I love these details! Save this trip under My Trips.
                           </Checkbox>
                         </Form.Item>
 
-                        <Form.Item
-                        >
-                          {enableButton()}
-                        </Form.Item>
-                        <Form.Item
-                        >
-                          <a href="./quiz" style={{ color: "black", marginTop: '50 px', marginBottom: '50 px' }}>
+                        <Form.Item>{enableButton()}</Form.Item>
+                        <Form.Item>
+                          <a
+                            href='./quiz'
+                            style={{
+                              color: 'black',
+                              marginTop: '50 px',
+                              marginBottom: '50 px'
+                            }}
+                          >
                             <LeftSquareOutlined /> Go Back
                           </a>
                         </Form.Item>
@@ -344,9 +430,8 @@ class CreateTripPage extends React.Component {
           </Content>
           <Footer />
         </Layout>
-      </Layout >
-    );
+      </Layout>
+    )
   }
 }
 export default CreateTripPage
-
