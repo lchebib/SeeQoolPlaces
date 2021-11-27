@@ -2,16 +2,14 @@ const express = require('express');
 const mysql = require('mysql');
 
 
-const routes = require('./routes');
-const config = require('./config.json');
+const routes = require('./routes')
+const config = require('./config.json')
 const cors = require('cors');
-
-// const app = express();
 
 const app = express();
 app.use(cors({
-  origin: '*'
-}));
+     origin: '*'
+ }));
 
 // Route 1 - register as GET 
 app.get('/hello', routes.hello)
@@ -22,31 +20,34 @@ app.get('/random_city', routes.random)
 // Route 3 - register as GET 
 app.get('/trips', routes.all_trips)
 
+// Route 5 - register as GET 
+// query 2
+app.get('/cities/', routes.all_cities)
+// app.get('/cities/:state', routes.all_cities)
 
-// EXAMPLES FROM HW
-// // Route 2 - register as GET 
-// app.get('/jersey/:choice', routes.jersey)
+// Route 4 - register as GET 
+app.get('/quizCities', routes.quizCities)
+// query 9
+// /quiz?city=string, state=string, population=int&p0=boolean&p1=boolean&p2=boolean&p3=boolean&p4=boolean&p5=boolean
 
-// // Route 3 - register as GET 
-// app.get('/matches/:league', routes.all_matches)
+// Route 10 - register as GET
+app.get('/trip_pois/', routes.trip_pois)
 
-// // Route 4 - register as GET 
-// app.get('/players', routes.all_players)
+// Route 6 - register as GET 
+// post quiz: query 10
+app.get('/quiz/topcity', routes.quiz_topcity)
 
-// // Route 5 - register as GET 
-// app.get('/match', routes.match)
+// Route 7 - register as GET 
+// post quiz: query 11
+app.get('/quiz/attraction', routes.quiz_attraction)
 
-// // Route 6 - register as GET 
-// app.get('/player', routes.player)
+// Route 8 - register as GET 
+// post quiz: query 12
+app.get('/quiz/restaurant', routes.quiz_restaurant)
 
-// // Route 7 - register as GET 
-// app.get('/search/matches', routes.search_matches)
-
-// // Route 8 - register as GET 
-// app.get('/search/players', routes.search_players)
-
-
-
+// Route 9 - register as GET 
+// post quiz: query 13
+app.get('/quiz/trail', routes.quiz_trail)
 
 
 app.listen(config.server_port, () => {
