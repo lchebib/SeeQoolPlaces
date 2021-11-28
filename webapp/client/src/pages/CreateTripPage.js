@@ -91,7 +91,7 @@ const makeOptions = (arr) => {
       children: []
     },
     {
-      value: 'british Columbia',
+      value: 'British Columbia',
       label: 'British Columbia',
       children: []
     }];
@@ -184,7 +184,7 @@ class CreateTripPage extends React.Component {
     var tripID = Math.floor((Math.random() * 1000) + 1);
     this.state.tripID = tripID
 
-    var tripDetails = { tripID: this.state.tripID, name: this.state.tripName, selectedDest: this.state.selectedDest, selectedPersonalities: this.state.selectedPersonalities, tripDates: this.state.trip }
+    var tripDetails = { tripID: this.state.tripID, name: this.state.tripName, selectedDest: this.state.selectedDest, selectedPersonalities: this.state.selectedPersonalities, tripDates: this.state.tripDates }
     console.log(tripDetails)
     // postCreateTrip(tripDetails)
 
