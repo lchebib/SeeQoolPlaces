@@ -15,7 +15,7 @@ app.use(cors({
 app.get('/hello', routes.hello)
 
 // Route 2 - register as GET 
-app.get('/random_city', routes.random)
+app.get('/random_city', routes.random_city)
 
 // Route 3 - register as GET 
 app.get('/trips', routes.all_trips)
@@ -33,21 +33,21 @@ app.get('/quizCities', routes.quizCities)
 // Route 10 - register as GET
 app.get('/trip_pois/', routes.trip_pois)
 
-// Route 6 - register as GET 
-// post quiz: query 10
-app.get('/quiz/topcity', routes.quiz_topcity)
-
 // Route 7 - register as GET 
 // post quiz: query 11
-app.get('/quiz/attraction', routes.quiz_attraction)
+app.get('/trip/attractions', routes.trip_attractions)
 
 // Route 8 - register as GET 
 // post quiz: query 12
-app.get('/quiz/restaurant', routes.quiz_restaurant)
+app.get('/trip/restaurants', routes.trip_restaurants)
 
 // Route 9 - register as GET 
 // post quiz: query 13
-app.get('/quiz/trail', routes.quiz_trail)
+app.get('/trip/trails', routes.trip_trails)
+
+// Route 6 - register as GET 
+// post quiz: query 10
+app.get('/quiz/topcity', routes.quiz_topcity)
 
 
 app.listen(config.server_port, () => {

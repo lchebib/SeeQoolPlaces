@@ -30,7 +30,7 @@ async function hello (req, res) {
 // ********************************************
 
 // Route 2 (handler) - return a random city, and a photo of an attraction or hike
-async function random (req, res) {
+async function random_city (req, res) {
   // top 24 'random' cities that we we select from database to show on landing page
   // BC ideas from here: https://www.planetware.com/canada/best-cities-in-british-columbia-cdn-1-284.htm
   // CA ideas from here: https://www.planetware.com/california/best-places-to-visit-in-california-us-ca-138.htm
@@ -592,13 +592,13 @@ function createPopulationQuery (population) {
 
 module.exports = {
   hello,
-  random,
+  random_city,
   all_trips,
   quizCities,
   all_cities,
-  quiz_topcity,
-  quiz_attraction,
-  quiz_restaurant,
-  quiz_trail,
-  trip_pois
+  trip_pois,
+  trip_attraction,
+  trip_restaurant,
+  trip_trail,
+  quiz_topcity
 }
