@@ -35,21 +35,21 @@ const { Content } = Layout
 //   }
 //   return result;
 
-const makeOptions = (res) => {
-  var arr = res.results
+const makeOptions = (arr) => {
+  var arr = arr.results;
 
   if (!Array.isArray(arr)) {
     return []
   }
   let result = [
     {
-      value: 'california',
+      value: 'California',
       label: 'California',
       code: 'CA',
       children: []
     },
     {
-      value: 'british columbia',
+      value: 'British Columbia',
       label: 'British Columbia',
       code: 'CA',
       children: []
@@ -69,15 +69,15 @@ const makeOptions = (res) => {
   return result
 }
 
-function filter (inputValue, path) {
-  return path.some(
-    option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
-  )
-}
+// function filter(inputValue, path) {
+//   return path.some(
+//     option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+//   )
+// }
 
 // how do we write a function that maps our cities and states into the options variable?
 class QuizSelectCityPage extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -88,26 +88,30 @@ class QuizSelectCityPage extends React.Component {
     this.onChange = this.onChange.bind(this)
     this.onClickNextPage = this.onClickNextPage.bind(this)
   }
-  onClickNextPage () {
+  onClickNextPage() {
     localStorage.setItem(
       'selectedDest',
       JSON.stringify(this.state.selectedDest)
     )
     window.location = '/quiz2'
   }
-  onChange (value) {
+  onChange(value) {
     this.setState({ buttonStatus: true })
     this.setState({ selectedDest: value })
     console.log(value)
   }
 
-  componentDidMount () {
+  componentDidMount() {
     getAllCities().then(res => {
       this.setState({ options: makeOptions(res) })
+      console.log(res);
     })
   }
 
-  render () {
+  render() {
+    if (this.state.options.length === 0) {
+      return null
+    }
     const enableButton = () => {
       if (this.state.buttonStatus === true) {
         return (
@@ -179,7 +183,7 @@ class QuizSelectCityPage extends React.Component {
                   <Cascader
                     options={this.state.options}
                     onChange={this.onChange}
-                    showSearch={{ filter }}
+                    // showSearch={{ filter }}
                     placeholder='Select City'
                     style={{ width: '60%' }}
                   />
