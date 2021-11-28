@@ -34,6 +34,8 @@ async function add_user (req, res) {
   var username = req.query.username
   var password = req.query.password
 
+  // TODO: check if username exists first
+  
   var myQuery = `
     INSERT INTO accounts (username, password)
     VALUES ('${username}', '${password}')
