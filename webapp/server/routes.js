@@ -597,8 +597,8 @@ module.exports = {
   quizCities,
   all_cities,
   trip_pois,
-  trip_attraction,
-  trip_restaurant,
-  trip_trail,
+  trip_attractions,
+  trip_restaurants,
+  trip_trails,
   quiz_topcity
 }
