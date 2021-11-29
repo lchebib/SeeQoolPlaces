@@ -204,7 +204,7 @@ function all_trips (req, res) {
   var username = req.query.username
 
   var myQuery = `
-    SELECT *
+    SELECT tripID, tripName, city, state
     FROM userTrips NATURAL JOIN tripProfile
   `
   console.log(myQuery)
@@ -523,10 +523,7 @@ function trip_trails (req, res) {
   })
 }
 
-// ********************************************
-//             Remove Trip Route
-// ********************************************
-
+// Route 9 (handler) - Deletes trip given tripID
 function delete_trip (req, res) {
   const tripID = req.query.tripID ? req.query.tripID : '0'
 
@@ -542,7 +539,7 @@ function delete_trip (req, res) {
       res.json({ error: error })
     } else if (results) {
       console.log('Deleted Trip ID ' + tripID.toString())
-      res.json({ results: results })
+      res.json({ results: true })
     }
   })
 }
