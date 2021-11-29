@@ -18,7 +18,10 @@ app.get('/hello', routes.hello)
 app.get('/add_user', routes.add_user)
 
 // Route 2 - register as GET 
-app.get('/logout', routes.logout_user)
+app.get('/login', routes.login)
+
+// Route 2 - register as GET 
+app.get('/logout', routes.logout)
 
 // Route 2 - register as GET 
 app.get('/random_city', routes.random_city)

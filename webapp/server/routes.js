@@ -29,33 +29,72 @@ async function hello (req, res) {
 //             User Account Routes
 // ********************************************
 
-// Route 3 (handler) - Add new username and password
+// Route 1 (handler) - Add new username and password
 async function add_user (req, res) {
   var username = req.query.username
   var password = req.query.password
 
-  // TODO: check if username exists first
-  
   var myQuery = `
-    INSERT INTO accounts (username, password)
-    VALUES ('${username}', '${password}')
-  `
+    SELECT *
+    FROM accounts
+    WHERE username = '${username}';
+`
   console.log(myQuery)
-  
+
   connection.query(myQuery, function (error, results, fields) {
     if (error) {
       console.log(error)
       res.json({ error: error })
     } else if (results) {
-      console.log('Added user ' + username.toString())
-      // TODO: return true if successful
-      // res.json({ results: results })
+      if (results.length > 0) {
+        console.log('User already exists')
+        res.json({ results: false })
+      } else {
+        var myQuery = `
+          INSERT INTO accounts (username, password)
+          VALUES ('${username}', '${password}')
+      `
+        console.log(myQuery)
+
+        connection.query(myQuery, function (error, results, fields) {
+          if (error) {
+            console.log(error)
+            res.json({ error: error })
+          } else if (results) {
+            console.log('Added user ' + username.toString())
+            res.json({ results: true })
+          }
+        })
+      }
+    }
+  })
+}
+
+// Route 2 (handler) - Log in user
+async function login (req, res) {
+  var username = req.query.username
+  var clientIP = req.socket.remoteAddress
+
+  var myQuery = `
+    INSERT INTO loggedIn (username, clientIP)
+    VALUES ('${username}', '${clientIP}'); 
+  `
+  console.log(myQuery)
+
+  connection.query(myQuery, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      // TODO: Check the contents of results given INSERT INTO query
+      console.log('Logged in user ' + username.toString())
+      res.json({ results: true })
     }
   })
 }
 
 // Route 3 (handler) - Log out user
-async function logout_user (req, res) {
+async function logout (req, res) {
   var username = req.query.username
   var clientIP = req.socket.remoteAddress
 
@@ -64,15 +103,15 @@ async function logout_user (req, res) {
     WHERE username = '${username}' AND clientIP = '${clientIP}'; 
   `
   console.log(myQuery)
-  
+
   connection.query(myQuery, function (error, results, fields) {
     if (error) {
       console.log(error)
       res.json({ error: error })
     } else if (results) {
-      console.log('Added user ' + username.toString())
-      // TODO: return true if successful
-      // res.json({ results: results })
+      // TODO: Check the contents of results given DELETE FROM query
+      console.log('Logged out user ' + username.toString())
+      res.json({ results: true })
     }
   })
 }
@@ -132,7 +171,7 @@ async function all_trips (req, res) {
     FROM userTrips NATURAL JOIN tripProfile
   `
   console.log(myQuery)
-  
+
   connection.query(myQuery, function (error, results, fields) {
     if (error) {
       console.log(error)
@@ -156,7 +195,7 @@ async function all_cities (req, res) {
     ORDER BY city  
   `
   console.log(myQuery)
-  
+
   connection.query(myQuery, function (error, results, fields) {
     if (error) {
       console.log(error)
@@ -207,7 +246,7 @@ function quizCities (req, res) {
 }
 
 // ********************************************
-//             Save Trip Routes
+//             Trip Routes
 // ********************************************
 
 // Route 4 (handler) - Filters POIs based on city, state, and personalities. Returns unique tripID.
@@ -217,12 +256,12 @@ function new_trip (req, res) {
   var tripName = req.query.tripName
   var city = req.query.city
   var state = req.query.state
-  var CoolCat = req.query.p0 === 'true'
-  var Adventurer = req.query.p1 === 'true'
-  var Entertainer = req.query.p2 === 'true'
-  var Family = req.query.p3 === 'true'
-  var Enthusiast = req.query.p4 === 'true'
-  var Investigator = req.query.p5 === 'true'
+  var CoolCat = req.query.p0
+  var Adventurer = req.query.p1
+  var Entertainer = req.query.p2
+  var Family = req.query.p3
+  var Enthusiast = req.query.p4
+  var Investigator = req.query.p5
 
   // create new entry in tripProfile
   var myQuery = `
@@ -288,8 +327,8 @@ function new_trip (req, res) {
   var myQuery = `
     CREATE OR REPLACE VIEW ${tripID} AS
     ${personalitiesQuery}
-    SELECT DISTINCT POI.pid AS pid
-    FROM POI JOIN personalityPID ON POI.pid = personalityPID.pid
+    SELECT DISTINCT pid
+    FROM POI NATURAL JOIN personalityPID
     WHERE POI.city = '${city}' AND POI.state = '${state}';
   `
   console.log(myQuery)
@@ -379,7 +418,7 @@ async function trip_pois (req, res) {
   // })
 }
 
-// Route 7 (handler) - Returns the attractions after quiz
+// Route 7 (handler) - Returns the attractions from filtered POIs
 async function trip_attractions (req, res) {
   const tripID = req.params.tripID ? req.params.tripID : '0'
 
@@ -394,12 +433,13 @@ async function trip_attractions (req, res) {
       console.log(error)
       res.json({ error: error })
     } else if (results) {
+      console.log('Got filtered Attractions')
       res.json({ results: results })
     }
   })
 }
 
-// Route 8 (handler) - Returns the restaurants after quiz
+// Route 8 (handler) - Returns the restaurants from filtered POIs
 async function trip_restaurants (req, res) {
   const tripID = req.params.tripID ? req.params.tripID : '0'
 
@@ -414,12 +454,13 @@ async function trip_restaurants (req, res) {
       console.log(error)
       res.json({ error: error })
     } else if (results) {
+      console.log('Got filtered Restaurants')
       res.json({ results: results })
     }
   })
 }
 
-// Route 9 (handler) - Returns the trails after quiz
+// Route 9 (handler) - Returns the trails from filtered POIs
 async function trip_trails (req, res) {
   const tripID = req.params.tripID ? req.params.tripID : '0'
 
@@ -434,6 +475,7 @@ async function trip_trails (req, res) {
       console.log(error)
       res.json({ error: error })
     } else if (results) {
+      console.log('Got filtered Trails')
       res.json({ results: results })
     }
   })
@@ -457,7 +499,7 @@ async function delete_trip (req, res) {
       console.log(error)
       res.json({ error: error })
     } else if (results) {
-      console.log("Deleted Trip ID " + tripID.toString())
+      console.log('Deleted Trip ID ' + tripID.toString())
       res.json({ results: results })
     }
   })
@@ -710,7 +752,7 @@ function createPersonalitiesQuery (p0, p1, p2, p3, p4, p5) {
 
   for (let p of personalities) {
     if (p[0] === 'true') {
-      if (firstPersonality) {
+      if (firstPersonality === true) {
         personalitiesQuery += 'SELECT * FROM ' + p[1]
         firstPersonality = false
       } else {
@@ -723,7 +765,9 @@ function createPersonalitiesQuery (p0, p1, p2, p3, p4, p5) {
   return personalitiesQuery
 }
 
-function createPopulationQuery (population) {
+function createPopulationQuery (pop) {
+  var population = parseInt(pop)
+
   // city size based on https://data.oecd.org/popregion/urban-population-by-city-size.htm
   var citySize = new Array()
   citySize[0] = new Array(0, '1') // any city
@@ -789,12 +833,13 @@ function authenticate (username, clientIP) {
 
 module.exports = {
   add_user,
-  logout_user,
+  login,
+  logout,
   hello,
   random_city,
   all_trips,
-  quizCities,
   all_cities,
+  quizCities,
   new_trip,
   trip_pois,
   trip_attractions,
