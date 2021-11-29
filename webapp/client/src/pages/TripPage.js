@@ -123,6 +123,7 @@ class TripPage extends React.Component {
     getAllPOIs().then(res => {
       // this.setState({ POIS: res })
       this.setState({ POIS: res.results })
+      console.log(res)
     })
 
     var tripID = window.location.href.split('=')[1]
@@ -247,14 +248,11 @@ class TripPage extends React.Component {
                 {/* <TabsCard trip={this.state.trip} onSchedule={this.addEvent} onAddFavorite={this.addFavorite} onRemoveFavorite={this.removeFavorite} /> */}
               </Row>
             </Content>
-            <Sider
-              style={{
-                background: 'white',
-                height: '100vh',
-                width: '200px',
-                border: '1px solid #000',
-              }}>
-              <FilterBar favorites={favorites} />
+            <Sider style={{ background: 'white', borderLeft: '1px solid #F0F0F0', borderBottom: '1px solid #F0F0F0' }}>
+              <FilterBar
+                favorites={this.state.favorites}
+                onClickFavorite={this.changeBigPOI}
+              />
             </Sider>
           </Layout>
           <Footer />
