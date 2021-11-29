@@ -65,8 +65,7 @@ class QuizPage2 extends React.Component {
       selectedDest: JSON.parse(localStorage.getItem('selectedDest')),
       buttonStatus: false
     }
-    // preserve the initial state in a new object
-    this.baseState = this.state
+
 
     this.onCityQuestion = this.onCityQuestion.bind(this)
     this.onCoolCatQuestion = this.onCoolCatQuestion.bind(this)
@@ -84,37 +83,15 @@ class QuizPage2 extends React.Component {
 
 
   retakeQuiz() {
-    this.setState(this.baseState)
-    this.forceUpdate()
-
     scrollToTop()
+    window.location.reload()
   }
+
 
   onAnswerSelect(e) {
     this.state.personalityScore[e.target.name] = e.target.value
-    // scrollTo()
   }
 
-
-  // retakeQuiz() {
-
-  //   scrollToTop()
-
-  //   // this.state = {
-  //   //   score: { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
-  //   //   personalityResults: {
-  //   //     population: 0, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false
-  //   //   },
-  //   //   description: "",
-  //   //   renderResults: false,
-  //   //   destResults: [{ 'city': 'Los Angeles', 'state': 'CA' }, { 'city': 'San Diego', 'state': 'CA' }, { 'city': 'Vancouver', 'state': 'BC' }],
-  //   //   selectedDest: [],
-  //   //   buttonStatus: false
-  //   // }
-
-  //   // window.location.reload();
-
-  // }
 
   onCityQuestion(answerScore) {
     var newResult = this.state.quizResults
