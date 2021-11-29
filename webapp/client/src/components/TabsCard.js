@@ -107,6 +107,11 @@ class TabsCard extends React.Component {
       return <Button type='primary' onClick={this.onFavorite} key={pid} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Add to Favorites</Button>
     }
 
+    const scheduleButton = (POI) => {
+      return <Button type='primary' onClick={this.onSchedule} key={POI} shape='round' style={{ border: 'none', background: 'black', color: 'white' }}>Add to Schedule</Button>
+    }
+
+
     const renderRadio = (POI, category) => {
       if (category === 'attractions') {
         return (
@@ -258,95 +263,149 @@ class TabsCard extends React.Component {
     //           <Row align='middle'>
     //             <Col span={14}>
 
-    //               <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
-    //                 bigPOI.name}
-    //               </div>
-    //               <div>
-    //                 <Rate disabled defaultValue={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
-    //                 {bigPOI.numReviews} reviews
-    //               </div>
-    //             </Col>
-    //             <Col span={10} >
-    //               <img src={(bigPOI.photo)}
-    //                 alt="POI"
-    //                 style={{
-    //                   maxWidth: '100%'
-    //                 }} />
-    //             </Col>
-    //           </Row>
-    //           <Row align='middle' >
-    //             <Space wrap='true'>
-    //               <div >
-    //                 {bigPOI.description}
-    //               </div>
-    //               <div >
-    //                 <span style={{ fontWeight: 'bold' }}>Route type: </span>
-    //                 {bigPOI.routeType}
-    //               </div>
-    //               <div >
-    //                 <span style={{ fontWeight: 'bold' }}>Difficulty: </span>
-    //                 {bigPOI.difficulty}
-    //               </div>
-    //               <div >
-    //                 <span style={{ fontWeight: 'bold' }}>Length: </span>
-    //                 {bigPOI.length} km
-    //               </div>
-    //               <div >
-    //                 <span style={{ fontWeight: 'bold' }}>Suggested duration: </span>
-    //                 {bigPOI.durationLow}-{bigPOI.durationHigh} hours
-    //               </div>
-    //               <div >
-    //                 <span style={{ fontWeight: 'bold' }}>Elevation gain </span>
-    //                 {bigPOI.elevationHigh - bigPOI.elevationLow} m
-    //               </div>
-    //             </Space>
-    //           </Row>
-    //           <Row align='middle' justify='center' gutter={[60]} style={{ fontFamily: 'Work Sans', marginTop: '15px' }}>
-    //             <Col span={12}>
-    //               <Button type='primary' onClick={this.onSchedule} key={bigPOI.pid} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Schedule</Button>
-    //             </Col>
-    //             <Col span={12}>
-    //               {favoritesButton()}
-    //             </Col>
-    //           </Row>
-    //         </Space>
-    //       </Card >
-    //     )
-    //   } else {
-    //     return (
-    //       <Card>
-    //         <Space direction='vertical'>
-    //           <Row>
-    //             <Space wrap='true'>
-    //               <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
-    //                 bigPOI.name}
-    //               </div>
-    //               <div>
-    //                 <Rate disabled defaultValue={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
-    //                 {bigPOI.numReviews} reviews
-    //               </div>
-    //               <div>
-    //                 <span style={{ fontSize: '110%' }}>{bigPOI.subcategory} • {bigPOI.tags.split(',').join(' • ')}</span>
-    //               </div>
-    //               <div >
-    //                 <span style={{ fontWeight: 'bold' }}>Suggested duration: </span>
-    //                 {bigPOI.durationLow}-{bigPOI.durationHigh} hours
-    //               </div>
-    //             </Space>
-    //           </Row>
-    //           <Row align='middle' justify='center' gutter={[60]} style={{ fontFamily: 'Work Sans', marginTop: '15px' }}>
-    //             {/* <Col span={12}>
-    //               <Button type='primary' onClick={this.onFavorite} key={bigPOI.pid} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Add to Favorites</Button>
-    //             </Col>
-    //             <Col span={12}>
-    //               <Button type='primary' onClick={this.onSchedule} key={bigPOI.pid} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '100%' }}>Schedule</Button>
-    //             </Col> */}
-    //           </Row>
-    //         </Space>
-    //       </Card>
-    //     )
-    //   }
-    // }
+    const renderBigPOI = (bigPOI) => {
+      if (bigPOI.category === 'attractions') {
+        return (
+          <Card >
+            <Space direction='vertical'>
+              <Row align='middle' >
+                <Col span={14} >
+                  <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
+                    bigPOI.name}
+                  </div>
+                  <div >
+                    <Rate disabled defaultValue={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
+                    {bigPOI.numReviews} reviews
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '110%' }}>{bigPOI.subcategory} • {bigPOI.tags.split(',').join(' • ')}</span>
+                  </div>
+                </Col>
+                <Col span={10} >
+                  <img src={(bigPOI.photo)}
+                    alt="POI"
+                    style={{
+                      maxWidth: '100%'
+                    }} />
+                </Col>
+              </Row>
+              <Row align='middle' >
+                <Space wrap='true'>
+                  <div >
+                    {bigPOI.description}
+                  </div>
+                  <div >
+                    <span style={{ fontWeight: 'bold' }}>Suggested duration: </span>
+                    {bigPOI.durationLow}-{bigPOI.durationHigh} hours
+                  </div>
+                </Space>
+              </Row>
+              <Row align='middle' justify='center' gutter={[20, 5]} style={{ marginTop: '15px' }}>
+                <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
+                  {scheduleButton(bigPOI)}
+                </Col>
+                <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
+                  {favoritesButton(bigPOI)}
+                </Col>
+              </Row>
+            </Space>
+          </Card >
+        )
+      } else if (bigPOI.category === 'trails') {
+        return (
+          <Card >
+            <Space direction='vertical'>
+              <Row align='middle'>
+                <Col lg={24} xl={14} >
+                  <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>
+                    {bigPOI.name}
+                  </div>
+                  <div>
+                    <Rate disabled defaultValue={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
+                    {bigPOI.numReviews} reviews
+                  </div>
+                </Col>
+                <Col lg={24} xl={10} >
+                  <img src={(bigPOI.photo)}
+                    alt="POI"
+                    style={{
+                      maxWidth: '100%'
+                    }} />
+                </Col>
+              </Row>
+              <Row align='middle' >
+                <Space wrap='true'>
+                  <div >
+                    {bigPOI.description}
+                  </div>
+                  <div >
+                    <span style={{ fontWeight: 'bold' }}>Route type: </span>
+                    {bigPOI.routeType}
+                  </div>
+                  <div >
+                    <span style={{ fontWeight: 'bold' }}>Difficulty: </span>
+                    {bigPOI.difficulty}
+                  </div>
+                  <div >
+                    <span style={{ fontWeight: 'bold' }}>Length: </span>
+                    {bigPOI.length} km
+                  </div>
+                  <div >
+                    <span style={{ fontWeight: 'bold' }}>Suggested duration: </span>
+                    {bigPOI.durationLow}-{bigPOI.durationHigh} hours
+                  </div>
+                  <div >
+                    <span style={{ fontWeight: 'bold' }}>Elevation gain </span>
+                    {bigPOI.elevationHigh - bigPOI.elevationLow} m
+                  </div>
+                </Space>
+              </Row>
+              <Row align='middle' justify='center' gutter={[20, 5]} style={{ marginTop: '15px' }}>
+                <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
+                  {scheduleButton(bigPOI)}
+                </Col>
+                <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
+                  {favoritesButton(bigPOI)}
+                </Col>
+              </Row>
+            </Space>
+          </Card >
+        )
+      } else {
+        return (
+          <Card >
+            <Space direction='vertical'>
+              <Row>
+                <Space wrap='true'>
+                  <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
+                    bigPOI.name}
+                  </div>
+                  <div>
+                    <Rate disabled defaultValue={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
+                    {bigPOI.numReviews} reviews
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '110%' }}>{bigPOI.subcategory} • {bigPOI.tags.split(',').join(' • ')}</span>
+                  </div>
+                  <div >
+                    <span style={{ fontWeight: 'bold' }}>Suggested duration: </span>
+                    {bigPOI.durationLow}-{bigPOI.durationHigh} hours
+                  </div>
+                </Space>
+              </Row>
+              <Row align='middle' justify='center' gutter={[20, 5]} style={{ marginTop: '15px' }}>
+                <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
+                  {scheduleButton(bigPOI)}
+                </Col>
+                <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
+                  {favoritesButton(bigPOI)}
+                </Col>
+              </Row>
+            </Space>
+          </Card>
+        )
+      }
+    }
 
 
     const tabListNoTitle = [
