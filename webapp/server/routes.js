@@ -36,7 +36,7 @@ async function add_user (req, res) {
 
   var myQuery = `
     SELECT *
-    FROM accounts
+    FROM Accounts
     WHERE username = '${username}';
 `
   console.log(myQuery)
@@ -51,7 +51,7 @@ async function add_user (req, res) {
         res.json({ results: false })
       } else {
         var myQuery = `
-          INSERT INTO accounts (username, password)
+          INSERT INTO Accounts (username, password)
           VALUES ('${username}', '${password}')
       `
         console.log(myQuery)
@@ -73,12 +73,14 @@ async function add_user (req, res) {
 // Route 2 (handler) - Log in user
 async function login (req, res) {
   var username = req.query.username
+  var password = req.query.password
   var clientIP = req.socket.remoteAddress
 
   var myQuery = `
-    INSERT INTO loggedIn (username, clientIP)
-    VALUES ('${username}', '${clientIP}'); 
-  `
+    SELECT *
+    FROM Accounts
+    WHERE username = '${username}' AND password = '${password}';
+`
   console.log(myQuery)
 
   connection.query(myQuery, function (error, results, fields) {
@@ -86,9 +88,26 @@ async function login (req, res) {
       console.log(error)
       res.json({ error: error })
     } else if (results) {
-      // TODO: Check the contents of results given INSERT INTO query
-      console.log('Logged in user ' + username.toString())
-      res.json({ results: true })
+      if (results.length > 0) {
+        var myQuery = `
+          INSERT INTO LoggedIn (username, clientIP)
+          VALUES ('${username}', '${clientIP}'); 
+        `
+        console.log(myQuery)
+
+        connection.query(myQuery, function (error, results, fields) {
+          if (error) {
+            console.log(error)
+            res.json({ error: error })
+          } else if (results) {
+            console.log('Logged in user ' + username.toString())
+            res.json({ results: true })
+          }
+        })
+      } else {
+        console.log('Wrong username and/or password')
+        res.redirect('http://localhost:3000/failed')
+      }
     }
   })
 }
@@ -99,7 +118,8 @@ async function logout (req, res) {
   var clientIP = req.socket.remoteAddress
 
   var myQuery = `
-    DELETE FROM loggedIn
+    SELECT *
+    FROM LoggedIn
     WHERE username = '${username}' AND clientIP = '${clientIP}'; 
   `
   console.log(myQuery)
@@ -109,9 +129,26 @@ async function logout (req, res) {
       console.log(error)
       res.json({ error: error })
     } else if (results) {
-      // TODO: Check the contents of results given DELETE FROM query
-      console.log('Logged out user ' + username.toString())
-      res.json({ results: true })
+      if (results.length > 0) {
+        var myQuery = `
+          DELETE FROM LoggedIn
+          WHERE username = '${username}' AND clientIP = '${clientIP}'; 
+      `
+        console.log(myQuery)
+
+        connection.query(myQuery, function (error, results, fields) {
+          if (error) {
+            console.log(error)
+            res.json({ error: error })
+          } else if (results) {
+            console.log('Logged out user ' + username.toString())
+            res.json({ results: true })
+          }
+        })
+      } else {
+        console.log('User was not logged in')
+        res.json({ results: true })
+      }
     }
   })
 }
