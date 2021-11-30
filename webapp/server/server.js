@@ -61,13 +61,13 @@ app.get('/trips', routes.all_trips)
 //             Quiz Routes
 // ********************************************
 
-// All states and cities
+// All states and cities (to populate the destination menu)
 // requires: none
 // returns [{state, city}], ordered by city
 app.get('/cities/', routes.all_cities)
 
 // Top 3 Cities based on quiz results
-// requires population and personalities --> /quizCities?population=1&p0=0&p1=1&...&p5=0 (population=int[0,3], [0,1] for false/true)
+// requires population and personalities --> /quizCities?population=1&p0=0&p1=1&...&p5=0 (population=[0,3], [0,1] for false/true)
 // returns [{city, state}]
 app.get('/quizCities', routes.quizCities)
 
@@ -76,11 +76,14 @@ app.get('/quizCities', routes.quizCities)
 //             Trip Routes
 // ********************************************
 
-// DEPRECATED. Leaving it here temporarily until we've fully migrated to the new routes.
+// DEPRECATED, but currently called in TripPage > componentWillMount() > getAllPOIs() to populate tabsCard
+// leaving this here temporarily until we've fully migrated to the new routes
+// moving forward, please use trip_attraction, trip_trails, and trip_restaurants to populate tabsCard
 app.get('/trip_pois/', routes.trip_pois)
 
 // Create new trip
-// requires city, state, and personalities --> /new_trip?city=<city>&state=<state>&p0=0&p1=1&...&p5=0 (no quotations, [0,1] for false/true)
+// requires username, "tripName", city, state, and personalities --> /new_trip?username=admin&tripName="trip name with spaces"&city=<city>&state=<state>&p0=0&p1=1&...&p5=0 
+// only tripName has quotations; username, city, and state no quotations; [0,1] for false/true in personalities
 // returns {tripID: int}
 app.get('/new_trip', routes.new_trip)
 
