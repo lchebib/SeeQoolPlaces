@@ -98,17 +98,24 @@ const getAllCities = async () => {
   // return res;
 }
 
-// ********************************************
-//             QuizPage0 Fetchers
-// ********************************************
 
 // ********************************************
 //             QuizPage1 Fetchers
 // ********************************************
 
-const getQuizCities = async (population, p1, p2, p3, p4, p5, p6) => {
+const getQuizCities = async (population, p0, p1, p2, p3, p4, p5) => {
+
+  // population = JSON.stringify(population)
+  // p0 = JSON.stringify(p1)
+  // p1 = JSON.stringify(p2)
+  // p2 = JSON.stringify(p3)
+  // p3 = JSON.stringify(p4)
+  // p4 = JSON.stringify(p5)
+  // p5 = JSON.stringify(p6)
+
+
   var res = await fetch(
-    `http://${config.server_host}:${config.server_port}/quizCities?population=${population}&p1=${p1}&p2=${p2}&p3=${p3}&p4=${p4}&p5=${p5}&p6=${p6}`,
+    `http://${config.server_host}:${config.server_port}/quizCities?population=${population}&p0=${p0}&p1=${p1}&p2=${p2}&p3=${p3}&p4=${p4}&p5=${p5}`,
     {
       method: 'GET'
     }
@@ -122,13 +129,14 @@ const getQuizCities = async (population, p1, p2, p3, p4, p5, p6) => {
 //             QuizPage2 Fetchers
 // ********************************************
 
-const getAllPOIs = async () => {
+const getAllPOIs = async (tripID) => {
   // const getAllPOIs = async (tripID) => {
   // var res = await fetch(`http://${config.server_host}:${config.server_port}/trip_pois?city=${city}&state=${state}&p1=${p1}&p2=${p2}&p3=${p3}&p4=${p4}&p5=${p5}&p6=${p6}`, {
   var res = await fetch(
     `http://${config.server_host}:${config.server_port}/trip_pois`,
     {
-      method: 'GET'
+      method: 'GET',
+      body: JSON.stringify(tripID)
     }
   )
   return res.json()
@@ -140,7 +148,7 @@ const getAllPOIs = async () => {
 //             CreateTripPage Fetchers
 // ********************************************
 
-const postCreateTrip = async tripDetails => {
+const postCreateTrip = async (tripDetails) => {
   console.log(tripDetails)
   var res = await fetch(
     `http://${config.server_host}:${config.server_port}/createtrip`,

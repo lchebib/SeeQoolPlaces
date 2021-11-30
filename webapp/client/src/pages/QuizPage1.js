@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Row, Col, Card, Button, Radio, Space } from 'antd';
+import { Layout, Row, Col, Card, Button, Radio } from 'antd';
 import SideBar from '../components/SideBar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -7,6 +7,7 @@ import { BuzzFeedQuiz } from "react-buzzfeed-quiz";
 import "react-buzzfeed-quiz/lib/styles.css";
 import { animateScroll as scroll } from 'react-scroll';
 import { LeftSquareOutlined } from '@ant-design/icons';
+import { getQuizCities, getRandomCity } from '../fetcher';
 
 
 const { Content } = Layout;
@@ -31,7 +32,7 @@ const answers = [
     text: "unQool",
     score: 0
   },
-]
+];
 
 
 const descriptions =
@@ -42,7 +43,7 @@ const descriptions =
   family: "You want to spend quality time with loved ones. ",
   enthusiast: "You tend to go with the flow and you're up for anything that sounds fun.",
   investigator: "You get to know a city by the stories of it's past. You're just happy when you're learning. "
-}
+};
 
 function scrollToBottom() {
   scroll.scrollToBottom();
@@ -57,108 +58,129 @@ function scrollToTop() {
 class QuizPage1 extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
+      populationScore: 0,
       personalityScore: { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
-      quizResults: {
-        population: 0, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false
-      },
+      quizResults: { population: 0, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false },
       description: "",
       renderResults: false,
-      destResults: [{ 'city': 'Los Angeles', 'state': 'CA' }, { 'city': 'San Diego', 'state': 'CA' }, { 'city': 'Vancouver', 'state': 'BC' }],
+      destResults: [{ city: 'Los Angeles', state: 'California' }, { city: 'San Diego', state: 'California' }, { city: 'Vancouver', state: 'British Columbia' }],
       selectedDest: [],
       buttonStatus: false,
       retakeQuiz: false
-    }
+    };
 
-    this.onCityQuestion = this.onCityQuestion.bind(this)
-    this.onCoolCatQuestion = this.onCoolCatQuestion.bind(this)
-    this.onAdventurerQuestion = this.onAdventurerQuestion.bind(this)
-    this.onEntertainerQuestion = this.onEntertainerQuestion.bind(this)
-    this.onFamilyQuestion = this.onFamilyQuestion.bind(this)
-    this.onEnthusiastQuestion = this.onEnthusiastQuestion.bind(this)
-    this.onInvestiagtorQuestion = this.onInvestiagtorQuestion.bind(this)
-    this.onResult = this.onResult.bind(this)
-    this.setSelectedDest = this.setSelectedDest.bind(this)
-    this.retakeQuiz = this.retakeQuiz.bind(this)
-    this.clickNextPage = this.clickNextPage.bind(this)
-    this.pushQuizResults = this.pushQuizResults.bind(this)
+    this.onCityQuestion = this.onCityQuestion.bind(this);
+    this.onCoolCatQuestion = this.onCoolCatQuestion.bind(this);
+    this.onAdventurerQuestion = this.onAdventurerQuestion.bind(this);
+    this.onEntertainerQuestion = this.onEntertainerQuestion.bind(this);
+    this.onFamilyQuestion = this.onFamilyQuestion.bind(this);
+    this.onEnthusiastQuestion = this.onEnthusiastQuestion.bind(this);
+    this.onInvestiagtorQuestion = this.onInvestiagtorQuestion.bind(this);
+    this.onResult = this.onResult.bind(this);
+    this.setSelectedDest = this.setSelectedDest.bind(this);
+    this.retakeQuiz = this.retakeQuiz.bind(this);
+    this.clickNextPage = this.clickNextPage.bind(this);
+    this.pushQuizResults = this.pushQuizResults.bind(this);
+    this.getQuizDestinations = this.getQuizDestinations.bind(this);
   }
 
 
   retakeQuiz() {
-    scrollToTop()
-    window.location.reload()
+    scrollToTop();
+    window.location.reload();
   }
 
   onCityQuestion(answerScore) {
-    var newResult = this.state.quizResults
-    newResult.population = newResult.population + answerScore
-    this.setState({ quizResults: newResult })
+    this.setState({ populationScore: answerScore });
   }
 
   onCoolCatQuestion(answerScore) {
-    var newScore = this.state.personalityScore
-    newScore.coolCat = newScore.coolCat + answerScore
-    this.setState({ personalityScore: newScore })
+    var newScore = this.state.personalityScore;
+    newScore.coolCat = newScore.coolCat + answerScore;
+    this.setState({ personalityScore: newScore });
   }
 
   onAdventurerQuestion(answerScore) {
-    var newScore = this.state.personalityScore
-    newScore.adventurer = newScore.adventurer + answerScore
-    this.setState({ personalityScore: newScore })
+    var newScore = this.state.personalityScore;
+    newScore.adventurer = newScore.adventurer + answerScore;
+    this.setState({ personalityScore: newScore });
   }
 
   onEntertainerQuestion(answerScore) {
-    var newScore = this.state.personalityScore
-    newScore.entertainer = newScore.entertainer + answerScore
-    this.setState({ personalityScore: newScore })
+    var newScore = this.state.personalityScore;
+    newScore.entertainer = newScore.entertainer + answerScore;
+    this.setState({ personalityScore: newScore });
   }
 
   onFamilyQuestion(answerScore) {
-    var newScore = this.state.personalityScore
-    newScore.family = newScore.family + answerScore
-    this.setState({ personalityScore: newScore })
+    var newScore = this.state.personalityScore;
+    newScore.family = newScore.family + answerScore;
+    this.setState({ personalityScore: newScore });
   }
 
   onEnthusiastQuestion(answerScore) {
-    var newScore = this.state.personalityScore
-    newScore.enthusiast = newScore.enthusiast + answerScore
-    this.setState({ personalityScore: newScore })
+    var newScore = this.state.personalityScore;
+    newScore.enthusiast = newScore.enthusiast + answerScore;
+    this.setState({ personalityScore: newScore });
   }
 
   onInvestiagtorQuestion(answerScore) {
-    var newScore = this.state.personalityScore
-    newScore.investigator = newScore.investigator + answerScore
-    this.setState({ personalityScore: newScore })
+    var newScore = this.state.personalityScore;
+    newScore.investigator = newScore.investigator + answerScore;
+    this.setState({ personalityScore: newScore });
   }
 
 
   onResult() {
-    this.state.quizResults = { city: false, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false }
-    this.state.description = ""
+    this.state.quizResults = { population: 0, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false };
+    this.state.description = "";
 
-    var numPersonalities = 0
+    var numPersonalities = 0;
+
+    this.state.quizResults.population = this.state.populationScore;
 
     for (const key in this.state.personalityScore) {
       if (this.state.personalityScore[key] >= 5) {
-        this.state.quizResults[key] = true
-        this.state.description += descriptions[key]
+        this.state.quizResults[key] = true;
+        this.state.description += descriptions[key];
         numPersonalities += 1;
       }
     }
 
     if (numPersonalities === 0 || numPersonalities === 6) {
-      this.setState({ quizResults: { city: false, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: true, investigator: false } })
+      this.setState({ quizResults: { population: this.state.populationScore, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: true, investigator: false } });
       this.setState({ description: descriptions.enthusiast });
     }
+
+    // Get quiz cities
+    this.getQuizDestinations();
 
     this.state.personalityScore = { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 };
     this.setState({ renderResults: true });
 
-    scrollToBottom()
+    scrollToBottom();
 
+  }
+
+  getQuizDestinations() {
+
+
+    getQuizCities(
+      this.state.quizResults.population,
+      this.state.quizResults.coolCat,
+      this.state.quizResults.adventurer,
+      this.state.quizResults.entertainer,
+      this.state.quizResults.family,
+      this.state.quizResults.enthusiast,
+      this.state.quizResults.investigator
+    ).then(res => {
+      // this.setState({destResults: res.results})
+      console.log(res);
+    }
+    );
   }
 
   setSelectedDest(e) {
@@ -169,15 +191,15 @@ class QuizPage1 extends React.Component {
   }
 
   clickNextPage() {
-    this.pushQuizResults()
+    this.pushQuizResults();
     window.location = '/createtrip';
   }
 
   pushQuizResults() {
     var selectedDest = this.state.selectedDest;
     localStorage.setItem('selectedDest', JSON.stringify(selectedDest));
-    var selectedPersonalities = { ...this.state.quizResults }
-    delete selectedPersonalities.population
+    var selectedPersonalities = { ...this.state.quizResults };
+    delete selectedPersonalities.population;
     localStorage.setItem('selectedPersonalities', JSON.stringify(selectedPersonalities));
   }
 
