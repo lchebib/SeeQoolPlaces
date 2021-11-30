@@ -64,33 +64,33 @@ const favorites = [
 ]
 
 
-// const events = [
-//   {
-//     id: 0,
-//     title: "All Day Event very long title",
-//     allDay: false,
-//     start: new Date('November 18, 2021 0:00:00'),
-//     end: new Date("November 18, 2021 0:30:00"),
-//     resource: { duration: 2 }
-//   },
-//   {
-//     id: 20,
-//     title: "Dinner",
-//     allDay: false,
-//     start: new Date('November 18, 2021 1:00:00'),
-//     end: new Date('November 18, 2021 3:00:00'),
-//     resource: { duration: 0.5 }
+const events = [
+  {
+    id: 0,
+    title: "All Day Event very long title",
+    allDay: false,
+    start: new Date('November 18, 2021 0:00:00'),
+    end: new Date("November 18, 2021 0:30:00"),
+    resource: { duration: 2 }
+  },
+  {
+    id: 20,
+    title: "Dinner",
+    allDay: false,
+    start: new Date('November 18, 2021 1:00:00'),
+    end: new Date('November 18, 2021 3:00:00'),
+    resource: { duration: 0.5 }
 
-//   },
-//   {
-//     id: 21,
-//     title: "Dinner 2",
-//     allDay: false,
-//     start: new Date('November 18, 2021 1:00:00'),
-//     end: new Date('November 18, 2021 3:00:00'),
-//     resource: { duration: 0.5 }
-//   },
-// ]
+  },
+  {
+    id: 21,
+    title: "Dinner 2",
+    allDay: false,
+    start: new Date('November 18, 2021 1:00:00'),
+    end: new Date('November 18, 2021 3:00:00'),
+    resource: { duration: 0.5 }
+  },
+]
 
 class TripPage extends React.Component {
 

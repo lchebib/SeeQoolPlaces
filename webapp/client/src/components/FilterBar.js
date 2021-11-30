@@ -35,7 +35,8 @@ class FilterBar extends React.Component {
         width: '200px',
         height: '100vh',
       }}>
-        <Row align="top" justify="center" style={{ 'height': '30vh' }}>
+        <Row align="top" justify="center" style={{ 'height': '80vh' }}>
+          {/* <Row align="top" justify="center" style={{ 'height': '30vh' }}> */}
           <Col style={{ width: '160px' }}>
             <Space direction='vertical'>
               <div style={{ fontFamily: 'Work Sans', fontSize: 20 }}>Favorites</div>
@@ -66,20 +67,15 @@ class FilterBar extends React.Component {
           </Col>
         </Row>
 
-        <Divider />
+        {/* <Divider />
         <Row align="top" justify="center" style={{ 'height': '35vh' }}>
 
           <Col style={{ width: '160px' }}>
             <Space direction='vertical'>
-              <div style={{ fontFamily: 'Work Sans', fontSize: 20 }}>Favorites</div>
-              {this.props.favorites.map((POI) =>
-                <div>
-                  {favoriteButton(POI)}
-                </div>
-              )}
+              <div style={{ fontFamily: 'Work Sans', fontSize: 20 }}>Filter</div>
             </Space>
           </Col>
-        </Row>
+        </Row> */}
         <Divider />
         <Row align="top" justify="center" style={{ 'height': '10vh', fontFamily: 'Work Sans' }}>
           <Col style={{ width: '160px' }}>
