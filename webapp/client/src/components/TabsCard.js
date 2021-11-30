@@ -182,8 +182,8 @@ class TabsCard extends React.Component {
         return (
           <Card >
             <Space direction='vertical'>
-              <Row align='middle' >
-                <Col span={14} >
+              <Row >
+                <Col lg={24} xl={14} >
                   <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
                     bigPOI.name}
                   </div>
@@ -195,7 +195,7 @@ class TabsCard extends React.Component {
                     <span style={{ fontSize: '110%' }}>{bigPOI.subcategory} • {bigPOI.tags.split(',').join(' • ')}</span>
                   </div>
                 </Col>
-                <Col span={10} >
+                <Col lg={24} xl={10} >
                   <img src={(bigPOI.photo)}
                     alt="POI"
                     style={{
@@ -229,7 +229,7 @@ class TabsCard extends React.Component {
         return (
           <Card >
             <Space direction='vertical'>
-              <Row align='middle'>
+              <Row >
                 <Col lg={24} xl={14} >
                   <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>
                     {bigPOI.name}
@@ -289,7 +289,7 @@ class TabsCard extends React.Component {
         return (
           <Card >
             <Space direction='vertical'>
-              <Row>
+              <Row >
                 <Space wrap='true'>
                   <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
                     bigPOI.name}
