@@ -15,15 +15,14 @@ class FilterBar extends React.Component {
     }
 
     const favoriteButton = (POI) => {
+      var color;
+
       if (POI.category === "trails") {
-        console.log(POI)
-        return <Button style={{ background: '#9CDA86' }}>{POI.name}</Button>
+        color = '#9CDA86'
       } else if (POI.category === "attractions") {
-        console.log(POI)
-        return <Button style={{ background: '#FFC93F' }}>{POI.name}</Button>
+        color = '#FFC93F'
       } else {
-        console.log(POI)
-        return <Button style={{ background: '#EC7878' }}>{POI.name}</Button>
+        color = '#EC7878'
       }
       return <Button onClick={() => { this.props.onClickFavorite(POI) }} shape='round' style={{ background: color, border: 'none', width: '100%', textAlign: 'left' }}>{POI.name}</Button>
 
@@ -34,7 +33,7 @@ class FilterBar extends React.Component {
       <div style={{
         paddingTop: '15px',
         width: '200px',
-        height: '80vh',
+        height: '100vh',
       }}>
         <Row align="top" justify="center" style={{ 'height': '30vh' }}>
           <Col style={{ width: '160px' }}>

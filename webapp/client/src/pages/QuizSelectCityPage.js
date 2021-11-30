@@ -56,21 +56,12 @@ const makeOptions = (arr) => {
     }
   ]
   arr.forEach(obj => {
-<<<<<<< HEAD
     let cityArr = Object.entries(obj)
     let cityObj = { value: cityArr[1][1], label: cityArr[1][1] }
     console.log(cityObj['value'])
     console.log(cityObj['label'])
     if (cityArr[0][1] === 'CA') {
       result[0].children.push(cityObj)
-=======
-    let cityArr = Object.entries(obj);
-    let cityObj = { value: cityArr[1][1], label: cityArr[1][1] };
-    console.log(cityObj['value']);
-    console.log(cityObj['label']);
-    if (cityArr[0][1] === "CA") {
-      result[0].children.push(cityObj);
->>>>>>> parent of 4f7a42a... Add/remove favorites from FilterBar and clicking on favorite renders bigPOI
     } else {
       result[1].children.push(cityObj)
     }

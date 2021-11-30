@@ -139,9 +139,13 @@ const getTripPOIS = async (tripID, username) => {
   //   }
   // )
   // return res.json()
+  // var res = { results: tempGetPOIS() };
+
   var res = { results: tempGetPOIS() };
+  // var res = tempGetPOIS();
   return res;
 }
+
 
 const postCreateTrip = async (tripDetails) => {
   console.log(tripDetails)

@@ -13,49 +13,49 @@ import '../style/scheduler.css'
 const DnDCalendar = withDragAndDrop(Calendar);
 const localizer = momentLocalizer(moment);
 
-const initialEvents = [
-  {
-    id: 0,
-    title: "Event very long title",
-    allDay: false,
-    start: new Date('December 1, 2021 3:00:00'),
-    end: new Date("December 1, 2021 6:00:00"),
-    resource: { duration: 6 },
-    category: 'trails'
-  },
-  {
-    id: 20,
-    title: "Dinner",
-    allDay: false,
-    start: new Date('December 3, 2021 1:00:00'),
-    end: new Date('December 3, 2021 3:00:00'),
-    resource: { duration: 2 }
+// const initialEvents = [
+//   {
+//     id: 0,
+//     title: "Event very long title",
+//     allDay: false,
+//     start: new Date('December 1, 2021 3:00:00'),
+//     end: new Date("December 1, 2021 6:00:00"),
+//     resource: { duration: 6 },
+//     category: 'trails'
+//   },
+//   {
+//     id: 20,
+//     title: "Dinner",
+//     allDay: false,
+//     start: new Date('December 3, 2021 1:00:00'),
+//     end: new Date('December 3, 2021 3:00:00'),
+//     resource: { duration: 2 }
 
-  },
-  {
-    id: 21,
-    title: "Dinner 2",
-    allDay: false,
-    start: new Date('December 4, 2021 1:00:00'),
-    end: new Date('December 4, 2021 3:00:00'),
-    resource: { duration: 2 }
-  },
+//   },
+//   {
+//     id: 21,
+//     title: "Dinner 2",
+//     allDay: false,
+//     start: new Date('December 4, 2021 1:00:00'),
+//     end: new Date('December 4, 2021 3:00:00'),
+//     resource: { duration: 2 }
+//   },
 
-  // {
-  //   id: 2,
-  //   title: "DTS STARTS",
-  //   start: new Date(2016, 2, 13, 0, 0, 0),
-  //   end: new Date(2016, 2, 20, 0, 0, 0)
-  // },
+// {
+//   id: 2,
+//   title: "DTS STARTS",
+//   start: new Date(2016, 2, 13, 0, 0, 0),
+//   end: new Date(2016, 2, 20, 0, 0, 0)
+// },
 
-  // {
-  //   id: 3,
-  //   title: "DTS ENDS",
-  //   start: new Date(2016, 10, 6, 0, 0, 0),
-  //   end: new Date(2016, 10, 13, 0, 0, 0),
-  //   desc: "Description is shown here"
-  // },
-];
+// {
+//   id: 3,
+//   title: "DTS ENDS",
+//   start: new Date(2016, 10, 6, 0, 0, 0),
+//   end: new Date(2016, 10, 13, 0, 0, 0),
+//   desc: "Description is shown here"
+// },
+// ];
 
 
 
@@ -81,7 +81,7 @@ class Scheduler extends React.Component {
 
   componentDidMount() {
     this.setState({ trip: this.props.trip })
-    this.setState({ events: initialEvents })
+    this.setState({ events: this.props.events })
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -131,7 +131,7 @@ class Scheduler extends React.Component {
   }
 
   eventStyleGetter(event, start, end, isSelected) {
-    console.log(event);
+    // console.log(event);
     var backgroundColor;
     if (event.category === 'trails') {
       backgroundColor = '#9CDA86';
@@ -156,7 +156,7 @@ class Scheduler extends React.Component {
 
   addEvent(POI) {
 
-    console.log(POI)
+    // console.log(POI)
     var newEvents = [...this.state.events]
     var eid = 1
     if (this.state.events.length > 0) {
@@ -184,7 +184,7 @@ class Scheduler extends React.Component {
 
     newEvents.push(event)
     this.setState({ events: newEvents })
-    console.log(event)
+    // console.log(event)
   }
 
 
@@ -335,4 +335,3 @@ class Scheduler extends React.Component {
 }
 
 export default Scheduler
-

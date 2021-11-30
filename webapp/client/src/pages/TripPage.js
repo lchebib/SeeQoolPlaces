@@ -64,33 +64,33 @@ const favorites = [
 ]
 
 
-const events = [
-  {
-    id: 0,
-    title: "All Day Event very long title",
-    allDay: false,
-    start: new Date('November 18, 2021 0:00:00'),
-    end: new Date("November 18, 2021 0:30:00"),
-    resource: { duration: 2 }
-  },
-  {
-    id: 20,
-    title: "Dinner",
-    allDay: false,
-    start: new Date('November 18, 2021 1:00:00'),
-    end: new Date('November 18, 2021 3:00:00'),
-    resource: { duration: 0.5 }
+// const events = [
+//   {
+//     id: 0,
+//     title: "All Day Event very long title",
+//     allDay: false,
+//     start: new Date('November 18, 2021 0:00:00'),
+//     end: new Date("November 18, 2021 0:30:00"),
+//     resource: { duration: 2 }
+//   },
+//   {
+//     id: 20,
+//     title: "Dinner",
+//     allDay: false,
+//     start: new Date('November 18, 2021 1:00:00'),
+//     end: new Date('November 18, 2021 3:00:00'),
+//     resource: { duration: 0.5 }
 
-  },
-  {
-    id: 21,
-    title: "Dinner 2",
-    allDay: false,
-    start: new Date('November 18, 2021 1:00:00'),
-    end: new Date('November 18, 2021 3:00:00'),
-    resource: { duration: 0.5 }
-  },
-]
+//   },
+//   {
+//     id: 21,
+//     title: "Dinner 2",
+//     allDay: false,
+//     start: new Date('November 18, 2021 1:00:00'),
+//     end: new Date('November 18, 2021 3:00:00'),
+//     resource: { duration: 0.5 }
+//   },
+// ]
 
 class TripPage extends React.Component {
 
@@ -101,8 +101,9 @@ class TripPage extends React.Component {
       trip: null,
       POIS: [],
       favorites: favorites,
+      scheduledPOIS: [],
       events: [],
-      bigPOI: {}
+      bigPOI: null
     }
 
     this.addEvent = this.addEvent.bind(this)
@@ -122,8 +123,7 @@ class TripPage extends React.Component {
 
     getTripPOIS(tripID, "admin").then(res => {
       this.setState({ POIS: res.results })
-      this.setState({ bigPOI: this.state.POIS[0] })
-      console.log(res.results)
+      this.setState({ bigPOI: res.results[0] })
     })
 
     var trip = JSON.parse(localStorage.getItem(tripID))
@@ -136,9 +136,9 @@ class TripPage extends React.Component {
   }
 
   addEvent(POI) {
-    var events = [...this.state.events]
-    events.push(POI)
-    this.setState({ events: events })
+    var scheduledPOIS = [...this.state.scheduledPOIS]
+    scheduledPOIS.push(POI)
+    this.setState({ scheduledPOIS: scheduledPOIS })
   }
 
   removeEvent(POI) {
@@ -202,6 +202,7 @@ class TripPage extends React.Component {
                 <Scheduler
                   trip={this.state.trip}
                   events={this.state.events}
+                  scheduledPOIS={this.state.scheduledPOIS}
                   updateEvents={this.updateEvents} />
               </Row>
               <Row justify='center' >
@@ -219,7 +220,7 @@ class TripPage extends React.Component {
             </Content>
             <Sider style={{ background: 'white', border: '1px solid #F0F0F0' }}>
               <FilterBar
-                favorites={this.state.favoritePOIS}
+                favorites={this.state.favorites}
                 onClickFavorite={this.changeBigPOI}
               />
             </Sider>

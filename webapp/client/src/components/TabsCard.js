@@ -27,8 +27,6 @@ class TabsCard extends React.Component {
     this.setKeyArr(this.state.currentTab);
   }
 
-
-
   onSchedule() {
     this.props.onSchedule(this.props.bigPOI);
   }
@@ -386,3 +384,6 @@ class TabsCard extends React.Component {
   }
 }
 export default TabsCard
+
+
+

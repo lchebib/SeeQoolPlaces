@@ -51,6 +51,29 @@ function scrollToTop() {
 
 
 
+function tempStateChanger(arr) {
+
+  // arr = [{state: 'CA', city: 'Los Angeles'}, {state: 'BC', city: 'Vancouver'}, {}]
+
+  // var arr = arr.results;
+  // var array = [...arr]
+
+  // arr.forEach(obj => {
+  //   if (obj.state === 'CA') {
+  //     obj.state = 'California';
+  //   } else {
+  //     obj.state = 'British Columbia';
+  //   }
+  // })
+
+  if (arr[0] === 'CA') {
+    arr[0] = 'California';
+  } else {
+    arr[0] = 'British Columbia';
+  }
+  return arr;
+}
+
 class QuizPage1 extends React.Component {
 
   constructor(props) {
@@ -62,7 +85,6 @@ class QuizPage1 extends React.Component {
       quizResults: { population: 0, coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
       description: "",
       renderResults: false,
-      // destResults: [{ city: 'Los Angeles', state: 'California' }, { city: 'San Diego', state: 'California' }, { city: 'Vancouver', state: 'British Columbia' }],
       destResults: [],
       selectedDest: [],
       buttonStatus: false,
@@ -81,6 +103,7 @@ class QuizPage1 extends React.Component {
     this.clickNextPage = this.clickNextPage.bind(this);
     this.pushQuizResults = this.pushQuizResults.bind(this);
     this.getQuizDestinations = this.getQuizDestinations.bind(this);
+
   }
 
 
@@ -168,7 +191,11 @@ class QuizPage1 extends React.Component {
       this.state.quizResults.enthusiast,
       this.state.quizResults.investigator
     ).then(res => {
-      this.state.destResults = res.results;
+
+      // run res.results through a filter to turn CA to California
+      // var destinations = tempStateChanger(res.results[0])
+      var destinations = res.results
+      this.state.destResults = destinations;
       this.setState({ renderResults: true });
       scrollToBottom();
     });
@@ -176,10 +203,12 @@ class QuizPage1 extends React.Component {
 
   }
 
+
+
   setSelectedDest(e) {
     var index = parseInt(e.target.value);
     var destObj = this.state.destResults[index];
-    this.state.selectedDest = [destObj.state, destObj.city];
+    this.state.selectedDest = tempStateChanger([destObj.state, destObj.city]);
     this.setState({ buttonStatus: true });
   }
 
