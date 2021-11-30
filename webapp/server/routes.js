@@ -184,8 +184,8 @@ function random_city (req, res) {
   var myQuery = `
         SELECT *
         FROM LandingPagePhoto
-        WHERE city = "${randomCityName}"
-          AND state = "${randomCityState}"
+        WHERE city = '${randomCityName}'
+          AND state = '${randomCityState}'
   `
 
   connection.query(myQuery, function (error, results, fields) {
@@ -205,7 +205,8 @@ function all_trips (req, res) {
 
   var myQuery = `
     SELECT tripID, tripName, city, state
-    FROM userTrips NATURAL JOIN tripProfile
+    FROM UserTrips NATURAL JOIN TripProfile
+    WHERE username = '${username}';
   `
   console.log(myQuery)
 
@@ -229,6 +230,7 @@ function all_cities (req, res) {
   var myQuery = `
     SELECT DISTINCT state, city
     FROM POI
+    WHERE state IS NOT NULL AND city IS NOT NULL
     ORDER BY city  
   `
   console.log(myQuery)
@@ -246,17 +248,26 @@ function all_cities (req, res) {
 
 // Route 4 (handler) - Returns top 3 cities based on desired city size and travel personalities
 function quizCities (req, res) {
+  var population = req.query.population
+  var CoolCat = parseInt(req.query.p0) === 1
+  var Adventurer = parseInt(req.query.p1) === 1
+  var Entertainer = parseInt(req.query.p2) === 1
+  var Family = parseInt(req.query.p3) === 1
+  var Enthusiast = parseInt(req.query.p4) === 1
+  var Investigator = parseInt(req.query.p5) === 1
+
   createPersonalityViews()
+
   var personalitiesQuery = createPersonalitiesQuery(
-    req.query.p0,
-    req.query.p1,
-    req.query.p2,
-    req.query.p3,
-    req.query.p4,
-    req.query.p5
+    CoolCat,
+    Adventurer,
+    Entertainer,
+    Family,
+    Enthusiast,
+    Investigator
   )
 
-  var populationQuery = createPopulationQuery(req.query.population)
+  var populationQuery = createPopulationQuery(population)
 
   var myQuery = `
     ${personalitiesQuery}
@@ -293,17 +304,17 @@ function new_trip (req, res) {
   var tripName = req.query.tripName
   var city = req.query.city
   var state = req.query.state
-  var CoolCat = req.query.p0 === 'true'
-  var Adventurer = req.query.p1 === 'true'
-  var Entertainer = req.query.p2 === 'true'
-  var Family = req.query.p3 === 'true'
-  var Enthusiast = req.query.p4 === 'true'
-  var Investigator = req.query.p5 === 'true'
+  var CoolCat = parseInt(req.query.p0) === 1
+  var Adventurer = parseInt(req.query.p1) === 1
+  var Entertainer = parseInt(req.query.p2) === 1
+  var Family = parseInt(req.query.p3) === 1
+  var Enthusiast = parseInt(req.query.p4) === 1
+  var Investigator = parseInt(req.query.p5) === 1
 
   // create new entry in tripProfile
   var myQuery = `
     INSERT INTO TripProfile (tripName, city, state, CoolCat, Adventurer, Entertainer, Family, Enthusiast, Investigator)
-    VALUES (${tripName}, ${city}, ${state}, ${CoolCat}, ${Adventurer}, ${Entertainer}, ${Family}, ${Enthusiast}, ${Investigator});
+    VALUES (${tripName}, '${city}', '${state}', ${CoolCat}, ${Adventurer}, ${Entertainer}, ${Family}, ${Enthusiast}, ${Investigator});
   `
   console.log(myQuery)
 
@@ -332,7 +343,7 @@ function new_trip (req, res) {
           // add trip to userTrips
           var myQuery = `
             INSERT INTO UserTrips (username, tripID)
-            VALUES (${username}, ${tripID});
+            VALUES ('${username}', ${tripID});
           `
           console.log(myQuery)
 
@@ -342,10 +353,10 @@ function new_trip (req, res) {
               res.json({ error: error })
             } else if (results) {
               console.log('Added new trip to UserTrips')
-              
+
               // generate filtered POIs
               createPersonalityViews()
-            
+
               var personalitiesQuery = createPersonalitiesQuery(
                 CoolCat,
                 Adventurer,
@@ -355,17 +366,17 @@ function new_trip (req, res) {
                 Investigator
               )
 
-              var viewName = "Trip_" + tripID.toString()
-            
+              var viewName = 'Trip_' + tripID.toString()
+
               var myQuery = `
                 CREATE OR REPLACE VIEW ${viewName} AS
                 ${personalitiesQuery}
                 SELECT DISTINCT pid
                 FROM POI NATURAL JOIN personalityPID
-                WHERE POI.city = ${city} AND POI.state = ${state};
+                WHERE POI.city = '${city}' AND POI.state = '${state}';
               `
               console.log(myQuery)
-            
+
               connection.query(myQuery, function (error, results, fields) {
                 if (error) {
                   console.log(error)
@@ -376,7 +387,7 @@ function new_trip (req, res) {
                   )
                 }
               })
-            
+
               // return tripID
               res.json({ tripID: tripID })
             }
@@ -389,7 +400,7 @@ function new_trip (req, res) {
 
 // Route 10 (handler) - (DEPRECATED) Returns trip POIs based on city, state, and travel personalities
 async function trip_pois (req, res) {
-  const username = req.params.username ? req.params.username : 'admin'
+  const username = req.params.username ? req.params.username : admin
   const tripID = req.params.tid ? req.params.tid : 0
   const tripTable = username + 'Trip' + tripID.toString()
 
@@ -459,8 +470,8 @@ async function trip_pois (req, res) {
 
 // Route 7 (handler) - Returns the attractions from filtered POIs
 function trip_attractions (req, res) {
-  const tripID = req.query.tripID ? req.query.tripID : '0'
-  var viewName = "Trip_" + tripID.toString()
+  const tripID = req.query.tripID ? req.query.tripID : 0
+  var viewName = 'Trip_' + tripID.toString()
 
   var myQuery = `
     SELECT *
@@ -481,8 +492,8 @@ function trip_attractions (req, res) {
 
 // Route 8 (handler) - Returns the restaurants from filtered POIs
 function trip_restaurants (req, res) {
-  const tripID = req.query.tripID ? req.query.tripID : '0'
-  var viewName = "Trip_" + tripID.toString()
+  const tripID = req.query.tripID ? req.query.tripID : 0
+  var viewName = 'Trip_' + tripID.toString()
 
   var myQuery = `
     SELECT *
@@ -503,8 +514,8 @@ function trip_restaurants (req, res) {
 
 // Route 9 (handler) - Returns the trails from filtered POIs
 function trip_trails (req, res) {
-  const tripID = req.query.tripID ? req.query.tripID : '0'
-  var viewName = "Trip_" + tripID.toString()
+  const tripID = req.query.tripID ? req.query.tripID : 0
+  var viewName = 'Trip_' + tripID.toString()
 
   var myQuery = `
     SELECT *
@@ -525,7 +536,7 @@ function trip_trails (req, res) {
 
 // Route 9 (handler) - Deletes trip given tripID
 function delete_trip (req, res) {
-  const tripID = req.query.tripID ? req.query.tripID : '0'
+  const tripID = req.query.tripID ? req.query.tripID : 0
 
   var myQuery = `
     DELETE FROM TripProfile
@@ -790,7 +801,7 @@ function createPersonalitiesQuery (p0, p1, p2, p3, p4, p5) {
   var personalitiesQuery = 'WITH personalityPID AS ('
 
   for (let p of personalities) {
-    if (p[0] === true) {
+    if (p[0] == 1) {
       if (firstPersonality === true) {
         personalitiesQuery += 'SELECT * FROM ' + p[1]
         firstPersonality = false
@@ -812,12 +823,13 @@ function createPopulationQuery (pop) {
   citySize[0] = new Array(0, '1') // any city
   citySize[1] = new Array(1, '500000') // (large) metropolitan
   citySize[2] = new Array(2, '200000') // mid-size urban area
-  citySize[3] = new Array(3, '500000') // small urban area
+  citySize[3] = new Array(3, '50000') // small urban area
 
   var populationQuery = ''
 
   if (population > 1) {
-    ', filteredCities AS (SELECT city, state FROM City WHERE population >= ' +
+    populationQuery +=
+      ', filteredCities AS (SELECT city, state FROM City WHERE population >= ' +
       citySize[population][1] +
       ' AND population < ' +
       citySize[population - 1][1] +
@@ -837,35 +849,39 @@ function createPopulationQuery (pop) {
 // ********************************************
 
 function test (req, res) {
-  var clientIP = req.socket.remoteAddress
-  console.log('Client IP: ' + clientIP.toString())
   var username = req.query.username
-  console.log('Username: ' + username.toString())
+  var clientIP = req.socket.remoteAddress
+  // console.log('Username: ' + username.toString())
+  // console.log('Client IP: ' + clientIP.toString())
 
   // TODO: make this function work...
-  return true
 
-  // if (res === true) {
-  //   // console.log(status)
-  //   res.send('Logged In!!')
-  // } else {
-  //   res.redirect('http://localhost:3000/failed')
-  // }
+  if (authenticate(username, clientIP) == true) {
+    res.send('Logged In!!')
+  } else {
+    res.redirect('http://localhost:3000/failed')
+  }
 }
 
 function authenticate (username, clientIP) {
   var myQuery = `
     SELECT *
-    FROM loggedIn
+    FROM LoggedIn
     WHERE clientIP = '${clientIP}' AND username = '${username}';  
   `
   console.log(myQuery)
 
   connection.query(myQuery, function (error, results, fields) {
-    if (results && results.length > 0) {
-      return true
+    if (results) {
+      if (results.length > 0) {
+        console.log('Authenticated user')
+        return true
+      } else {
+        console.log('Username NOT logged in with this client IP')
+        return false
+      }
     } else {
-      return false
+      console.log(error)
     }
   })
 }
