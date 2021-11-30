@@ -9,11 +9,7 @@ import { animateScroll as scroll } from 'react-scroll';
 import { LeftSquareOutlined } from '@ant-design/icons';
 import { getQuizCities, getRandomCity } from '../fetcher';
 
-
 const { Content } = Layout;
-
-const Quiz = BuzzFeedQuiz;
-
 
 const answers = [
   {
@@ -63,13 +59,13 @@ class QuizPage1 extends React.Component {
     this.state = {
       populationScore: 0,
       personalityScore: { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
-      quizResults: { population: 0, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false },
+      quizResults: { population: 0, coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
       description: "",
       renderResults: false,
-      destResults: [{ city: 'Los Angeles', state: 'California' }, { city: 'San Diego', state: 'California' }, { city: 'Vancouver', state: 'British Columbia' }],
+      // destResults: [{ city: 'Los Angeles', state: 'California' }, { city: 'San Diego', state: 'California' }, { city: 'Vancouver', state: 'British Columbia' }],
+      destResults: [],
       selectedDest: [],
       buttonStatus: false,
-      retakeQuiz: false
     };
 
     this.onCityQuestion = this.onCityQuestion.bind(this);
@@ -89,8 +85,10 @@ class QuizPage1 extends React.Component {
 
 
   retakeQuiz() {
-    scrollToTop();
-    window.location.reload();
+    scrollToTop()
+    setTimeout(() => {
+      window.location.reload()
+    }, 1000);
   }
 
   onCityQuestion(answerScore) {
@@ -135,39 +133,32 @@ class QuizPage1 extends React.Component {
 
 
   onResult() {
-    this.state.quizResults = { population: 0, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false };
+    this.state.quizResults = { population: 0, coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 };
     this.state.description = "";
-
     var numPersonalities = 0;
 
     this.state.quizResults.population = this.state.populationScore;
 
     for (const key in this.state.personalityScore) {
       if (this.state.personalityScore[key] >= 5) {
-        this.state.quizResults[key] = true;
+        this.state.quizResults[key] = 1;
         this.state.description += descriptions[key];
         numPersonalities += 1;
       }
     }
 
     if (numPersonalities === 0 || numPersonalities === 6) {
-      this.setState({ quizResults: { population: this.state.populationScore, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: true, investigator: false } });
-      this.setState({ description: descriptions.enthusiast });
+      this.state.quizResults = { population: this.state.populationScore, coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 1, investigator: 0 }
+      this.state.description = descriptions.enthusiast
     }
 
     // Get quiz cities
     this.getQuizDestinations();
-
     this.state.personalityScore = { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 };
-    this.setState({ renderResults: true });
-
-    scrollToBottom();
 
   }
 
   getQuizDestinations() {
-
-
     getQuizCities(
       this.state.quizResults.population,
       this.state.quizResults.coolCat,
@@ -177,10 +168,12 @@ class QuizPage1 extends React.Component {
       this.state.quizResults.enthusiast,
       this.state.quizResults.investigator
     ).then(res => {
-      // this.setState({destResults: res.results})
-      console.log(res);
-    }
-    );
+      this.state.destResults = res.results;
+      this.setState({ renderResults: true });
+      scrollToBottom();
+    });
+
+
   }
 
   setSelectedDest(e) {
@@ -269,7 +262,7 @@ class QuizPage1 extends React.Component {
               <Col>
                 <div style={{ fontSize: '5vw', }}>On this trip, I want to... </div>
 
-                <Quiz
+                <BuzzFeedQuiz
                   byline={true}
                   autoScroll={true}
                   style={{ className: 'rbq_question_inner_container' }}
