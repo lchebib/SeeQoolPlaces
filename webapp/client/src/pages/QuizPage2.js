@@ -56,19 +56,15 @@ class QuizPage2 extends React.Component {
 
     this.state = {
       personalityScore: { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
-      quizResults: {
-        population: 0, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false
-      },
+      quizResults: { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
       description: "",
       renderResults: false,
-      destResults: [{ 'city': 'Los Angeles', 'state': 'CA' }, { 'city': 'San Diego', 'state': 'CA' }, { 'city': 'Vancouver', 'state': 'BC' }],
+      // destResults: [{ 'city': 'Los Angeles', 'state': 'CA' }, { 'city': 'San Diego', 'state': 'CA' }, { 'city': 'Vancouver', 'state': 'BC' }],
+      destResults: [],
       selectedDest: JSON.parse(localStorage.getItem('selectedDest')),
       buttonStatus: false
     }
-    // preserve the initial state in a new object
-    this.baseState = this.state
 
-    this.onCityQuestion = this.onCityQuestion.bind(this)
     this.onCoolCatQuestion = this.onCoolCatQuestion.bind(this)
     this.onAdventurerQuestion = this.onAdventurerQuestion.bind(this)
     this.onEntertainerQuestion = this.onEntertainerQuestion.bind(this)
@@ -79,47 +75,14 @@ class QuizPage2 extends React.Component {
     this.retakeQuiz = this.retakeQuiz.bind(this)
     this.clickNextPage = this.clickNextPage.bind(this)
     this.pushQuizResults = this.pushQuizResults.bind(this)
-    this.onAnswerSelect = this.onAnswerSelect.bind(this)
   }
 
 
   retakeQuiz() {
-    this.setState(this.baseState)
-    this.forceUpdate()
-
     scrollToTop()
-  }
-
-  onAnswerSelect(e) {
-    this.state.personalityScore[e.target.name] = e.target.value
-    // scrollTo()
-  }
-
-
-  // retakeQuiz() {
-
-  //   scrollToTop()
-
-  //   // this.state = {
-  //   //   score: { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
-  //   //   personalityResults: {
-  //   //     population: 0, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false
-  //   //   },
-  //   //   description: "",
-  //   //   renderResults: false,
-  //   //   destResults: [{ 'city': 'Los Angeles', 'state': 'CA' }, { 'city': 'San Diego', 'state': 'CA' }, { 'city': 'Vancouver', 'state': 'BC' }],
-  //   //   selectedDest: [],
-  //   //   buttonStatus: false
-  //   // }
-
-  //   // window.location.reload();
-
-  // }
-
-  onCityQuestion(answerScore) {
-    var newResult = this.state.quizResults
-    newResult.population = newResult.population + answerScore
-    this.setState({ personalityResults: newResult })
+    setTimeout(() => {
+      window.location.reload()
+    }, 1000);
   }
 
   onCoolCatQuestion(answerScore) {
@@ -161,26 +124,25 @@ class QuizPage2 extends React.Component {
 
   onResult() {
     console.log("Pressed Last Quiz Button")
-    this.state.quizResults = { city: false, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: false, investigator: false }
+    this.state.quizResults = { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 };
     this.state.description = ""
     var numPersonalities = 0
 
     for (const key in this.state.personalityScore) {
       if (this.state.personalityScore[key] >= 5) {
-        this.state.quizResults[key] = true
+        this.state.quizResults[key] = 1
         this.state.description += descriptions[key]
         numPersonalities += 1;
       }
     }
 
     if (numPersonalities === 0 || numPersonalities === 6) {
-      this.setState({ quizResults: { city: false, coolCat: false, adventurer: false, entertainer: false, family: false, enthusiast: true, investigator: false } })
+      this.state.quizResults = { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 1, investigator: 0 }
       this.setState({ description: descriptions.enthusiast })
     }
 
     this.state.personalityScore = { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 }
     this.setState({ renderResults: true })
-
     scrollToBottom()
   }
 

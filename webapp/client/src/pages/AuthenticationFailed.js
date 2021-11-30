@@ -6,7 +6,7 @@ class AuthenticationFailed extends React.Component {
     super(props)
     setTimeout(function () {
       window.location = `/`
-    }, 2000)
+    }, 3000)
   }
 
   render () {
