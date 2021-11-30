@@ -2,14 +2,14 @@ import React from 'react'
 import { Row, Col } from 'antd'
 
 class AuthenticationFailed extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     setTimeout(function () {
       window.location = `/`
     }, 3000)
   }
 
-  render () {
+  render() {
     return (
       <Row
         type='flex'
