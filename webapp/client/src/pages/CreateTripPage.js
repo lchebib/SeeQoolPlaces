@@ -82,7 +82,7 @@ const makeOptions = (arr) => {
   if (!Array.isArray(arr)) {
     return [];
   }
-  console.log("got here");
+  // console.log("got here");
 
   let result = [
     {
@@ -98,8 +98,8 @@ const makeOptions = (arr) => {
   arr.forEach(obj => {
     let cityArr = Object.entries(obj);
     let cityObj = { value: cityArr[1][1], label: cityArr[1][1] };
-    console.log(cityArr);
-    console.log(cityObj);
+    // console.log(cityArr);
+    // console.log(cityObj);
     if (cityArr[0][1] === "CA") {
       result[0].children.push(cityObj);
     } else {
@@ -124,9 +124,9 @@ class CreateTripPage extends React.Component {
     this.state = {
       buttonStatus: false,
       options: [],
-      selectedDest: localStorage.getItem('selectedDest') ? JSON.parse(localStorage.getItem('selectedDest')) : [],
-      defaultDest: localStorage.getItem('selectedDest') ? JSON.parse((localStorage.getItem('selectedDest')).toLowerCase()) : [],
-      selectedPersonalities: localStorage.getItem('selectedPersonalities') ? JSON.parse((localStorage.getItem('selectedPersonalities')).toLowerCase()) : {},
+      selectedDest: [],
+      defaultDest: [],
+      selectedPersonalities: { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
       defaultPersonalities: [],
       tripName: "",
       tripNameValidateStatus: { validateStatus: "", errorMsg: "" },
@@ -148,8 +148,11 @@ class CreateTripPage extends React.Component {
   }
 
   onPersonalitiesChange(checkedValue) {
-    this.setState({ selectedPersonalities: checkedValue });
-    console.log(this.state.tripDates)
+    checkedValue.forEach(personality => {
+      this.state.selectedPersonalities[personality] = 1
+    });
+
+    // this.setState({ selectedPersonalities: checkedValue });
   }
 
   onTripNameChange(e) {
@@ -181,22 +184,21 @@ class CreateTripPage extends React.Component {
 
 
   createTrip() {
+    // Temporary assignment of random tripID.
+    // TODO: Create tripID by assigning it incrementally.
     var tripID = Math.floor((Math.random() * 1000) + 1);
     this.state.tripID = tripID
 
-    var tripDetails = { tripID: this.state.tripID, name: this.state.tripName, selectedDest: this.state.selectedDest, selectedPersonalities: this.state.selectedPersonalities, tripDates: this.state.tripDates }
-    console.log(tripDetails)
+    var tripDetails = {
+      id: this.state.tripID,
+      name: this.state.tripName,
+      destination: this.state.selectedDest,
+      personalities: this.state.selectedPersonalities,
+      dates: this.state.tripDates
+    }
+
     // postCreateTrip(tripDetails)
-
-    var trips = JSON.parse(localStorage.getItem("trips"))
-    var newTrips = trips ? trips : {}
-    // var newTrips = trips ? trips : []
-    // newTrips.push(tripDetails)
-    newTrips.tripID = tripDetails
-    console.log(newTrips.tripID)
-    JSON.stringify(localStorage.setItem("trips", newTrips))
-    // JSON.stringify(localStorage.setItem("tripDates", newTrips))
-
+    localStorage.setItem(tripID, JSON.stringify(tripDetails))
     this.clickNextPage()
   }
 
@@ -206,18 +208,25 @@ class CreateTripPage extends React.Component {
   }
 
 
-  componentDidMount() {
+  componentWillMount() {
+
+    this.setState({ selectedDest: localStorage.getItem('selectedDest') ? JSON.parse(localStorage.getItem('selectedDest')) : [] })
+    this.setState({ defaultDest: localStorage.getItem('selectedDest') ? JSON.parse(localStorage.getItem('selectedDest')) : [] })
+    // this.setState({ defaultDest: localStorage.getItem('selectedDest') ? JSON.parse((localStorage.getItem('selectedDest')).toLowerCase()) : [] })
+
     getAllCities().then(res => {
       this.setState({ options: makeOptions(res) })
-      console.log(res);
     })
 
 
-    if (localStorage.getItem('selectedPersonalities')) {
-      this.setState({ selectedPersonalities: JSON.parse(localStorage.getItem('selectedPersonalities')) })
+    var personalities = localStorage.getItem('selectedPersonalities');
+    if (personalities) {
+      personalities = JSON.parse(personalities)
+      this.setState({ selectedPersonalities: personalities })
       var persArray = []
-      for (const [key, value] of Object.entries(this.state.selectedPersonalities)) {
-        if (value === true) {
+      for (const [key, value] of Object.entries(personalities)) {
+        console.log(key)
+        if (value === 1) {
           persArray.push(key)
         }
       }
@@ -278,7 +287,7 @@ class CreateTripPage extends React.Component {
                     {...formItemLayout}
                     onFinish={this.createTrip}
                     initialValues={{
-                      destination: this.state.selectedDest,
+                      destination: this.state.defaultDest,
                       personalities: this.state.defaultPersonalities
                     }}
                   >

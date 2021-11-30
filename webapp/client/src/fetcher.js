@@ -125,28 +125,23 @@ const getQuizCities = async (population, p0, p1, p2, p3, p4, p5) => {
   // return res;
 }
 
-// ********************************************
-//             QuizPage2 Fetchers
-// ********************************************
-
-const getAllPOIs = async (tripID) => {
-  // const getAllPOIs = async (tripID) => {
-  // var res = await fetch(`http://${config.server_host}:${config.server_port}/trip_pois?city=${city}&state=${state}&p1=${p1}&p2=${p2}&p3=${p3}&p4=${p4}&p5=${p5}&p6=${p6}`, {
-  var res = await fetch(
-    `http://${config.server_host}:${config.server_port}/trip_pois`,
-    {
-      method: 'GET',
-      body: JSON.stringify(tripID)
-    }
-  )
-  return res.json()
-  // var res = tempGetPOIS();
-  // return res;
-}
 
 // ********************************************
 //             CreateTripPage Fetchers
 // ********************************************
+
+
+const getTripPOIS = async (tripID, username) => {
+  // var res = await fetch(
+  //   `http://${config.server_host}:${config.server_port}/trip_pois?tid=${tripID}&username=${userna,e}`,
+  //   {
+  //     method: 'GET',
+  //   }
+  // )
+  // return res.json()
+  var res = { results: tempGetPOIS() };
+  return res;
+}
 
 const postCreateTrip = async (tripDetails) => {
   console.log(tripDetails)
@@ -173,6 +168,6 @@ export {
   signUp,
   getAllCities,
   getQuizCities,
-  getAllPOIs,
+  getTripPOIS,
   postCreateTrip
 }

@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import TabsCard from '../components/TabsCard';
 import Scheduler from '../components/Scheduler';
 import FilterBar from '../components/FilterBar';
-import { getAllPOIs } from '../fetcher';
+import { getTripPOIS } from '../fetcher';
 import { getAllTrips } from '../fetcher'
 
 const { Content, Sider } = Layout;
@@ -100,7 +100,6 @@ class TripPage extends React.Component {
     this.state = {
       trip: null,
       POIS: [],
-      events: [],
       favorites: favorites,
       events: [],
       bigPOI: {}
@@ -115,21 +114,17 @@ class TripPage extends React.Component {
   }
 
   componentWillMount() {
-    getAllTrips()
-
-    getAllPOIs().then(res => {
-      this.setState({ POIS: res })
-      this.setState({ bigPOI: this.state.POIS.find(POI => POI.category === 'trails') })
-    })
-
-    this.setState({ bigPOI: this.state.POIS[0] })
-
-
     var tripID = window.location.href.split('=')[1]
 
     if (isNaN(tripID)) {
       tripID = 100
     }
+
+    getTripPOIS(tripID, "admin").then(res => {
+      this.setState({ POIS: res.results })
+      this.setState({ bigPOI: this.state.POIS[0] })
+      console.log(res.results)
+    })
 
     var trip = JSON.parse(localStorage.getItem(tripID))
     this.setState({ trip: trip })
@@ -224,8 +219,8 @@ class TripPage extends React.Component {
             </Content>
             <Sider style={{ background: 'white', border: '1px solid #F0F0F0' }}>
               <FilterBar
-                favorites={this.state.favorites}
-                onClick={this.changeBigPOI}
+                favorites={this.state.favoritePOIS}
+                onClickFavorite={this.changeBigPOI}
               />
             </Sider>
           </Layout>
