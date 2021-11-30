@@ -224,6 +224,14 @@ class CreateTripPage extends React.Component {
       this.setState({ defaultPersonalities: persArray })
     }
 
+    //   if (localStorage.getItem('selectedDest')) {
+    //     var selectedDest = JSON.parse(localStorage.getItem('selectedDest'))
+    //     // localStorage.getItem('selectedDest') ? JSON.parse((localStorage.getItem('selectedDest')).toLowerCase()) : [],
+    //     this.setState({ selectedDest: selectedDest })
+    //     this.setState({ defaultDest: [selectedDest[0].toLowerCase(), selectedDest[1]] })
+    //   }
+    console.log(this.state.defaultDest[1].toLowerCase());
+
   }
 
   onCheckConfirmDetails = e => {

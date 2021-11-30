@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Row, Col, Menu, Space, Divider } from 'antd';
 
-const { SubMenu } = Menu
 class FilterBar extends React.Component {
 
   constructor(props) {
@@ -16,16 +15,15 @@ class FilterBar extends React.Component {
     }
 
     const favoriteButton = (POI) => {
-      var color;
       if (POI.category === "trails") {
-        color = '#9CDA86'
-        // return <Button style={{ background: '#9CDA86' }}>{POI.name}</Button>
+        console.log(POI)
+        return <Button style={{ background: '#9CDA86' }}>{POI.name}</Button>
       } else if (POI.category === "attractions") {
-        color = '#FFC93F'
-        // return <Button style={{ background: '#FFC93F' }}>{POI.name}</Button>
+        console.log(POI)
+        return <Button style={{ background: '#FFC93F' }}>{POI.name}</Button>
       } else {
-        color = '#EC7878'
-        // return <Button style={{ background: '#EC7878' }}>{POI.name}</Button>
+        console.log(POI)
+        return <Button style={{ background: '#EC7878' }}>{POI.name}</Button>
       }
       return <Button onClick={() => { this.props.onClickFavorite(POI) }} shape='round' style={{ background: color, border: 'none', width: '100%', textAlign: 'left' }}>{POI.name}</Button>
 
