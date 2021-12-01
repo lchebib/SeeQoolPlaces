@@ -11,10 +11,11 @@ class SideBar extends React.Component {
     super(props)
 
     this.state = {
-      myTrips: []
+      trips: []
     }
 
     this.onMenuClick = this.onMenuClick.bind(this)
+    this.storeTrips = this.storeTrips.bind(this)
   }
 
   onMenuClick(menuItem) {
@@ -26,11 +27,33 @@ class SideBar extends React.Component {
   }
 
   componentDidMount() {
-    getAllTrips().then(res => {
-      this.setState({ myTrips: res.results })
+
+    var username = localStorage.getItem("username")
+    getAllTrips(username).then(res => {
+      //tripID, tripName, city, state
+      this.setState({ trips: res.results })
+      this.storeTrips(this.state.trips)
     })
 
   }
+
+  storeTrips() {
+
+    this.state.trips.map((trip) => {
+      let tripDetails = {
+        tripID: trip.tripID,
+        tripName: trip.tripName,
+        city: trip.city,
+        state: trip.state,
+        startDate: new Date('December 24, 2021 00:00:00'), // temp
+        endDate: new Date('January 4, 2021 23:00:00'), // temp
+      }
+
+      localStorage.setItem(tripDetails.tripID, JSON.stringify(tripDetails))
+    });
+
+  }
+
 
   render() {
 
@@ -38,7 +61,6 @@ class SideBar extends React.Component {
     return (
 
       <div>
-        {/* <Affix > */}
         <Menu
           theme="light"
           onClick={(menuItem) => this.onMenuClick(menuItem)}
@@ -49,7 +71,7 @@ class SideBar extends React.Component {
             position: 'fixed',
             width: '200px',
             height: '100vh',
-            // border: '1px solid #000',
+            overflow: 'auto'
           }}
         >
           <a href="/">
@@ -61,12 +83,12 @@ class SideBar extends React.Component {
           </SubMenu>
 
           <SubMenu key="MyTrips" title="My Trips" style={{ fontWeight: "bold", fontSize: 15, }}>
-            {this.state.myTrips.map((trip) =>
-              <Menu.Item key={trip.id} style={{ fontWeight: "normal", fontSize: 15, }}>{trip.name}</Menu.Item>
+            {this.state.trips.map((trip) =>
+              <Menu.Item key={trip.tripID} style={{ fontWeight: "normal", fontSize: 15, }}>{trip.tripName}</Menu.Item>
             )}
           </SubMenu>
 
-          <Menu.Item
+          {/* <Menu.Item
             key="about" title="" style={{ fontWeight: "bold", fontSize: 15, position: 'absolute', bottom: 100, zIndex: 1 }}>
             About
           </Menu.Item>
@@ -77,9 +99,8 @@ class SideBar extends React.Component {
           <Menu.Item
             key="careers" title="" style={{ fontWeight: "bold", fontSize: 15, position: 'absolute', bottom: 20, zIndex: 1 }}>
             Careers
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu>
-        {/* </Affix> */}
       </div>
     );
 

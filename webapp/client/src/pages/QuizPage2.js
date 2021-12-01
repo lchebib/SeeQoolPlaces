@@ -179,7 +179,7 @@ class QuizPage2 extends React.Component {
                 <br />
                 <div style={{ fontSize: '3vw', color: 'white' }}>Ready to create your trip to {this.state.selectedDest[1]}? </div>
                 <br />
-                <Button onClick={this.clickNextPage} type='primary' shape='round' size='large' style={{ margin: '20px', border: 'none', background: 'black', color: 'white', width: '15vw', height: '5vw', fontSize: '2vw' }}>Create Trip</Button>
+                <Button onClick={this.clickNextPage} type='primary' shape='round' size='large' style={{ margin: '20px', border: 'none', background: 'black', color: 'white', width: '12vw', height: '4vw', fontSize: '2vw' }}>Next</Button>
                 <br />
                 <Button onClick={this.retakeQuiz} type='primary' shape='round' size='large' style={{ margin: '20px', border: 'none', background: '#5c1b4d' }}>Retake Quiz</Button>
               </Card >

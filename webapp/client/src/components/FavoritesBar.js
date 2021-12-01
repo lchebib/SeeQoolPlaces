@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Row, Col, Menu, Space, Divider } from 'antd';
 
-class FilterBar extends React.Component {
+class FavoritesBar extends React.Component {
 
   constructor(props) {
     super(props)
@@ -34,6 +34,9 @@ class FilterBar extends React.Component {
         paddingTop: '15px',
         width: '200px',
         height: '100vh',
+        overflow: 'auto',
+        position: 'fixed'
+
       }}>
         <Row align="top" justify="center" style={{ 'height': '80vh' }}>
           {/* <Row align="top" justify="center" style={{ 'height': '30vh' }}> */}
@@ -90,4 +93,4 @@ class FilterBar extends React.Component {
   }
 }
 
-export default FilterBar
+export default FavoritesBar

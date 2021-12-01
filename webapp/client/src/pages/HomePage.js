@@ -5,16 +5,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { getRandomCity } from '../fetcher'
 
-const { Content } = Layout;
-
-// const parseState = (state) => {
-//   if (state == 'BC') {
-//     return 'british columbia'
-
-//   } else {
-//     return 'california'
-//   }
-// }
+const { Content, Sider } = Layout;
 
 class HomePage extends React.Component {
 
@@ -51,41 +42,29 @@ class HomePage extends React.Component {
 
   render() {
 
-    // if (!this.state.randomCity) {
-    //   return null
-    // }
-
     return (
-      <Layout style={{
-        background: 'white'
-      }}>
-        {/* <Affix> */}
-        {/* <Sider
+      <Layout style={{ background: 'white', minWidth: 1000 }}>
+        <Sider
           style={{
-            // overflow: 'auto',
-            // paddingTop: '15px',
             height: '100vh',
             position: 'fixed',
-            // left: 0,
-            // width: '200px',
-            border: '1px solid #000',
-          }}> */}
-        <SideBar />
-        {/* </Sider> */}
-        {/* </Affix> */}
-        <Layout className='layout' style={{ background: 'white', marginLeft: 200, minWidth: '750px', position: 'absolute', offset: '0, 0' }} >
+            zIndex: 100
+          }}>
+          <SideBar style />
+        </Sider>
+        <Layout style={{ background: 'white', marginLeft: 200 }} >
           <Header />
-          <Content style={{ margin: '24px 24px 0', overflow: 'initial', position: 'relative' }} >
+          <Content style={{ margin: '24px 24px 0' }} >
             <div style={{ textAlign: 'center' }}>
               <Row >
                 <Col span={24}>
                   <Card style={{
                     margin: '10px',
-                    // border: 'none',
+                    border: 'none',
                     // boxShadow: '1px 1px 5px #D3D3D3'
                   }}>
-                    <h1 style={{ fontFamily: 'Work Sans', fontSize: '30px' }}>Plan the perfect trip.</h1>
-                    <img src={(process.env.PUBLIC_URL + "/instructions.jpg")} alt="" style={{ maxWidth: '700px' }} />
+                    <div style={{ fontFamily: 'Work Sans', fontSize: '40px', marginBottom: '50px' }}>Plan the perfect trip.</div>
+                    <img src={(process.env.PUBLIC_URL + "/instructions.jpg")} alt="" style={{ maxWidth: '90%' }} />
                   </Card>
                 </Col >
               </Row>
@@ -105,8 +84,7 @@ class HomePage extends React.Component {
                     right: '0px',
                     bottom: '0px',
                     left: '0px',
-                    content: '',
-                    // border: 'none',
+                    border: 'none',
                     // boxShadow: '1px 1px 5px #D3D3D3'
                   }} />
                   <Card style={{
@@ -141,8 +119,7 @@ class HomePage extends React.Component {
                     right: '0px',
                     bottom: '0px',
                     left: '0px',
-                    content: '',
-                    // border: 'none',
+                    border: 'none',
                     // boxShadow: '1px 1px 5px #D3D3D3'
                   }} />
                   <Card style={{

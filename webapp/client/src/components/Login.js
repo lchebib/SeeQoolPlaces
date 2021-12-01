@@ -44,7 +44,7 @@ const Login = () => {
 
 
 	const authSuccess = (username) => {
-		localStorage.setItem("User", username)
+		localStorage.setItem("username", username)
 		window.location = '/home';
 
 	};

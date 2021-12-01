@@ -7,7 +7,7 @@ import { BuzzFeedQuiz } from "react-buzzfeed-quiz";
 import "react-buzzfeed-quiz/lib/styles.css";
 import { animateScroll as scroll } from 'react-scroll';
 import { LeftSquareOutlined } from '@ant-design/icons';
-import { getQuizCities, getRandomCity } from '../fetcher';
+import { getQuizCities } from '../fetcher';
 
 const { Content } = Layout;
 
@@ -50,29 +50,15 @@ function scrollToTop() {
 }
 
 
+// function tempStateChanger(arr) {
 
-function tempStateChanger(arr) {
-
-  // arr = [{state: 'CA', city: 'Los Angeles'}, {state: 'BC', city: 'Vancouver'}, {}]
-
-  // var arr = arr.results;
-  // var array = [...arr]
-
-  // arr.forEach(obj => {
-  //   if (obj.state === 'CA') {
-  //     obj.state = 'California';
-  //   } else {
-  //     obj.state = 'British Columbia';
-  //   }
-  // })
-
-  if (arr[0] === 'CA') {
-    arr[0] = 'California';
-  } else {
-    arr[0] = 'British Columbia';
-  }
-  return arr;
-}
+//   if (arr[0] === 'CA') {
+//     arr[0] = 'California';
+//   } else {
+//     arr[0] = 'British Columbia';
+//   }
+//   return arr;
+// }
 
 class QuizPage1 extends React.Component {
 
@@ -105,7 +91,6 @@ class QuizPage1 extends React.Component {
     this.getQuizDestinations = this.getQuizDestinations.bind(this);
 
   }
-
 
   retakeQuiz() {
     scrollToTop()
@@ -178,7 +163,6 @@ class QuizPage1 extends React.Component {
     // Get quiz cities
     this.getQuizDestinations();
     this.state.personalityScore = { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 };
-
   }
 
   getQuizDestinations() {
@@ -191,24 +175,18 @@ class QuizPage1 extends React.Component {
       this.state.quizResults.enthusiast,
       this.state.quizResults.investigator
     ).then(res => {
-
-      // run res.results through a filter to turn CA to California
-      // var destinations = tempStateChanger(res.results[0])
       var destinations = res.results
       this.state.destResults = destinations;
       this.setState({ renderResults: true });
       scrollToBottom();
     });
-
-
   }
-
-
 
   setSelectedDest(e) {
     var index = parseInt(e.target.value);
     var destObj = this.state.destResults[index];
-    this.state.selectedDest = tempStateChanger([destObj.state, destObj.city]);
+    // this.state.selectedDest = tempStateChanger([destObj.state, destObj.city]);
+    this.state.selectedDest = [destObj.state, destObj.city];
     this.setState({ buttonStatus: true });
   }
 
@@ -256,7 +234,7 @@ class QuizPage1 extends React.Component {
                 <br />
                 <div style={{ fontSize: '3vw', }}> Your perfect cities are... </div>
                 <br />
-                <Radio.Group buttonStyle="solid" onChange={(e) => this.setSelectedDest(e)}>
+                <Radio.Group buttonStyle="solid" onChange={(e) => this.setSelectedDest(e)} style={{ marginBottom: 50 }}>
                   <Radio.Button value="0" style={{ padding: '2vh', borderRadius: '3px', marginTop: '20px', width: '80%', height: '8vh', fontSize: '2vw', fontFamily: 'sans-serif bold', border: 'none' }}>
                     {this.state.destResults[0].city}, {this.state.destResults[0].state}
                   </Radio.Button>
@@ -267,11 +245,9 @@ class QuizPage1 extends React.Component {
                     {this.state.destResults[2].city}, {this.state.destResults[2].state}
                   </Radio.Button>
                 </Radio.Group>
-                {/* <Space direction='vertical'> */}
                 <br />
                 {enableButton()}
                 <br />
-                {/* </Space> */}
                 <Button onClick={this.retakeQuiz} type='primary' shape='round' size='large' style={{ margin: '20px', border: 'none', background: '#5c1b4d' }}>Retake Quiz</Button>
               </Card >
             </Col>

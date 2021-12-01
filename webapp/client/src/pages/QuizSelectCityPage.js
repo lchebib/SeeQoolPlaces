@@ -1,117 +1,37 @@
 import React from 'react'
-import { Layout, Row, Col, Card, Button, Cascader } from 'antd'
+import { Layout, Row, Col, Card, Button } from 'antd'
 import { LeftSquareOutlined } from '@ant-design/icons'
 import SideBar from '../components/SideBar'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import { getAllCities } from '../fetcher'
+import DestinationCascader from '../components/DestinationCascader';
 import 'react-buzzfeed-quiz/lib/styles.css'
 
 const { Content } = Layout
 
-// const makeOptions = (arr) => {
-//   let result = [
-//     {
-//       value: 'california',
-//       label: 'California',
-//       children: []
-//     },
-//     {
-//       value: 'british columbia',
-//       label: 'British Columbia',
-//       children: []
-//     }];
-
-//   for (let i = 0; i < arr.results.length; i++) {
-//     let cityArr = Object.values(arr.results[i]);
-//     if (cityArr[1] !== null) {
-//       let cityObj = { value: cityArr[1].toLowerCase(), label: cityArr[1] };
-//       if (cityArr[0] === "CA") {
-//         result[0].children.push(cityObj);
-//       } else {
-//         result[1].children.push(cityObj);
-//       }
-//     }
-//   }
-//   return result;
-
-const makeOptions = (arr) => {
-  var arr = arr.results;
-
-  if (!Array.isArray(arr)) {
-    return []
-  }
-  let result = [
-    {
-      value: 'California',
-      label: 'California',
-      code: 'CA',
-      children: []
-    },
-    {
-      value: 'British Columbia',
-      label: 'British Columbia',
-      code: 'CA',
-      children: []
-    }
-  ]
-  arr.forEach(obj => {
-    let cityArr = Object.entries(obj)
-    let cityObj = { value: cityArr[1][1], label: cityArr[1][1] }
-    console.log(cityObj['value'])
-    console.log(cityObj['label'])
-    if (cityArr[0][1] === 'CA') {
-      result[0].children.push(cityObj)
-    } else {
-      result[1].children.push(cityObj)
-    }
-  })
-  return result
-}
-
-// function filter(inputValue, path) {
-//   return path.some(
-//     option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
-//   )
-// }
-
-// how do we write a function that maps our cities and states into the options variable?
 class QuizSelectCityPage extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      options: [],
       buttonStatus: false,
       selectedDest: []
     }
-    this.onChange = this.onChange.bind(this)
+    this.onDestChange = this.onDestChange.bind(this)
     this.onClickNextPage = this.onClickNextPage.bind(this)
   }
   onClickNextPage() {
-    localStorage.setItem(
-      'selectedDest',
-      JSON.stringify(this.state.selectedDest)
-    )
+    localStorage.setItem('selectedDest', JSON.stringify(this.state.selectedDest))
     window.location = '/quiz2'
   }
-  onChange(value) {
+  onDestChange(value) {
     this.setState({ buttonStatus: true })
     this.setState({ selectedDest: value })
     console.log(value)
   }
 
-  componentDidMount() {
-    getAllCities().then(res => {
-      this.setState({ options: makeOptions(res) })
-      console.log(res);
-    })
-  }
-
   render() {
-    if (this.state.options.length === 0) {
-      return null
-    }
+
     const enableButton = () => {
       if (this.state.buttonStatus === true) {
         return (
@@ -180,13 +100,8 @@ class QuizSelectCityPage extends React.Component {
                     <br />
                     <br />
                   </div>
-                  <Cascader
-                    options={this.state.options}
-                    onChange={this.onChange}
-                    // showSearch={{ filter }}
-                    placeholder='Select City'
-                    style={{ width: '60%' }}
-                  />
+                  <DestinationCascader onChange={this.onDestChange} style={{ width: '60%' }} />
+
                   <br />
                   <br />
                   {enableButton()}

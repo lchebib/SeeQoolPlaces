@@ -163,7 +163,7 @@ class Scheduler extends React.Component {
       eid = this.state.events[0].id + 1
     }
 
-    var start = new Date(this.state.trip.dates[0])
+    var start = new Date(this.state.trip.startDate)
     start.setHours(0, 0, 0, 0)
     // var start = new Date(this.state.trip.dates[0])
     var duration = POI.durationHigh
@@ -310,7 +310,7 @@ class Scheduler extends React.Component {
               events={this.state.events}
               startAccessor="start"
               endAccessor="end"
-              defaultDate={this.state.trip.dates[0]}
+              defaultDate={this.state.trip.startDate}
               localizer={localizer}
               toolbar
               resizable

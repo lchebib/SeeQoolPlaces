@@ -6,26 +6,19 @@ import {
   Form,
   Input,
   Button,
-  Cascader,
   Checkbox,
   DatePicker,
-  Space
 } from 'antd';
-import {
-  LeftSquareOutlined
-} from '@ant-design/icons';
+
+import { LeftSquareOutlined } from '@ant-design/icons';
 import SideBar from '../components/SideBar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { getAllCities } from '../fetcher';
-import { postCreateTrip } from '../fetcher'
-import moment from "moment";
-
-
+import DestinationCascader from '../components/DestinationCascader';
+import { newTrip } from '../fetcher'
 
 const { Content } = Layout;
 const { RangePicker } = DatePicker;
-
 
 const formItemLayout = {
   labelCol: {
@@ -38,84 +31,7 @@ const formItemLayout = {
   },
 };
 
-
-const personalities = [
-  { label: 'coolCat', value: 'coolCat' },
-  { label: 'adventurer', value: 'Adventurer' },
-  { label: 'entertainer', value: 'Entertainer' },
-  { label: 'family', value: 'Family' },
-  { label: 'enthusiast', value: 'Enthusiast' },
-  { label: 'investigator', value: 'Investigator' },
-];
-
-
 const personalityTooltip = "Let us get to know you so we can recommend some activities you're guaranteed to enjoy. Take the Trip Quiz to find out your travel personality!"
-
-// const descriptions =
-// {
-//   coolCat: "Your ideal night involves seeing your favorite band perform live or hitting up some local breweries. Also, you've probably worked as a barista at some point in life.",
-//   adventurer: "You have an adventurous spirit, and love to get lost and explore whether its a bustling city or the middle of the woods. ",
-//   entertainer: "You enjoy the finer things in life and your bucket-list includes a 3 Michelin star restaurant.",
-//   family: "You want to spend quality time with loved ones. ",
-//   enthusiast: "You tend to go with the flow and you're up for anything that sounds fun.",
-//   investigator: "You get to know a city by the stories of it's past. You're just happy when you're learning. "
-// }
-
-
-// const makeAutoFill = (str) => {
-//   // if ()
-//   let arr = str.split(',');
-//   let state;
-//   let city = arr[1].toLowerCase();
-//   if (arr[0] == 'california') {
-//     state = 'california';
-//   } else {
-//     state = 'british columbia';
-//   }
-//   arr = [state, city];
-//   return arr;
-// }
-
-const makeOptions = (arr) => {
-  var arr = arr.results
-
-  if (!Array.isArray(arr)) {
-    return [];
-  }
-  // console.log("got here");
-
-  let result = [
-    {
-      value: 'California',
-      label: 'California',
-      children: []
-    },
-    {
-      value: 'British Columbia',
-      label: 'British Columbia',
-      children: []
-    }];
-  arr.forEach(obj => {
-    let cityArr = Object.entries(obj);
-    let cityObj = { value: cityArr[1][1], label: cityArr[1][1] };
-    // console.log(cityArr);
-    // console.log(cityObj);
-    if (cityArr[0][1] === "CA") {
-      result[0].children.push(cityObj);
-    } else {
-      result[1].children.push(cityObj);
-    }
-  });
-  return result;
-}
-
-// const options2 = makeOptions(getAllCities());
-
-// function filter(inputValue, path) {
-//   return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
-// }
-
-
 
 class CreateTripPage extends React.Component {
   constructor(props) {
@@ -125,12 +41,10 @@ class CreateTripPage extends React.Component {
       buttonStatus: false,
       options: [],
       selectedDest: [],
-      defaultDest: [],
       selectedPersonalities: { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
-      defaultPersonalities: [],
       tripName: "",
       tripNameValidateStatus: { validateStatus: "", errorMsg: "" },
-      tripID: 0,
+      // tripID: 0,
       tripDates: []
     }
 
@@ -140,7 +54,7 @@ class CreateTripPage extends React.Component {
     this.onPersonalitiesChange = this.onPersonalitiesChange.bind(this)
     this.onDestChange = this.onDestChange.bind(this)
     this.onTripNameChange = this.onTripNameChange.bind(this)
-
+    this.storeTrip = this.storeTrip.bind(this)
   }
 
   onDestChange(value) {
@@ -151,107 +65,81 @@ class CreateTripPage extends React.Component {
     checkedValue.forEach(personality => {
       this.state.selectedPersonalities[personality] = 1
     });
-
-    // this.setState({ selectedPersonalities: checkedValue });
   }
 
   onTripNameChange(e) {
-
-    // var storedTrips = localStorage.getItem("trips")
-    // console.log(typeof storedTrips)
-    // if (typeof storedTrips === "string") {
-    //   var trips = JSON.parse(localStorage.getItem("trips"))
-    // } else {
-    //   var trips = localStorage.getItem("trips")
-    // }
-
-    // console.log(trips)
-
-    // var tripsExist = trips ? trips : null
-    // console.log(tripsExist)
-
-    // if (trips) {
-    //   tripsExist.map((trip) => {
-    //     if (trip.name == name) {
-    //       this.tripNameValidateStatus = { validateStatus: "Trip name already exists. Please choose a unique name ", errorMsg: "error" }
-    //       return
-    //     }
-    //   })
-    // }
     var name = e.target.value
     this.state.tripName = name
   }
 
-
   createTrip() {
-    // Temporary assignment of random tripID.
-    // TODO: Create tripID by assigning it incrementally.
-    var tripID = Math.floor((Math.random() * 1000) + 1);
-    this.state.tripID = tripID
 
-    var tripDetails = {
-      id: this.state.tripID,
-      name: this.state.tripName,
-      destination: this.state.selectedDest,
-      personalities: this.state.selectedPersonalities,
-      dates: this.state.tripDates
-    }
+    var username = localStorage.getItem("username")
+    var tripID
 
-    // postCreateTrip(tripDetails)
-    localStorage.setItem(tripID, JSON.stringify(tripDetails))
-    this.clickNextPage()
-  }
-
-
-  clickNextPage() {
-    window.location = `/trip?id=${this.state.tripID}`;
-  }
-
-
-  componentWillMount() {
-
-    this.setState({ selectedDest: localStorage.getItem('selectedDest') ? JSON.parse(localStorage.getItem('selectedDest')) : [] })
-    this.setState({ defaultDest: localStorage.getItem('selectedDest') ? JSON.parse(localStorage.getItem('selectedDest')) : [] })
-    // this.setState({ defaultDest: localStorage.getItem('selectedDest') ? JSON.parse((localStorage.getItem('selectedDest')).toLowerCase()) : [] })
-
-    getAllCities().then(res => {
-      this.setState({ options: makeOptions(res) })
+    newTrip(
+      username,
+      this.state.tripName,
+      this.state.selectedDest[1],
+      this.state.selectedDest[0],
+      this.state.selectedPersonalities.coolCat,
+      this.state.selectedPersonalities.adventurer,
+      this.state.selectedPersonalities.entertainer,
+      this.state.selectedPersonalities.family,
+      this.state.selectedPersonalities.enthusiast,
+      this.state.selectedPersonalities.investigator,
+    ).then(res => {
+      // this.state.tripID = res.results
+      tripID = res.results
     })
 
-
-    var personalities = localStorage.getItem('selectedPersonalities');
-    if (personalities) {
-      personalities = JSON.parse(personalities)
-      this.setState({ selectedPersonalities: personalities })
-      var persArray = []
-      for (const [key, value] of Object.entries(personalities)) {
-        console.log(key)
-        if (value === 1) {
-          persArray.push(key)
-        }
-      }
-      this.setState({ defaultPersonalities: persArray })
-    }
-
-    //   if (localStorage.getItem('selectedDest')) {
-    //     var selectedDest = JSON.parse(localStorage.getItem('selectedDest'))
-    //     // localStorage.getItem('selectedDest') ? JSON.parse((localStorage.getItem('selectedDest')).toLowerCase()) : [],
-    //     this.setState({ selectedDest: selectedDest })
-    //     this.setState({ defaultDest: [selectedDest[0].toLowerCase(), selectedDest[1]] })
-    //   }
-    // console.log(this.state.defaultDest[1].toLowerCase());
-
+    this.storeTrip(tripID)
+    this.clickNextPage(tripID)
   }
 
-  onCheckConfirmDetails = e => {
-    this.setState({
-      buttonStatus: e.target.checked,
-    });
-  };
+  storeTrip(tripID) {
+    let tripDetails = {
+      tripID: tripID,
+      tripName: this.state.tripName,
+      city: this.state.selectedDest[1],
+      state: this.state.selectedDest[0],
+      startDate: this.state.tripDates[0],
+      endDate: this.state.tripDates[1]
+    }
 
+    localStorage.setItem(tripDetails.tripID, JSON.stringify(tripDetails))
+  }
 
+  clickNextPage(tripID) {
+    console.log(tripID)
+    // window.location = `/trip?id=${this.state.tripID}`;
+    window.location = `/trip?id=${tripID}`;
+  }
+
+  componentWillMount() {
+    this.setState({ selectedDest: localStorage.getItem('selectedDest') ? JSON.parse(localStorage.getItem('selectedDest')) : [] })
+    this.setState({ selectedPersonalities: localStorage.getItem('selectedPersonalities') ? JSON.parse(localStorage.getItem('selectedPersonalities')) : {} })
+  }
+
+  onCheckConfirmDetails(e) {
+    this.setState({ buttonStatus: e.target.checked });
+  }
 
   render() {
+
+    console.log(this.state.selectedDest)
+
+    const defaultPersonalities = () => {
+      if (this.state.selectedPersonalities) {
+        var persArray = []
+        for (const [key, value] of Object.entries(this.state.selectedPersonalities)) {
+          if (value === 1) {
+            persArray.push(key)
+          }
+        }
+      }
+      return persArray
+    }
 
     const enableButton = () => {
       if (this.state.buttonStatus === true) {
@@ -259,7 +147,6 @@ class CreateTripPage extends React.Component {
       }
       return <Button disabled type='primary' shape='round' size='large' style={{ border: 'none', }}>Create Trip</Button>
     }
-
 
 
     return (
@@ -287,8 +174,8 @@ class CreateTripPage extends React.Component {
                     {...formItemLayout}
                     onFinish={this.createTrip}
                     initialValues={{
-                      destination: this.state.defaultDest,
-                      personalities: this.state.defaultPersonalities
+                      destination: this.state.selectedDest,
+                      personalities: defaultPersonalities()
                     }}
                   >
                     <Form.Item
@@ -312,7 +199,7 @@ class CreateTripPage extends React.Component {
                         { type: 'array', required: true, message: 'Please select your destination!' },
                       ]}
                     >
-                      <Cascader options={this.state.options} onChange={this.onDestChange} placeholder="Select City" />
+                      <DestinationCascader defaultValue={this.state.selectedDest} onChange={this.onDestChange} />
                     </Form.Item>
 
                     <Form.Item

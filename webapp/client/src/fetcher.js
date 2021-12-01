@@ -15,18 +15,18 @@ import {
 //             All Page Fetchers
 // ********************************************
 
-const getAllTrips = async () => {
-  // var res = await fetch(`http://${config.server_host}:${config.server_port}/trips`, {
-  //     method: 'GET',
-  // })
-  // return res.json()
-  var res = { results: tempMyTrips }
-
-  res.results.map(trip => {
-    localStorage.setItem(trip.id, JSON.stringify(trip))
+const getAllTrips = async (username) => {
+  var res = await fetch(`http://${config.server_host}:${config.server_port}/trips?username=${username}`, {
+    method: 'GET',
   })
+  return res.json()
+  // var res = { results: tempMyTrips }
 
-  return res
+  // res.results.map(trip => {
+  //   localStorage.setItem(trip.id, JSON.stringify(trip))
+  // })
+
+  // return res
 }
 
 const signUp = async (username, password) => {
@@ -134,20 +134,16 @@ const getTripPOIS = async (tripID, username) => {
 }
 
 
-const postCreateTrip = async (tripDetails) => {
-  console.log(tripDetails)
+const newTrip = async (username, tripName, city, state, p0, p1, p2, p3, p4, p5) => {
   var res = await fetch(
-    `http://${config.server_host}:${config.server_port}/createtrip`,
+    `http://${config.server_host}:${config.server_port}/new_trip?username=${username}&tripName='${tripName}'&city=${city}&state=${state}&p0=${p0}&p1=${p1}&p2=${p2}&p3=${p3}&p4=${p4}&p5=${p5}`,
     {
       method: 'GET',
-      body: JSON.stringify(tripDetails)
     }
   )
-  // const content = await rawResponse.json();
-
-  // console.log(content);
-
   return res.json()
+  // const content = await rawResponse.json();
+  // console.log(content);
 }
 
 export {
@@ -159,5 +155,5 @@ export {
   getAllCities,
   getQuizCities,
   getTripPOIS,
-  postCreateTrip
+  newTrip
 }

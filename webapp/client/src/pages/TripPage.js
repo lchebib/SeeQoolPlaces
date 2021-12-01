@@ -5,9 +5,8 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import TabsCard from '../components/TabsCard';
 import Scheduler from '../components/Scheduler';
-import FilterBar from '../components/FilterBar';
+import FavoritesBar from '../components/FavoritesBar';
 import { getTripPOIS } from '../fetcher';
-import { getAllTrips } from '../fetcher'
 
 const { Content, Sider } = Layout;
 
@@ -184,16 +183,16 @@ class TripPage extends React.Component {
     }
 
     return (
-      <Layout style={{ minWidth: 1100 }}>
+      <Layout style={{ minWidth: 1200 }}>
         <SideBar />
-        <Layout className='layout' style={{ background: 'white', marginLeft: 200 }}>
+        <Layout style={{ background: 'white', marginLeft: 200 }}>
           <Header />
-          <Layout className='layout' style={{ background: 'white' }}>
+          <Layout style={{ background: 'white' }}>
             <Content style={{ margin: '24px 24px 0', overflow: 'initial' }}>
               <Row justify='center' >
                 <Col >
                   <div style={{ fontFamily: 'Work Sans', textAlign: 'center' }}>
-                    <div style={{ fontSize: '3vw' }}>{this.state.tripName}</div>
+                    <div style={{ fontSize: '30px' }}>{this.state.trip.tripName}</div>
                     <br />
                   </div>
                 </Col >
@@ -218,15 +217,28 @@ class TripPage extends React.Component {
                 />
               </Row>
             </Content>
-            <Sider style={{ background: 'white', border: '1px solid #F0F0F0' }}>
-              <FilterBar
+            {/* <Sider style={{ background: 'white', border: '1px solid #F0F0F0' }}>
+              <FavoritesBar
                 favorites={this.state.favorites}
                 onClickFavorite={this.changeBigPOI}
               />
-            </Sider>
+            </Sider> */}
           </Layout>
           <Footer />
         </Layout>
+        <Sider
+          style={{
+            background: 'white',
+            border: '1px solid #F0F0F0',
+            height: '100vh',
+            // position: 'fixed',
+            zIndex: 100
+          }}>
+          <FavoritesBar
+            favorites={this.state.favorites}
+            onClickFavorite={this.changeBigPOI}
+          />
+        </Sider>
       </Layout >
     );
   }
