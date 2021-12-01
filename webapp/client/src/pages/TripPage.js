@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import TabsCard from '../components/TabsCard';
 import Scheduler from '../components/Scheduler';
 import FavoritesBar from '../components/FavoritesBar';
-import { getTripPOIS } from '../fetcher';
+import { getTripPOIS, getTripRestaurants, getTripAttractions, getTripTrails } from '../fetcher';
 
 const { Content, Sider } = Layout;
 
@@ -102,7 +102,10 @@ class TripPage extends React.Component {
       favorites: favorites,
       scheduledPOIS: [],
       events: [],
-      bigPOI: null
+      bigPOI: null,
+      tripAttractions: [],
+      tripRestaurants: [],
+      tripTrails: []
     }
 
     this.addEvent = this.addEvent.bind(this)
@@ -120,13 +123,28 @@ class TripPage extends React.Component {
       tripID = 100
     }
 
-    getTripPOIS(tripID, "admin").then(res => {
-      this.setState({ POIS: res.results })
-      this.setState({ bigPOI: res.results[0] })
-    })
+    // getTripPOIS(tripID, "admin").then(res => {
+    //   this.setState({ POIS: res.results })
+    //   this.setState({ bigPOI: res.results[0] })
+    // })
 
     var trip = JSON.parse(localStorage.getItem(tripID))
     this.setState({ trip: trip })
+
+    getTripAttractions(60).then(res => {
+      this.setState({ tripAttractions: res.results })
+      // this.setState({ bigPOI: res.results[0] })
+    })
+
+    getTripRestaurants(60).then(res => {
+      this.setState({ tripRestaurants: res.results })
+      // this.setState({ bigPOI: res.results[0] })
+    })
+
+    getTripTrails(60).then(res => {
+      this.setState({ tripTrails: res.results })
+      this.setState({ bigPOI: res.results[0] })
+    })
 
   }
 

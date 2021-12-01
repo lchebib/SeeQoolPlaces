@@ -11,7 +11,10 @@ class TabsCard extends React.Component {
       minValue: 0,
       currentPage: 1,
       pageSize: 9,
-      keyArr: []
+      keyArr: [],
+      tripAttractions: [],
+      tripRestaurants: [],
+      tripTrails: []
     };
 
     this.onChangePage = this.onChangePage.bind(this);
@@ -20,6 +23,13 @@ class TabsCard extends React.Component {
     this.onSchedule = this.onSchedule.bind(this);
     this.onAddFavorite = this.onAddFavorite.bind(this);
     this.onRemoveFavorite = this.onRemoveFavorite.bind(this);
+  }
+
+  componentWillMount() {
+    this.setTripAttractions();
+    this.setTripRestaurants();
+    this.setTripTrails();
+    this.setKeyArr(this.state.currentTab);
   }
 
   componentWillMount() {
@@ -38,12 +48,48 @@ class TabsCard extends React.Component {
     this.props.onRemoveFavorite(this.props.bigPOI);
   }
 
+  // setKeyArr(key) {
+  //   let keyArr = this.props.POIS.filter(obj => {
+  //     return obj.category === key;
+  //   })
+  //   this.setState({ keyArr: keyArr });
+  // };
+
+  // new one
   setKeyArr(key) {
-    let keyArr = this.props.POIS.filter(obj => {
-      return obj.category === key;
-    })
-    this.setState({ keyArr: keyArr });
+    switch (key) {
+      case 'trails':
+        this.setState({ keyArr: this.state.tripTrails });
+        break;
+      case 'attractions':
+        this.setState({ keyArr: this.state.tripAttractions });
+        break;
+      case 'restaurants':
+        this.setState({ keyArr: this.state.tripRestaurants });
+        break;
+    }
   };
+
+  /*
+  new functions for trip POI arrays
+  */
+
+  setTripAttractions() {
+    let attractArr = this.props.tripAttractions;
+    this.setState({ tripAttractions: attractArr });
+  };
+
+  setTripRestaurants() {
+    let restArr = this.props.tripRestaurants;
+    this.setState({ tripRestaurants: restArr });
+  };
+
+  setTripTrails() {
+    let trailArr = this.props.tripTrails;
+    this.setState({ tripTrails: trailArr });
+  };
+
+  //////////////////////////////////
 
   onChangeTab(key) {
     this.setState({ currentTab: key });

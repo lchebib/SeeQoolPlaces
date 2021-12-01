@@ -146,6 +146,40 @@ const newTrip = async (username, tripName, city, state, p0, p1, p2, p3, p4, p5) 
   // console.log(content);
 }
 
+// ********************************************
+//             TripPage Fetchers
+// ********************************************
+
+const getTripAttractions = async (tripID) => {
+  var res = await fetch(
+    `http://${config.server_host}:${config.server_port}/trip_attractions?tid=${tripID}`,
+    {
+      method: 'GET',
+    }
+  )
+  return res.json()
+}
+
+const getTripTrails = async (tripID) => {
+  var res = await fetch(
+    `http://${config.server_host}:${config.server_port}/trip_trails?tid=${tripID}`,
+    {
+      method: 'GET',
+    }
+  )
+  return res.json()
+}
+
+const getTripRestaurants = async (tripID) => {
+  var res = await fetch(
+    `http://${config.server_host}:${config.server_port}/trip_restaurants?tid=${tripID}`,
+    {
+      method: 'GET',
+    }
+  )
+  return res.json()
+}
+
 export {
   getAllTrips,
   getRandomCity,
@@ -155,5 +189,9 @@ export {
   getAllCities,
   getQuizCities,
   getTripPOIS,
-  newTrip
+  newTrip,
+  getTripAttractions,
+  getTripTrails,
+  getTripRestaurants
+
 }
