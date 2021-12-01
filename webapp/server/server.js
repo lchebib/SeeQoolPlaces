@@ -79,7 +79,7 @@ app.get('/quizCities', routes.quizCities)
 // DEPRECATED, but currently called in TripPage > componentWillMount() > getAllPOIs() to populate tabsCard
 // leaving this here temporarily until we've fully migrated to the new routes
 // moving forward, please use trip_attraction, trip_trails, and trip_restaurants to populate tabsCard
-app.get('/trip_pois/', routes.trip_pois)
+// app.get('/trip_pois/', routes.trip_pois)
 
 // Create new trip
 // requires username, "tripName", city, state, and personalities --> /new_trip?username=admin&tripName="trip name with spaces"&city=<city>&state=<state>&p0=0&p1=1&...&p5=0 
@@ -88,10 +88,9 @@ app.get('/trip_pois/', routes.trip_pois)
 app.get('/new_trip', routes.new_trip)
 
 // Retrieve stored trip
-// requires username, tripID --> /retrieve_trip?username=admin&tripID=3
-// only tripName has quotations; username, city, and state no quotations; [0,1] for false/true in personalities
-// returns {tripID: int}
-app.get('/retrieve_trip', routes.new_trip)
+// requires tripID --> /retrieve_trip?tripID=3
+// returns true if successful; false otherwise
+app.get('/retrieve_trip', routes.retrieve_trip)
 
 // Get trip attractions (for tabsCard)
 // requires tripID --> /trip/attractions?tripID=2
