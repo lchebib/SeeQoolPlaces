@@ -122,16 +122,14 @@ const getQuizCities = async (population, p0, p1, p2, p3, p4, p5) => {
 
 const getTripPOIS = async (tripID, username) => {
   // var res = await fetch(
-  //   `http://${config.server_host}:${config.server_port}/trip_pois?tid=${tripID}&username=${userna,e}`,
+  //   `http://${config.server_host}:${config.server_port}/trip_pois?tid=${tripID}&username=${username}`,
   //   {
   //     method: 'GET',
   //   }
   // )
   // return res.json()
-  // var res = { results: tempGetPOIS() };
 
   var res = { results: tempGetPOIS() };
-  // var res = tempGetPOIS();
   return res;
 }
 

@@ -87,6 +87,12 @@ app.get('/trip_pois/', routes.trip_pois)
 // returns {tripID: int}
 app.get('/new_trip', routes.new_trip)
 
+// Retrieve stored trip
+// requires username, tripID --> /retrieve_trip?username=admin&tripID=3
+// only tripName has quotations; username, city, and state no quotations; [0,1] for false/true in personalities
+// returns {tripID: int}
+app.get('/retrieve_trip', routes.new_trip)
+
 // Get trip attractions (for tabsCard)
 // requires tripID --> /trip/attractions?tripID=2
 // returns [{pid, subcategory, description, tags, photo}]
