@@ -1,6 +1,5 @@
 import React from 'react';
 import { Row, Col, Card, Button, Radio, Rate, Pagination, Space } from 'antd';
-import { getAllPOIs } from '../fetcher';
 
 class TabsCard extends React.Component {
 

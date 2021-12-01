@@ -9,7 +9,7 @@ class LandingPage extends React.Component {
 
     return (
       <>
-        <Row align='middle' justify='center' style={{ marginTop: 200, marginBottom: 100 }}>
+        <Row align='middle' justify='center' style={{ paddingTop: 200, paddingBottom: 100 }}>
           <img src={(process.env.PUBLIC_URL + "/login_logo.svg")} alt="See Qool Places Logo" style={{ width: '50vw' }} />
         </Row >
         <Row align='middle' justify='center'>

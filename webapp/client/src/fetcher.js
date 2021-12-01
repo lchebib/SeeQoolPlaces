@@ -29,38 +29,27 @@ const getAllTrips = async () => {
   return res
 }
 
-const getLoggedInUser = async () => {
-  // var res = await fetch(`http://${config.server_host}:${config.server_port}/logged-in-user`, {
-  //     method: 'GET',
-  // })
-  // return res.json()
-  var res = { results: tempGetLoggedInUser() }
-  return res
+const signUp = async (username, password) => {
+  var res = await fetch(`http://${config.server_host}:${config.server_port}/add_user?username=${username}&password=${password}`, {
+    method: 'GET',
+  })
+  return res.json();
 }
 
 const logout = async username => {
-  // var res = await fetch(`http://${config.server_host}:${config.server_port}/logout`, {
-  //     method: 'POST',
-  // })
-
-  return tempLogout(username)
+  var res = await fetch(`http://${config.server_host}:${config.server_port}/logout?username=${username}`, {
+    method: 'GET',
+  })
+  return res.json();
 }
 
-const login = async username => {
-  // var res = await fetch(`http://${config.server_host}:${config.server_port}/login`, {
-  //     method: 'POST',
-  // })
-
-  return tempLogin(username)
+const login = async (username, password) => {
+  var res = await fetch(`http://${config.server_host}:${config.server_port}/login?username=${username}&password=${password}`, {
+    method: 'GET',
+  })
+  return res.json();
 }
 
-const signUp = async username => {
-  // var res = await fetch(`http://${config.server_host}:${config.server_port}/signup`, {
-  //     method: 'POST',
-  // })
-
-  return tempSignUp(username)
-}
 
 // ********************************************
 //             Home Page Fetchers
@@ -166,7 +155,6 @@ const postCreateTrip = async (tripDetails) => {
 export {
   getAllTrips,
   getRandomCity,
-  getLoggedInUser,
   logout,
   login,
   signUp,

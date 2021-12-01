@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageHeader, Avatar, Input, Space, Button, Row, Col } from 'antd';
 import { UserOutlined, SearchOutlined } from '@ant-design/icons';
-import { getLoggedInUser, logout } from '../fetcher'
+import { logout } from '../fetcher'
 // import '../style/customAntDesign.less'
 // import styled from 'styled-components';
 
@@ -52,13 +52,13 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    getLoggedInUser().then(res => {
-      if (res.results) {
-        console.log(res.results)
-        this.setState({ isLoggedIn: true })
-        this.setState({ user: res.results })
-      }
-    })
+    // getLoggedInUser().then(res => {
+    //   if (res.results) {
+    //     console.log(res.results)
+    //     this.setState({ isLoggedIn: true })
+    //     this.setState({ user: res.results })
+    //   }
+    // })
   }
 
 
