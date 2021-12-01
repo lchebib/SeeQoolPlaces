@@ -76,11 +76,6 @@ app.get('/quizCities', routes.quizCities)
 //             Trip Routes
 // ********************************************
 
-// DEPRECATED, but currently called in TripPage > componentWillMount() > getAllPOIs() to populate tabsCard
-// leaving this here temporarily until we've fully migrated to the new routes
-// moving forward, please use trip_attraction, trip_trails, and trip_restaurants to populate tabsCard
-// app.get('/trip_pois/', routes.trip_pois)
-
 // Create new trip
 // requires username, "tripName", city, state, and personalities --> /new_trip?username=admin&tripName="trip name with spaces"&city=<city>&state=<state>&p0=0&p1=1&...&p5=0 
 // only tripName has quotations; username, city, and state no quotations; [0,1] for false/true in personalities
@@ -107,13 +102,14 @@ app.get('/trip/restaurants', routes.trip_restaurants)
 // returns [{pid, length, difficulty, low, high, description, route_type, photo}]
 app.get('/trip/trails', routes.trip_trails)
 
-// Get requires tripID --> /trip/favorites?tripID=2
-// returns [{pid, length, difficulty, low, high, description, route_type, photo}]
+// Get trip favorites
+// requires tripID --> /trip/favorites?tripID=2
+// returns [{pid, name, city, state, category, duration_low, duration_high, rating, num_reviews}]
 app.get('/trip/favorites', routes.trip_favorites)
 
 // Get trip events
 // requires tripID --> /trip/events?tripID=2
-// returns [{pid, length, difficulty, low, high, description, route_type, photo}]
+// returns [{eventID, tripID, pid, start, end}]
 app.get('/trip/events', routes.trip_events)
 
 // Save trip favorites
@@ -123,7 +119,7 @@ app.get('/trip/save_favorites', routes.trip_favorites)
 
 // Save trip events
 // requires tripID, events = JSON.stringify([ events ]) --> /trip/save_events?tripID=2&events=stringifiedEvents
-// returns [{pid, length, difficulty, low, high, description, route_type, photo}]
+// returns true if successfully saved events
 app.get('/trip/save_events', routes.trip_events)
 
 // Delete trip permanently from user account
