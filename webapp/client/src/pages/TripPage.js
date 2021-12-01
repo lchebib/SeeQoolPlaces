@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import TabsCard from '../components/TabsCard';
 import Scheduler from '../components/Scheduler';
 import FavoritesBar from '../components/FavoritesBar';
-import { getTripPOIS, getTripRestaurants, getTripAttractions, getTripTrails } from '../fetcher';
+import { getTripRestaurants, getTripAttractions, getTripTrails, postDeleteTrip, postSaveTrip } from '../fetcher';
 
 const { Content, Sider } = Layout;
 
@@ -63,33 +63,33 @@ const favorites = [
 ]
 
 
-const events = [
-  {
-    id: 0,
-    title: "All Day Event very long title",
-    allDay: false,
-    start: new Date('November 18, 2021 0:00:00'),
-    end: new Date("November 18, 2021 0:30:00"),
-    resource: { duration: 2 }
-  },
-  {
-    id: 20,
-    title: "Dinner",
-    allDay: false,
-    start: new Date('November 18, 2021 1:00:00'),
-    end: new Date('November 18, 2021 3:00:00'),
-    resource: { duration: 0.5 }
+// const events = [
+//   {
+//     id: 0,
+//     title: "All Day Event very long title",
+//     allDay: false,
+//     start: new Date('November 18, 2021 0:00:00'),
+//     end: new Date("November 18, 2021 0:30:00"),
+//     resource: { duration: 2 }
+//   },
+//   {
+//     id: 20,
+//     title: "Dinner",
+//     allDay: false,
+//     start: new Date('November 18, 2021 1:00:00'),
+//     end: new Date('November 18, 2021 3:00:00'),
+//     resource: { duration: 0.5 }
 
-  },
-  {
-    id: 21,
-    title: "Dinner 2",
-    allDay: false,
-    start: new Date('November 18, 2021 1:00:00'),
-    end: new Date('November 18, 2021 3:00:00'),
-    resource: { duration: 0.5 }
-  },
-]
+//   },
+//   {
+//     id: 21,
+//     title: "Dinner 2",
+//     allDay: false,
+//     start: new Date('November 18, 2021 1:00:00'),
+//     end: new Date('November 18, 2021 3:00:00'),
+//     resource: { duration: 0.5 }
+//   },
+// ]
 
 class TripPage extends React.Component {
 
@@ -114,6 +114,8 @@ class TripPage extends React.Component {
     this.removeFavorite = this.removeFavorite.bind(this)
     this.updateEvents = this.updateEvents.bind(this)
     this.changeBigPOI = this.changeBigPOI.bind(this)
+    this.saveTrip = this.saveTrip.bind(this)
+    this.deleteTrip = this.deleteTrip.bind(this)
   }
 
   componentWillMount() {
@@ -131,21 +133,27 @@ class TripPage extends React.Component {
     var trip = JSON.parse(localStorage.getItem(tripID))
     this.setState({ trip: trip })
 
-    getTripAttractions(60).then(res => {
-      this.setState({ tripAttractions: res.results })
-      // this.setState({ bigPOI: res.results[0] })
-    })
-
-    getTripRestaurants(60).then(res => {
-      this.setState({ tripRestaurants: res.results })
-      // this.setState({ bigPOI: res.results[0] })
-    })
-
-    getTripTrails(60).then(res => {
+    getTripTrails(tripID).then(res => {
       this.setState({ tripTrails: res.results })
       this.setState({ bigPOI: res.results[0] })
+      console.log(res.results)
     })
 
+    getTripAttractions(tripID).then(res => {
+      this.setState({ tripAttractions: res.results })
+      if (!this.state.bigPOI) {
+        this.setState({ bigPOI: res.results[0] })
+      }
+      console.log(res.results)
+    })
+
+    getTripRestaurants(tripID).then(res => {
+      this.setState({ tripRestaurants: res.results })
+      if (!this.state.bigPOI) {
+        this.setState({ bigPOI: res.results[0] })
+      }
+      console.log(res.results)
+    })
   }
 
   updateEvents(events) {
@@ -186,11 +194,19 @@ class TripPage extends React.Component {
     this.setState({ bigPOI: POI })
   }
 
+  saveTrip() {
+    postSaveTrip(this.state.trip.tripID)
+  }
+
+  deleteTrip() {
+    postDeleteTrip(this.state.trip.tripID)
+    window.location = "/home"
+  }
 
   render() {
-    if (this.state.POIS.length === 0) {
-      return null
-    }
+    // if (this.state.tripTrails.length === 0 || this.state.tripAttractions.length === 0 || this.state.tripRestaurants.length === 0) {
+    //   return null
+    // }
 
     if (!this.state.bigPOI) {
       return null
@@ -199,6 +215,8 @@ class TripPage extends React.Component {
     if (!this.state.trip) {
       return null
     }
+
+    console.log(this.state.bigPOI)
 
     return (
       <Layout style={{ minWidth: 1200 }}>
@@ -226,7 +244,9 @@ class TripPage extends React.Component {
                 <TabsCard
                   trip={this.state.trip}
                   favorites={this.state.favorites}
-                  POIS={this.state.POIS}
+                  tripAttractions={this.state.tripAttractions}
+                  tripRestaurants={this.state.tripRestaurants}
+                  tripTrails={this.state.tripTrails}
                   bigPOI={this.state.bigPOI}
                   onSchedule={this.addEvent}
                   onAddFavorite={this.addFavorite}
@@ -255,6 +275,8 @@ class TripPage extends React.Component {
           <FavoritesBar
             favorites={this.state.favorites}
             onClickFavorite={this.changeBigPOI}
+          // onSave={this.saveTrip}
+          // onDelete={this.deleteTrip}
           />
         </Sider>
       </Layout >

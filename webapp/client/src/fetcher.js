@@ -152,7 +152,7 @@ const newTrip = async (username, tripName, city, state, p0, p1, p2, p3, p4, p5) 
 
 const getTripAttractions = async (tripID) => {
   var res = await fetch(
-    `http://${config.server_host}:${config.server_port}/trip_attractions?tid=${tripID}`,
+    `http://${config.server_host}:${config.server_port}/trip/attractions?tripID=${tripID}`,
     {
       method: 'GET',
     }
@@ -162,7 +162,7 @@ const getTripAttractions = async (tripID) => {
 
 const getTripTrails = async (tripID) => {
   var res = await fetch(
-    `http://${config.server_host}:${config.server_port}/trip_trails?tid=${tripID}`,
+    `http://${config.server_host}:${config.server_port}/trip/trails?tripID=${tripID}`,
     {
       method: 'GET',
     }
@@ -172,12 +172,32 @@ const getTripTrails = async (tripID) => {
 
 const getTripRestaurants = async (tripID) => {
   var res = await fetch(
-    `http://${config.server_host}:${config.server_port}/trip_restaurants?tid=${tripID}`,
+    `http://${config.server_host}:${config.server_port}/trip/restaurants?tripID=${tripID}`,
     {
       method: 'GET',
     }
   )
   return res.json()
+}
+
+const postSaveTrip = async (tripID) => {
+  var res = await fetch(
+    `http://${config.server_host}:${config.server_port}/save_trip?tripID={tripID}`,
+    {
+      method: 'GET',
+    }
+  )
+  // return res.json()
+}
+
+const postDeleteTrip = async (tripID) => {
+  var res = await fetch(
+    `http://${config.server_host}:${config.server_port}/delete_trip?tripID={tripID}`,
+    {
+      method: 'GET',
+    }
+  )
+  // return res.json()
 }
 
 export {
@@ -192,6 +212,7 @@ export {
   newTrip,
   getTripAttractions,
   getTripTrails,
-  getTripRestaurants
-
+  getTripRestaurants,
+  postSaveTrip,
+  postDeleteTrip
 }

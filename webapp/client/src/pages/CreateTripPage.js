@@ -92,10 +92,9 @@ class CreateTripPage extends React.Component {
       // this.state.tripID = res.results
       tripID = res.results
       console.log(tripID);
+      this.storeTrip(tripID)
+      this.clickNextPage(tripID)
     })
-
-    this.storeTrip(tripID)
-    this.clickNextPage(tripID)
   }
 
   storeTrip(tripID) {

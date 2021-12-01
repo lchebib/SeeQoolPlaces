@@ -156,7 +156,7 @@ class Scheduler extends React.Component {
 
   addEvent(POI) {
 
-    // console.log(POI)
+    console.log(POI)
     var newEvents = [...this.state.events]
     var eid = 1
     if (this.state.events.length > 0) {
@@ -164,12 +164,11 @@ class Scheduler extends React.Component {
     }
 
     var start = new Date(this.state.trip.startDate)
+    console.log(start)
     start.setHours(0, 0, 0, 0)
-    // var start = new Date(this.state.trip.dates[0])
-    var duration = POI.durationHigh
+    var duration = Math.floor(POI.duration_high * 60)
     var end = new Date(start)
-    end.setHours(end.getHours() + duration)
-    // var end = new Date(this.state.trip.dates[0])
+    end.setMinutes(end.getMinutes() + duration)
     var category = POI.category
 
     var event = {
@@ -184,7 +183,7 @@ class Scheduler extends React.Component {
 
     newEvents.push(event)
     this.setState({ events: newEvents })
-    // console.log(event)
+    console.log(event)
   }
 
 

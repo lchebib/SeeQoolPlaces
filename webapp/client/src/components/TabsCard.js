@@ -11,10 +11,11 @@ class TabsCard extends React.Component {
       minValue: 0,
       currentPage: 1,
       pageSize: 9,
-      keyArr: [],
-      tripAttractions: [],
-      tripRestaurants: [],
-      tripTrails: []
+      keyArr: []
+      // bigPOIPhoto: null,
+      // tripAttractions: [],
+      // tripRestaurants: [],
+      // tripTrails: []
     };
 
     this.onChangePage = this.onChangePage.bind(this);
@@ -26,9 +27,9 @@ class TabsCard extends React.Component {
   }
 
   componentWillMount() {
-    this.setTripAttractions();
-    this.setTripRestaurants();
-    this.setTripTrails();
+    // this.setTripAttractions();
+    // this.setTripRestaurants();
+    // this.setTripTrails();
     this.setKeyArr(this.state.currentTab);
   }
 
@@ -59,35 +60,43 @@ class TabsCard extends React.Component {
   setKeyArr(key) {
     switch (key) {
       case 'trails':
-        this.setState({ keyArr: this.state.tripTrails });
+        this.setState({ keyArr: this.props.tripTrails });
         break;
       case 'attractions':
-        this.setState({ keyArr: this.state.tripAttractions });
+        this.setState({ keyArr: this.props.tripAttractions });
         break;
       case 'restaurants':
-        this.setState({ keyArr: this.state.tripRestaurants });
+        this.setState({ keyArr: this.props.tripRestaurants });
         break;
     }
   };
+
+  getBackgroundImage(POI) {
+    if (POI.photo) {
+      return POI.photo;
+    } else {
+      return 'https://thumbs.dreamstime.com/z/no-image-available-icon-photo-camera-flat-vector-illustration-132483141.jpg';
+    }
+  }
 
   /*
   new functions for trip POI arrays
   */
 
-  setTripAttractions() {
-    let attractArr = this.props.tripAttractions;
-    this.setState({ tripAttractions: attractArr });
-  };
+  // setTripAttractions() {
+  //   let attractArr = this.props.tripAttractions;
+  //   this.setState({ tripAttractions: attractArr });
+  // };
 
-  setTripRestaurants() {
-    let restArr = this.props.tripRestaurants;
-    this.setState({ tripRestaurants: restArr });
-  };
+  // setTripRestaurants() {
+  //   let restArr = this.props.tripRestaurants;
+  //   this.setState({ tripRestaurants: restArr });
+  // };
 
-  setTripTrails() {
-    let trailArr = this.props.tripTrails;
-    this.setState({ tripTrails: trailArr });
-  };
+  // setTripTrails() {
+  //   let trailArr = this.props.tripTrails;
+  //   this.setState({ tripTrails: trailArr });
+  // };
 
   //////////////////////////////////
 
@@ -112,6 +121,10 @@ class TabsCard extends React.Component {
 
   render() {
 
+    // if (this.state.keyArr.length === 0) {
+    //   return null
+    // }
+
     const favoritesButton = (POI) => {
       if (this.props.favorites.some(fav => fav.pid === POI.pid)) {
         /* not compatible with some browsers */
@@ -131,7 +144,10 @@ class TabsCard extends React.Component {
           <>
             <Col span={7} >
               <Card style={{
-                backgroundImage: `url(${POI.photo})`,
+                backgroundImage: `url(${this.getBackgroundImage(POI)})`,
+                // backgroundImage: `url(${POI.photo ? POI.photo : '/Users/emilyconnor/Documents/Documents - Emily’s MacBook Pro/550-group-project/SeeQoolPlaces/webapp/client/public/no-image-available-icon-photo-camera-flat-vector-illustration-132483141.jpg'})`,
+                // backgroundImage: `url(${POI.photo})`,
+
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
@@ -152,7 +168,7 @@ class TabsCard extends React.Component {
               </Row>
               <Row gutter={[12]} style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
                 <Col>
-                  {POI.durationHigh} hr
+                  {POI.duration_high} hr
                 </Col>
               </Row>
             </Col>
@@ -164,7 +180,8 @@ class TabsCard extends React.Component {
           <>
             <Col span={7} style={{ height: '90%' }}>
               <Card style={{
-                backgroundImage: `url(${POI.photo})`,
+                // backgroundImage: `url(${POI.photo})`,
+                backgroundImage: `url(${this.getBackgroundImage(POI)})`,
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
@@ -188,7 +205,7 @@ class TabsCard extends React.Component {
                 </Col>
                 •
                 <Col>
-                  {POI.durationHigh} hr
+                  {POI.duration_high} hr
                 </Col>
               </Row>
             </Col>
@@ -212,7 +229,7 @@ class TabsCard extends React.Component {
                 </Col>
                 •
                 <Col>
-                  {POI.durationHigh} hr
+                  {POI.duration_high} hr
                 </Col>
               </Row>
             </Col>
@@ -241,7 +258,7 @@ class TabsCard extends React.Component {
                   </div>
                 </Col>
                 <Col lg={24} xl={10} >
-                  <img src={(bigPOI.photo)}
+                  <img src={(this.getBackgroundImage(bigPOI))}
                     alt="POI"
                     style={{
                       maxWidth: '100%'
@@ -255,7 +272,7 @@ class TabsCard extends React.Component {
                   </div>
                   <div >
                     <span style={{ fontWeight: 'bold' }}>Suggested duration: </span>
-                    {bigPOI.durationLow}-{bigPOI.durationHigh} hours
+                    {bigPOI.duration_low}-{bigPOI.duration_high} hours
                   </div>
                 </Space>
               </Row>
@@ -285,7 +302,7 @@ class TabsCard extends React.Component {
                   </div>
                 </Col>
                 <Col lg={24} xl={10} >
-                  <img src={(bigPOI.photo)}
+                  <img src={(this.getBackgroundImage(bigPOI))}
                     alt="POI"
                     style={{
                       maxWidth: '100%'
@@ -311,11 +328,11 @@ class TabsCard extends React.Component {
                   </div>
                   <div >
                     <span style={{ fontWeight: 'bold' }}>Suggested duration: </span>
-                    {bigPOI.durationLow}-{bigPOI.durationHigh} hours
+                    {bigPOI.duration_low}-{bigPOI.duration_high} hours
                   </div>
                   <div >
                     <span style={{ fontWeight: 'bold' }}>Elevation gain </span>
-                    {bigPOI.elevationHigh - bigPOI.elevationLow} m
+                    {bigPOI.high - bigPOI.low} m
                   </div>
                 </Space>
               </Row>
@@ -348,7 +365,7 @@ class TabsCard extends React.Component {
                   </div>
                   <div >
                     <span style={{ fontWeight: 'bold' }}>Suggested duration: </span>
-                    {bigPOI.durationLow}-{bigPOI.durationHigh} hours
+                    {bigPOI.duration_low}-{bigPOI.duration_high} hours
                   </div>
                 </Space>
               </Row>

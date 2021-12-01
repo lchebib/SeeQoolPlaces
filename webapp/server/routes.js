@@ -498,7 +498,7 @@ function trip_attractions(req, res) {
 
   var myQuery = `
     SELECT *
-    FROM ${viewName} NATURAL JOIN Attraction;  
+    FROM ${viewName} NATURAL JOIN Attraction NATURAL JOIN POI;  
   `
   console.log(myQuery)
 
@@ -520,7 +520,7 @@ function trip_restaurants(req, res) {
 
   var myQuery = `
     SELECT *
-    FROM ${viewName} NATURAL JOIN Restaurant;  
+    FROM ${viewName} NATURAL JOIN Restaurant NATURAL JOIN POI;  
   `
   console.log(myQuery)
 
@@ -542,7 +542,7 @@ function trip_trails(req, res) {
 
   var myQuery = `
     SELECT *
-    FROM ${viewName} NATURAL JOIN Trail;  
+    FROM ${viewName} NATURAL JOIN Trail NATURAL JOIN POI;  
   `
   console.log(myQuery)
 

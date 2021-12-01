@@ -83,8 +83,8 @@ class FavoritesBar extends React.Component {
         <Row align="top" justify="center" style={{ 'height': '10vh', fontFamily: 'Work Sans' }}>
           <Col style={{ width: '160px' }}>
             <Space direction='vertical'>
-              <Button onClick={() => { this.props.onSave() }} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '180px' }}>Save Trip</Button>
-              <Button onClick={() => { this.props.onDelete() }} shape='round' size='large' style={{ border: 'none', background: 'red', color: 'white', width: '180px' }}>Delete Trip</Button>
+              <Button onClick={this.props.onSave} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '180px' }}>Save Trip</Button>
+              <Button onClick={this.props.onDelete} shape='round' size='large' style={{ border: 'none', background: 'red', color: 'white', width: '180px' }}>Delete Trip</Button>
             </Space>
           </Col>
         </Row>
