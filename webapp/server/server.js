@@ -127,6 +127,11 @@ app.get('/trip/events', routes.trip_events)
 // returns true if successfully saved trip
 app.get('/trip/save_trip', routes.save_trip)
 
+// Update trip details
+// requires tripID, city, state, startDate, endDate --> /trip/update_trip?tripID=2&city=Victoria&state=BC&startDate=<YYYY-MM-DD>&endDate=<YYYY-MM-DD>
+// returns true if successfully updated trip
+app.get('/trip/update_trip', routes.update_trip)
+
 // Delete trip permanently from user account
 // requires tripID --> /delete_trip?tripID=2
 // always returns true

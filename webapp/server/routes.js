@@ -740,10 +740,12 @@ function update_trip (req, res) {
   const tripName = req.query.tripName ? req.query.tripName : ''
   const city = req.query.city ? req.query.city : ''
   const state = req.query.state ? req.query.state : ''
+  const startDate = req.query.startDate ? req.query.startDate : ''
+  const endDate = req.query.endDate ? req.query.endDate : ''
 
   var myQuery = `
     UPDATE TripProfile
-    SET tripName = ${tripName}, city = '${city}', state = '${state}'
+    SET tripName = ${tripName}, city = '${city}', state = '${state}', startDate = ${startDate}, endDate = ${endDate}
     WHERE tripID = ${tripID};
   `
   console.log(myQuery)
@@ -1167,6 +1169,7 @@ module.exports = {
   // save_favorites,
   // save_events,
   save_trip,
+  update_trip,
   delete_trip,
   test
 }
