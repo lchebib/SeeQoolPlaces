@@ -17,7 +17,7 @@ connection.connect()
 // ********************************************
 
 // Route 1 (handler)
-async function hello(req, res) {
+async function hello (req, res) {
   if (req.query.name) {
     res.send(`Hello, ${req.query.name}! Welcome to the SeeQoolPlaces server!`)
   } else {
@@ -30,7 +30,7 @@ async function hello(req, res) {
 // ********************************************
 
 // Route 1 (handler) - Add new username and password
-async function add_user(req, res) {
+async function add_user (req, res) {
   var username = req.query.username
   var password = req.query.password
 
@@ -71,7 +71,7 @@ async function add_user(req, res) {
 }
 
 // Route 2 (handler) - Log in user
-async function login(req, res) {
+async function login (req, res) {
   var username = req.query.username
   var password = req.query.password
   var clientIP = req.socket.remoteAddress
@@ -86,7 +86,7 @@ async function login(req, res) {
 
   connection.query(myQuery, function (error, results, fields) {
     if (error) {
-      console.log("Error trying to log in user: " + username.toString())
+      console.log('Error trying to log in user: ' + username.toString())
       console.log(error)
       res.json({ results: false })
       // res.json({ error: error })
@@ -138,12 +138,10 @@ async function login(req, res) {
       }
     }
   })
-
-
 }
 
 // Route 3 (handler) - Log out user
-async function logout(req, res) {
+async function logout (req, res) {
   var username = req.query.username
   var clientIP = req.socket.remoteAddress
 
@@ -188,7 +186,7 @@ async function logout(req, res) {
 // ********************************************
 
 // Route 2 (handler) - return a random city, and a photo of an attraction or hike
-function random_city(req, res) {
+function random_city (req, res) {
   // top 24 'random' cities that we we select from database to show on landing page
   // BC ideas from here: https://www.planetware.com/canada/best-cities-in-british-columbia-cdn-1-284.htm
   // CA ideas from here: https://www.planetware.com/california/best-places-to-visit-in-california-us-ca-138.htm
@@ -230,7 +228,7 @@ function random_city(req, res) {
 }
 
 // Route 3 (handler) - Return names of existing user-made trips to be displayed in sidebar
-function all_trips(req, res) {
+function all_trips (req, res) {
   var username = req.query.username
 
   var myQuery = `
@@ -256,7 +254,7 @@ function all_trips(req, res) {
 // ********************************************
 
 // Route 5 (handler) - Returns the list of all cities
-function all_cities(req, res) {
+function all_cities (req, res) {
   var myQuery = `
     SELECT DISTINCT state, city
     FROM POI
@@ -277,7 +275,7 @@ function all_cities(req, res) {
 }
 
 // Route 4 (handler) - Returns top 3 cities based on desired city size and travel personalities
-function quizCities(req, res) {
+function quizCities (req, res) {
   var population = req.query.population
   var CoolCat = parseInt(req.query.p0) === 1
   var Adventurer = parseInt(req.query.p1) === 1
@@ -329,7 +327,7 @@ function quizCities(req, res) {
 // ********************************************
 
 // Route 4 (handler) - Filters POIs based on city, state, and personalities. Returns unique tripID.
-function new_trip(req, res) {
+function new_trip (req, res) {
   // get trip profile parameters
   var username = req.query.username
   var tripName = req.query.tripName
@@ -429,29 +427,15 @@ function new_trip(req, res) {
   })
 }
 
-// Route 10 (handler) - (DEPRECATED) Returns trip POIs based on city, state, and travel personalities
-async function trip_pois(req, res) {
-  const username = req.params.username ? req.params.username : admin
-  const tripID = req.params.tid ? req.params.tid : 0
-  const tripTable = username + 'Trip' + tripID.toString()
+// Route 4 (handler) - Retrieve filtered POIs based on tripID.
+function retrieve_trip (req, res) {
+  var tripID = req.query.tripID
 
-  const city = req.params.city ? req.params.city : 'Vancouver'
-  const state = req.params.state ? req.params.state : 'BC'
-
-  const p0 = req.query.p0 ? req.query.p0 : 'false'
-  const p1 = req.query.p1 ? req.query.p1 : 'false'
-  const p2 = req.query.p2 ? req.query.p2 : 'false'
-  const p3 = req.query.p3 ? req.query.p3 : 'false'
-  const p4 = req.query.p4 ? req.query.p4 : 'true'
-  const p5 = req.query.p5 ? req.query.p5 : 'false'
-
-  createPersonalityViews()
-  var personalitiesQuery = createPersonalitiesQuery(p0, p1, p2, p3, p4, p5)
-
-  var myQuery = `
-    ${personalitiesQuery}
+  // retrieve trip profile
+  myQuery = `
     SELECT *
-    FROM personalityPID NATURAL JOIN POI;
+    FROM TripProfile
+    WHERE tripID = ${tripID};
   `
   console.log(myQuery)
 
@@ -460,47 +444,123 @@ async function trip_pois(req, res) {
       console.log(error)
       res.json({ error: error })
     } else if (results) {
-      console.log('Got POIs based on city, state, and personalities')
-      res.json({ results: results })
+      if (results.length > 0) {
+        console.log('Retrieved trip profile for Trip ' + tripID.toString())
+
+        // generate filtered POIs
+        createPersonalityViews()
+
+        var personalitiesQuery = createPersonalitiesQuery(
+          results[0].CoolCat,
+          results[0].Adventurer,
+          results[0].Entertainer,
+          results[0].Family,
+          results[0].Enthusiast,
+          results[0].Investigator
+        )
+
+        var viewName = 'Trip_' + tripID.toString()
+        var city = results[0].city
+        var state = results[0].state
+
+        myQuery = `
+          CREATE OR REPLACE VIEW ${viewName} AS
+          ${personalitiesQuery}
+          SELECT DISTINCT pid
+          FROM POI NATURAL JOIN personalityPID
+          WHERE POI.city = '${city}' AND POI.state = '${state}';
+        `
+        console.log(myQuery)
+
+        connection.query(myQuery, function (error, results, fields) {
+          if (error) {
+            console.log(error)
+            res.json({ error: error })
+          } else if (results) {
+            console.log('Generated filtered POIs based on city, state, and personalities')
+            res.json({ results: true })
+          }
+        })
+      } else {
+        console.log('Trip does not exist')
+        res.json({ results: false })
+      }
     }
   })
-
-  // var myQuery = `
-  //   CREATE OR REPLACE VIEW ${tripTable} AS
-  //   ${personalitiesQuery}
-  //   SELECT '${username}' AS username, ${tripID} AS tid, POI.pid AS pid
-  //   FROM personalityPID JOIN POI ON personalityPID.pid = POI.pid
-  //   WHERE POI.city = '${city}' AND POI.state = '${state}';
-  //   `
-  // console.log(myQuery)
-
-  // connection.query(myQuery, function (error, results, fields) {
-  //   if (error) {
-  //     console.log(error)
-  //     res.json({ error: error })
-  //   } else if (results) {
-  //     console.log('Got POIs based on city, state, and personalities')
-  //   }
-  // })
-
-  // myQuery = `
-  //   SELECT *
-  //   FROM ${tripTable};
-  //   `
-  // console.log(myQuery)
-
-  // connection.query(myQuery, function (error, results, fields) {
-  //   if (error) {
-  //     console.log(error)
-  //     res.json({ error: error })
-  //   } else if (results) {
-  //     res.json({ results: results })
-  //   }
-  // })
 }
 
+// // Route 10 (handler) - (DEPRECATED) Returns trip POIs based on city, state, and travel personalities
+// async function trip_pois (req, res) {
+//   const username = req.params.username ? req.params.username : admin
+//   const tripID = req.params.tid ? req.params.tid : 0
+//   const tripTable = username + 'Trip' + tripID.toString()
+
+//   const city = req.params.city ? req.params.city : 'Vancouver'
+//   const state = req.params.state ? req.params.state : 'BC'
+
+//   const p0 = req.query.p0 ? req.query.p0 : 'false'
+//   const p1 = req.query.p1 ? req.query.p1 : 'false'
+//   const p2 = req.query.p2 ? req.query.p2 : 'false'
+//   const p3 = req.query.p3 ? req.query.p3 : 'false'
+//   const p4 = req.query.p4 ? req.query.p4 : 'true'
+//   const p5 = req.query.p5 ? req.query.p5 : 'false'
+
+//   createPersonalityViews()
+//   var personalitiesQuery = createPersonalitiesQuery(p0, p1, p2, p3, p4, p5)
+
+//   var myQuery = `
+//     ${personalitiesQuery}
+//     SELECT *
+//     FROM personalityPID NATURAL JOIN POI;
+//   `
+//   console.log(myQuery)
+
+//   connection.query(myQuery, function (error, results, fields) {
+//     if (error) {
+//       console.log(error)
+//       res.json({ error: error })
+//     } else if (results) {
+//       console.log('Got POIs based on city, state, and personalities')
+//       res.json({ results: results })
+//     }
+//   })
+
+//   // var myQuery = `
+//   //   CREATE OR REPLACE VIEW ${tripTable} AS
+//   //   ${personalitiesQuery}
+//   //   SELECT '${username}' AS username, ${tripID} AS tid, POI.pid AS pid
+//   //   FROM personalityPID JOIN POI ON personalityPID.pid = POI.pid
+//   //   WHERE POI.city = '${city}' AND POI.state = '${state}';
+//   //   `
+//   // console.log(myQuery)
+
+//   // connection.query(myQuery, function (error, results, fields) {
+//   //   if (error) {
+//   //     console.log(error)
+//   //     res.json({ error: error })
+//   //   } else if (results) {
+//   //     console.log('Got POIs based on city, state, and personalities')
+//   //   }
+//   // })
+
+//   // myQuery = `
+//   //   SELECT *
+//   //   FROM ${tripTable};
+//   //   `
+//   // console.log(myQuery)
+
+//   // connection.query(myQuery, function (error, results, fields) {
+//   //   if (error) {
+//   //     console.log(error)
+//   //     res.json({ error: error })
+//   //   } else if (results) {
+//   //     res.json({ results: results })
+//   //   }
+//   // })
+// }
+
 // Route 7 (handler) - Returns the attractions from filtered POIs
-function trip_attractions(req, res) {
+function trip_attractions (req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
   var viewName = 'Trip_' + tripID.toString()
 
@@ -522,7 +582,7 @@ function trip_attractions(req, res) {
 }
 
 // Route 8 (handler) - Returns the restaurants from filtered POIs
-function trip_restaurants(req, res) {
+function trip_restaurants (req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
   var viewName = 'Trip_' + tripID.toString()
 
@@ -544,7 +604,7 @@ function trip_restaurants(req, res) {
 }
 
 // Route 9 (handler) - Returns the trails from filtered POIs
-function trip_trails(req, res) {
+function trip_trails (req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
   var viewName = 'Trip_' + tripID.toString()
 
@@ -566,7 +626,7 @@ function trip_trails(req, res) {
 }
 
 // Route 9 (handler) - Deletes trip given tripID
-function delete_trip(req, res) {
+function delete_trip (req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
 
   var myQuery = `
@@ -590,7 +650,7 @@ function delete_trip(req, res) {
 //             Filter POIs
 // ********************************************
 
-async function createPersonalityViews() {
+async function createPersonalityViews () {
   // Case 1: Cool Cat
   var CoolCat = `
     CREATE OR REPLACE VIEW CoolCat AS
@@ -819,7 +879,7 @@ async function createPersonalityViews() {
   })
 }
 
-function createPersonalitiesQuery(p0, p1, p2, p3, p4, p5) {
+function createPersonalitiesQuery (p0, p1, p2, p3, p4, p5) {
   var personalities = new Array()
   personalities[0] = new Array(p0, 'CoolCat')
   personalities[1] = new Array(p1, 'Adventurer')
@@ -846,7 +906,7 @@ function createPersonalitiesQuery(p0, p1, p2, p3, p4, p5) {
   return personalitiesQuery
 }
 
-function createPopulationQuery(pop) {
+function createPopulationQuery (pop) {
   var population = parseInt(pop)
 
   // city size based on https://data.oecd.org/popregion/urban-population-by-city-size.htm
@@ -875,11 +935,47 @@ function createPopulationQuery(pop) {
   return populationQuery
 }
 
+function generateFilteredPOIs (tripID) {
+  // generate filtered POIs
+  createPersonalityViews()
+
+  var personalitiesQuery = createPersonalitiesQuery(
+    CoolCat,
+    Adventurer,
+    Entertainer,
+    Family,
+    Enthusiast,
+    Investigator
+  )
+
+  var viewName = 'Trip_' + tripID.toString()
+
+  var myQuery = `
+                CREATE OR REPLACE VIEW ${viewName} AS
+                ${personalitiesQuery}
+                SELECT DISTINCT pid
+                FROM POI NATURAL JOIN personalityPID
+                WHERE POI.city = '${city}' AND POI.state = '${state}';
+              `
+  console.log(myQuery)
+
+  connection.query(myQuery, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      console.log(
+        'Generated filtered POIs based on city, state, and personalities'
+      )
+    }
+  })
+}
+
 // ********************************************
 //             Authenticate
 // ********************************************
 
-function test(req, res) {
+function test (req, res) {
   var username = req.query.username
   var clientIP = req.socket.remoteAddress
   // console.log('Username: ' + username.toString())
@@ -894,7 +990,7 @@ function test(req, res) {
   }
 }
 
-function authenticate(username, clientIP) {
+function authenticate (username, clientIP) {
   var myQuery = `
     SELECT *
     FROM LoggedIn
@@ -927,7 +1023,8 @@ module.exports = {
   all_cities,
   quizCities,
   new_trip,
-  trip_pois,
+  retrieve_trip,
+  // trip_pois,
   trip_attractions,
   trip_restaurants,
   trip_trails,
