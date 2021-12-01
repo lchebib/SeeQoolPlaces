@@ -107,6 +107,25 @@ app.get('/trip/restaurants', routes.trip_restaurants)
 // returns [{pid, length, difficulty, low, high, description, route_type, photo}]
 app.get('/trip/trails', routes.trip_trails)
 
+// Get requires tripID --> /trip/favorites?tripID=2
+// returns [{pid, length, difficulty, low, high, description, route_type, photo}]
+app.get('/trip/favorites', routes.trip_favorites)
+
+// Get trip events
+// requires tripID --> /trip/events?tripID=2
+// returns [{pid, length, difficulty, low, high, description, route_type, photo}]
+app.get('/trip/events', routes.trip_events)
+
+// Save trip favorites
+// requires tripID, favorites = JSON.stringify([ pids ]) --> /trip/save_favorites?tripID=2&favorites=stringifiedPIDs
+// returns true if successfully saved favorites
+app.get('/trip/save_favorites', routes.trip_favorites)
+
+// Save trip events
+// requires tripID, events = JSON.stringify([ events ]) --> /trip/save_events?tripID=2&events=stringifiedEvents
+// returns [{pid, length, difficulty, low, high, description, route_type, photo}]
+app.get('/trip/save_events', routes.trip_events)
+
 // Delete trip permanently from user account
 // requires tripID --> /delete_trip?tripID=2
 // always returns true
