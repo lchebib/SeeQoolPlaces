@@ -601,19 +601,92 @@ function trip_events (req, res) {
   })
 }
 
-// Route 9 (handler) - Save trip Favorites
-function save_favorites (req, res) {
+// // Route 9 (handler) - Save trip Favorites
+// function save_favorites (req, res) {
+//   const tripID = req.query.tripID ? req.query.tripID : 0
+//   const favorites = JSON.parse(req.query.favorites)
+//     ? req.query.favorites
+//     : { favorites: [] }
+
+//   if (favorites.length > 0 && tripID !== 0) {
+//     for (let pid of favorites) {
+//       var myQuery = `
+//         INSERT INTO TripFavorites (tripID, pid)
+//         VALUES (${tripID}, ${pid});
+//       `
+//       console.log(myQuery)
+
+//       connection.query(myQuery, function (error, results, fields) {
+//         if (error) {
+//           console.log(error)
+//           res.json({ error: error })
+//         } else if (results) {
+//           console.log('Saved trip Favorites')
+//           res.json({ results: true })
+//         }
+//       })
+//     }
+//   } else {
+//     console.log('No favorites to store or invalid trip ID')
+//     res.json({ results: false })
+//   }
+// }
+
+// // Route 9 (handler) - Save trip Events
+// function save_events (req, res) {
+//   const tripID = req.query.tripID ? req.query.tripID : 0
+//   const events = JSON.parse(req.query.events)
+//     ? req.query.events
+//     : { events: [] }
+
+//   if (events.length > 0) {
+//     for (let event of events) {
+//       var eventID = event.eventID
+//       var tripID = event.tripID
+//       var pid = event.pid
+//       var start = event.start
+//       var end = event.end
+
+//       var myQuery = `
+//         INSERT INTO TripEvents (eventID, tripID, pid, start, end)
+//         VALUES (${eventID}, ${tripID}, ${pid}, ${start}, ${end});
+//       `
+//       console.log(myQuery)
+
+//       connection.query(myQuery, function (error, results, fields) {
+//         if (error) {
+//           console.log(error)
+//           res.json({ error: error })
+//         } else if (results) {
+//           console.log('Saved trip Events')
+//           res.json({ results: true })
+//         }
+//       })
+//     }
+//   } else {
+//     console.log('No events to store')
+//     res.json({ results: false })
+//   }
+// }
+
+// Route 9 (handler) - Save trip Favorites and Events
+function save_trip (req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
+
   const favorites = JSON.parse(req.query.favorites)
     ? req.query.favorites
     : { favorites: [] }
 
-  if (favorites.length > 0 && tripID !== 0) {
+  const events = JSON.parse(req.query.events)
+    ? req.query.events
+    : { events: [] }
+
+  if (favorites.length > 0) {
     for (let pid of favorites) {
       var myQuery = `
-        INSERT INTO TripFavorites (tripID, pid)
-        VALUES (${tripID}, ${pid});  
-      `
+          INSERT INTO TripFavorites (tripID, pid)
+          VALUES (${tripID}, ${pid});  
+        `
       console.log(myQuery)
 
       connection.query(myQuery, function (error, results, fields) {
@@ -622,7 +695,6 @@ function save_favorites (req, res) {
           res.json({ error: error })
         } else if (results) {
           console.log('Saved trip Favorites')
-          res.json({ results: true })
         }
       })
     }
@@ -630,14 +702,6 @@ function save_favorites (req, res) {
     console.log('No favorites to store or invalid trip ID')
     res.json({ results: false })
   }
-}
-
-// Route 9 (handler) - Save trip Events
-function save_events (req, res) {
-  const tripID = req.query.tripID ? req.query.tripID : 0
-  const events = JSON.parse(req.query.events)
-    ? req.query.events
-    : { events: [] }
 
   if (events.length > 0) {
     for (let event of events) {
@@ -659,7 +723,6 @@ function save_events (req, res) {
           res.json({ error: error })
         } else if (results) {
           console.log('Saved trip Events')
-          res.json({ results: true })
         }
       })
     }
@@ -667,6 +730,33 @@ function save_events (req, res) {
     console.log('No events to store')
     res.json({ results: false })
   }
+      
+  res.json({ results: true })
+}
+
+// Route 9 (handler) - Update trip details
+function update_trip (req, res) {
+  const tripID = req.query.tripID ? req.query.tripID : 0
+  const tripName = req.query.tripName ? req.query.tripName : ''
+  const city = req.query.city ? req.query.city : ''
+  const state = req.query.state ? req.query.state : ''
+
+  var myQuery = `
+    UPDATE TripProfile
+    SET tripName = ${tripName}, city = '${city}', state = '${state}'
+    WHERE tripID = ${tripID};
+  `
+  console.log(myQuery)
+
+  connection.query(myQuery, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      console.log('Updated trip details')
+      res.json({ results: true })
+    }
+  })
 }
 
 // Route 9 (handler) - Deletes trip given tripID
@@ -1074,8 +1164,9 @@ module.exports = {
   trip_trails,
   trip_favorites,
   trip_events,
-  save_favorites,
-  save_events,
+  // save_favorites,
+  // save_events,
+  save_trip,
   delete_trip,
   test
 }
