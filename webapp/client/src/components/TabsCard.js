@@ -72,9 +72,7 @@ class TabsCard extends React.Component {
   }
 
   onChangePOI(e) {
-    this.setState({ bigPOI: e.target.value });
     this.props.onClickPOI(e.target.value);
-
   }
 
   onChangePage(page, size) {
@@ -86,6 +84,9 @@ class TabsCard extends React.Component {
     // if (this.state.keyArr.length === 0) {
     //   return null
     // }
+
+    console.log(this.state.keyArr)
+    console.log(this.props.bigPOI)
 
 
     const renderRadio = (POI) => {
@@ -111,7 +112,7 @@ class TabsCard extends React.Component {
               </Row>
               <Row justify='start' style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
                 <Rate disabled allowHalf='true' defaultValue={POI.rating} style={{ color: '#006400', zoom: '0.55' }} />
-                <span className="ant-rate-text">{POI.numReviews}</span>
+                <span className="ant-rate-text">{POI.num_reviews}</span>
               </Row>
               <Row gutter={[12]} style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
                 <Col>
@@ -144,7 +145,7 @@ class TabsCard extends React.Component {
               </Row>
               <Row justify='start' style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
                 <Rate disabled allowHalf='true' defaultValue={POI.rating} style={{ color: '#006400', zoom: '0.55' }} />
-                <span className="ant-rate-text">{POI.numReviews}</span>
+                <span className="ant-rate-text">{POI.num_reviews}</span>
               </Row>
               <Row gutter={[12]} style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
                 <Col>
@@ -168,7 +169,7 @@ class TabsCard extends React.Component {
               </Row>
               <Row justify='start' style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
                 <Rate disabled allowHalf='true' defaultValue={POI.rating} style={{ color: '#006400', zoom: '0.55' }} />
-                <span className="ant-rate-text">{POI.numReviews}</span>
+                <span className="ant-rate-text">{POI.num_reviews}</span>
               </Row>
               <Row gutter={[12]} style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
                 <Col>
@@ -200,6 +201,20 @@ class TabsCard extends React.Component {
     }
 
 
+    const handleTags = (tags) => {
+      if (tags) {
+        return "• " + tags.split(',').join(' • ')
+      }
+    }
+
+    const handleSuggestedDuration = (dur_high, dur_low) => {
+      if (dur_high == dur_low) {
+        return `${dur_high} hours`
+      } else {
+        return `${dur_low} - ${dur_high} hours`
+      }
+    }
+
     const renderBigPOI = (bigPOI) => {
       if (bigPOI.category === 'attractions') {
         return (
@@ -207,29 +222,31 @@ class TabsCard extends React.Component {
             <Space direction='vertical'>
               <Row gutter={0, 5}>
                 <Col lg={24} xl={14} >
-                  <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
-                    bigPOI.name}
-                  </div>
-                  <div >
-                    <Rate disabled defaultValue={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
-                    {bigPOI.numReviews} reviews
-                  </div>
-                  <div>
-                    <span style={{ fontSize: '110%' }}>{bigPOI.subcategory} • {bigPOI.tags.split(',').join(' • ')}</span>
-                  </div>
+                  <Space direction='vertical'>
+                    <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
+                      bigPOI.name}
+                    </div>
+                    <div >
+                      <Rate disabled defaultValue={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
+                      {bigPOI.num_reviews} reviews
+                    </div>
+                    <div>
+                      <span style={{ fontSize: '110%' }}>{bigPOI.tags.split(',').join(' • ')}</span>
+                    </div>
+                  </Space>
                 </Col>
                 <Col lg={24} xl={10} >
                   <img src={(this.getBackgroundImage(bigPOI))} alt="POI" style={{ maxWidth: '100%' }} />
                 </Col>
               </Row>
               <Row align='middle' >
+                {bigPOI.description}
+              </Row>
+              <Row align='middle' >
                 <Space wrap='true'>
                   <div >
-                    {bigPOI.description}
-                  </div>
-                  <div >
                     <span style={{ fontWeight: 'bold' }}>Suggested duration: </span>
-                    {bigPOI.duration_low}-{bigPOI.duration_high} hours
+                    {handleSuggestedDuration(bigPOI.duration_high, bigPOI.duration_low)}
                   </div>
                 </Space>
               </Row>
@@ -250,23 +267,25 @@ class TabsCard extends React.Component {
             <Space direction='vertical'>
               <Row gutter={0, 5}>
                 <Col lg={24} xl={14} >
-                  <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>
-                    {bigPOI.name}
-                  </div>
-                  <div>
-                    <Rate disabled defaultValue={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
-                    {bigPOI.numReviews} reviews
-                  </div>
+                  <Space direction='vertical'>
+                    <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>
+                      {bigPOI.name}
+                    </div>
+                    <div>
+                      <Rate disabled defaultValue={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
+                      {bigPOI.num_reviews} reviews
+                    </div>
+                  </Space>
                 </Col>
                 <Col lg={24} xl={10} >
                   <img src={(this.getBackgroundImage(bigPOI))} alt="POI" style={{ maxWidth: '100%' }} />
                 </Col>
               </Row>
               <Row align='middle' >
+                {bigPOI.description}
+              </Row>
+              <Row align='middle' >
                 <Space wrap='true'>
-                  <div >
-                    {bigPOI.description}
-                  </div>
                   <div >
                     <span style={{ fontWeight: 'bold' }}>Route type: </span>
                     {bigPOI.routeType}
@@ -281,7 +300,7 @@ class TabsCard extends React.Component {
                   </div>
                   <div >
                     <span style={{ fontWeight: 'bold' }}>Suggested duration: </span>
-                    {bigPOI.duration_low}-{bigPOI.duration_high} hours
+                    {handleSuggestedDuration(bigPOI.duration_high, bigPOI.duration_low)}
                   </div>
                   <div >
                     <span style={{ fontWeight: 'bold' }}>Elevation gain </span>
@@ -305,21 +324,23 @@ class TabsCard extends React.Component {
           <Card >
             <Space direction='vertical'>
               <Row >
-                <Space wrap='true'>
-                  <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
-                    bigPOI.name}
-                  </div>
-                  <div>
-                    <Rate disabled defaultValue={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
-                    {bigPOI.numReviews} reviews
-                  </div>
-                  <div>
-                    <span style={{ fontSize: '110%' }}>{bigPOI.subcategory} • {bigPOI.tags.split(',').join(' • ')}</span>
-                  </div>
-                  <div >
+                <Space direction='vertical'>
+                  <Space wrap='true'>
+                    <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
+                      bigPOI.name}
+                    </div>
+                    <div >
+                      <Rate disabled defaultValue={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
+                      {bigPOI.num_reviews} reviews
+                    </div>
+                  </Space>
+                  <Col span={24} >
+                    <div style={{ fontSize: '110%' }}>{bigPOI.subcategory} {handleTags(bigPOI.tags)}</div>
+                  </Col>
+                  <Col span={24} >
                     <span style={{ fontWeight: 'bold' }}>Suggested duration: </span>
-                    {bigPOI.duration_low}-{bigPOI.duration_high} hours
-                  </div>
+                    {handleSuggestedDuration(bigPOI.duration_high, bigPOI.duration_low)}
+                  </Col>
                 </Space>
               </Row>
               <Row align='middle' justify='center' gutter={[20, 5]} style={{ fontFamily: 'Work Sans', marginTop: '15px' }}>
@@ -330,8 +351,8 @@ class TabsCard extends React.Component {
                   {favoritesButton(bigPOI)}
                 </Col>
               </Row>
-            </Space>
-          </Card>
+            </Space >
+          </Card >
         )
       }
     }
@@ -351,6 +372,7 @@ class TabsCard extends React.Component {
         tab: 'Restaurants',
       },
     ];
+
 
     return (
       <Row >

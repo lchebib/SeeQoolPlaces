@@ -48,7 +48,6 @@ class HomePage extends React.Component {
           style={{
             height: '100vh',
             position: 'fixed',
-            zIndex: 100
           }}>
           <SideBar style />
         </Sider>
