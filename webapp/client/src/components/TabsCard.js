@@ -60,7 +60,7 @@ class TabsCard extends React.Component {
     if (POI.photo) {
       return POI.photo;
     } else {
-      return 'https://thumbs.dreamstime.com/z/no-image-available-icon-photo-camera-flat-vector-illustration-132483141.jpg';
+      return 'https://i.imgur.com/k4MjFGw.png';
     }
   }
 
