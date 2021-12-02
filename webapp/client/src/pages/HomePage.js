@@ -98,7 +98,7 @@ class HomePage extends React.Component {
                     border: 'none',
                   }}>
                     <div>
-                      <div style={{ fontFamily: 'Work Sans', fontSize: '30px', color: 'white' }}>Find your city.</div>
+                      <div style={{ fontFamily: 'Work Sans', fontSize: '30px', color: 'white' }}>Start planning here.</div>
                       <Divider style={{ border: 'none' }} />
                       <Button href={"/quiz"} size='large' shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Take Trip Quiz</Button>
                     </div>

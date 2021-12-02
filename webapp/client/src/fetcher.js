@@ -120,18 +120,18 @@ const getQuizCities = async (population, p0, p1, p2, p3, p4, p5) => {
 // ********************************************
 
 
-const getTripPOIS = async (tripID, username) => {
-  // var res = await fetch(
-  //   `http://${config.server_host}:${config.server_port}/trip_pois?tid=${tripID}&username=${username}`,
-  //   {
-  //     method: 'GET',
-  //   }
-  // )
-  // return res.json()
+// const getTripPOIS = async (tripID, username) => {
+//   // var res = await fetch(
+//   //   `http://${config.server_host}:${config.server_port}/trip_pois?tid=${tripID}&username=${username}`,
+//   //   {
+//   //     method: 'GET',
+//   //   }
+//   // )
+//   // return res.json()
 
-  var res = { results: tempGetPOIS() };
-  return res;
-}
+//   var res = { results: tempGetPOIS() };
+//   return res;
+// }
 
 
 const newTrip = async (username, tripName, city, state, p0, p1, p2, p3, p4, p5) => {
@@ -180,25 +180,56 @@ const getTripRestaurants = async (tripID) => {
   return res.json()
 }
 
-const postSaveTrip = async (tripID) => {
+const postSaveTrip = async (tripID, favorites, events) => {
   var res = await fetch(
-    `http://${config.server_host}:${config.server_port}/save_trip?tripID={tripID}`,
+    `http://${config.server_host}:${config.server_port}/trip/save_trip?tripID=${tripID}&favorites=${favorites}&events=${events}`,
     {
       method: 'GET',
     }
   )
-  // return res.json()
+  return res.json()
 }
 
 const postDeleteTrip = async (tripID) => {
   var res = await fetch(
-    `http://${config.server_host}:${config.server_port}/delete_trip?tripID={tripID}`,
+    `http://${config.server_host}:${config.server_port}/delete_trip?tripID=${tripID}`,
     {
       method: 'GET',
     }
   )
-  // return res.json()
+  return res.json()
 }
+
+// const testStringify = async (tripID, favorites, events) => {
+//   var res = await fetch(
+//     `http://${config.server_host}:${config.server_port}/stringify_test?tripID=${tripID}&favorites=${favorites}&events=${events}`,
+//     {
+//       method: 'GET',
+//     }
+//   )
+//   return res.json()
+// }
+
+const getTripFavorites = async (tripID) => {
+  var res = await fetch(
+    `http://${config.server_host}:${config.server_port}/trip/favorites?tripID=${tripID}`,
+    {
+      method: 'GET',
+    }
+  )
+  return res.json()
+}
+
+const getTripEvents = async (tripID) => {
+  var res = await fetch(
+    `http://${config.server_host}:${config.server_port}/trip/events?tripID=${tripID}`,
+    {
+      method: 'GET',
+    }
+  )
+  return res.json()
+}
+
 
 export {
   getAllTrips,
@@ -208,11 +239,12 @@ export {
   signUp,
   getAllCities,
   getQuizCities,
-  getTripPOIS,
   newTrip,
   getTripAttractions,
   getTripTrails,
   getTripRestaurants,
   postSaveTrip,
-  postDeleteTrip
+  postDeleteTrip,
+  getTripEvents,
+  getTripFavorites
 }

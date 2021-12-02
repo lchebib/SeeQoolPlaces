@@ -584,8 +584,8 @@ function trip_events(req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
 
   var myQuery = `
-    SELECT *
-    FROM TripEvents
+    SELECT name AS title, eventID AS id, start, end, pid, category
+    FROM TripEvents NATURAL JOIN POI
     WHERE tripID = ${tripID};  
   `
   console.log(myQuery)
@@ -600,74 +600,6 @@ function trip_events(req, res) {
     }
   })
 }
-
-// // Route 9 (handler) - Save trip Favorites
-// function save_favorites (req, res) {
-//   const tripID = req.query.tripID ? req.query.tripID : 0
-//   const favorites = JSON.parse(req.query.favorites)
-//     ? req.query.favorites
-//     : { favorites: [] }
-
-//   if (favorites.length > 0 && tripID !== 0) {
-//     for (let pid of favorites) {
-//       var myQuery = `
-//         INSERT INTO TripFavorites (tripID, pid)
-//         VALUES (${tripID}, ${pid});
-//       `
-//       console.log(myQuery)
-
-//       connection.query(myQuery, function (error, results, fields) {
-//         if (error) {
-//           console.log(error)
-//           res.json({ error: error })
-//         } else if (results) {
-//           console.log('Saved trip Favorites')
-//           res.json({ results: true })
-//         }
-//       })
-//     }
-//   } else {
-//     console.log('No favorites to store or invalid trip ID')
-//     res.json({ results: false })
-//   }
-// }
-
-// // Route 9 (handler) - Save trip Events
-// function save_events (req, res) {
-//   const tripID = req.query.tripID ? req.query.tripID : 0
-//   const events = JSON.parse(req.query.events)
-//     ? req.query.events
-//     : { events: [] }
-
-//   if (events.length > 0) {
-//     for (let event of events) {
-//       var eventID = event.eventID
-//       var tripID = event.tripID
-//       var pid = event.pid
-//       var start = event.start
-//       var end = event.end
-
-//       var myQuery = `
-//         INSERT INTO TripEvents (eventID, tripID, pid, start, end)
-//         VALUES (${eventID}, ${tripID}, ${pid}, ${start}, ${end});
-//       `
-//       console.log(myQuery)
-
-//       connection.query(myQuery, function (error, results, fields) {
-//         if (error) {
-//           console.log(error)
-//           res.json({ error: error })
-//         } else if (results) {
-//           console.log('Saved trip Events')
-//           res.json({ results: true })
-//         }
-//       })
-//     }
-//   } else {
-//     console.log('No events to store')
-//     res.json({ results: false })
-//   }
-// }
 
 // Route 9 (handler) - Save trip Favorites and Events
 function save_trip(req, res) {
@@ -705,7 +637,7 @@ function save_trip(req, res) {
 
   if (events.length > 0) {
     for (let event of events) {
-      var eventID = event.eventID
+      var eventID = event.id
       var tripID = event.tripID
       var pid = event.pid
       var start = event.start
@@ -713,7 +645,7 @@ function save_trip(req, res) {
 
       var myQuery = `
         INSERT INTO TripEvents (eventID, tripID, pid, start, end)
-        VALUES (${eventID}, ${tripID}, ${pid}, ${start}, ${end});  
+        VALUES (${eventID}, ${tripID}, ${pid}, '${start}', '${end}');  
       `
       console.log(myQuery)
 
@@ -764,6 +696,8 @@ function update_trip(req, res) {
 // Route 9 (handler) - Deletes trip given tripID
 function delete_trip(req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
+  console.log("Trip ID to delete: )" + tripID.toString())
+  console.log(`Type of tripID is ${typeof tripID}`)
 
   var myQuery = `
     DELETE FROM TripProfile
@@ -942,21 +876,18 @@ async function createPersonalityViews() {
       FROM POI
       WHERE Category = 'attractions'
       ORDER BY num_reviews DESC
-      LIMIT 48
       ),
       Enthusiast_Restaurant AS (
       SELECT pid
       FROM POI
       WHERE Category = 'restaurants'
       ORDER BY num_reviews DESC
-      LIMIT 48
       ),
       Enthusiast_Trail AS (
       SELECT pid
       FROM POI
       WHERE Category = 'trails'
       ORDER BY num_reviews DESC
-      LIMIT 48
       )
       SELECT *
       FROM Enthusiast_Attraction 
@@ -1149,6 +1080,64 @@ function authenticate(username, clientIP) {
   })
 }
 
+
+
+// Stringify testing
+function stringify_test(req, res) {
+  console.log("Req")
+  console.log(req.query)
+  console.log("Favorites unparsed")
+  console.log(req.query.favorites)
+
+  const TripID = req.query.tripID ? req.query.tripID : 0
+  console.log("Trip ID")
+  console.log(TripID)
+
+  // const favoritesRaw = req.query.favorites
+  // const favorites = JSON.parse(favoritesRaw)
+  const favorites = JSON.parse(req.query.favorites)
+  console.log("Favorites")
+  console.log(favorites)
+
+  const events = JSON.parse(req.query.events)
+  console.log("Events")
+  console.log(events)
+
+  if (favorites.length > 0) {
+
+    console.log("Favorites:")
+
+    for (let pid of favorites) {
+
+      console.log(pid)
+    }
+  } else {
+    console.log('No favorites to store or invalid trip ID')
+    res.json({ results: false })
+  }
+
+  if (events.length > 0) {
+
+    console.log("Events")
+
+    for (let event of events) {
+
+      console.log(event)
+
+      // var eventID = event.eventID
+      // var tripID = event.tripID
+      // var pid = event.pid
+      // var start = event.start
+      // var end = event.end
+    }
+  } else {
+    console.log('No events to store')
+    res.json({ results: false })
+  }
+
+  res.json({ results: true })
+}
+
 module.exports = {
   add_user,
   login,
@@ -1171,5 +1160,6 @@ module.exports = {
   save_trip,
   update_trip,
   delete_trip,
+  stringify_test,
   test
 }

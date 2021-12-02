@@ -177,7 +177,7 @@ class Scheduler extends React.Component {
       start: start,
       end: end,
       allDay: false,
-      resource: [{ pid: POI.pid, duration: duration }],
+      pid: POI.pid,
       category: category
     }
 

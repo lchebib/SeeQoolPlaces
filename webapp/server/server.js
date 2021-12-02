@@ -112,18 +112,8 @@ app.get('/trip/favorites', routes.trip_favorites)
 // returns [{eventID, tripID, pid, start, end}]
 app.get('/trip/events', routes.trip_events)
 
-// Save trip favorites
-// requires tripID, favorites = JSON.stringify([ pids ]) --> /trip/save_favorites?tripID=2&favorites=stringifiedPIDs
-// returns true if successfully saved favorites
-// app.get('/trip/save_favorites', routes.save_favorites)
-
-// Save trip events
-// requires tripID, events = JSON.stringify([ events ]) --> /trip/save_events?tripID=2&events=stringifiedEvents
-// returns true if successfully saved events
-// app.get('/trip/save_events', routes.save_events)
-
 // Save trip favorites and events
-// requires tripID, favorites = JSON.stringify([ pids ]), events = JSON.stringify([ events{} ]) --> /trip/save_favorites?tripID=2&favorites=stringifiedPIDs&events=stringifiedEvents
+// requires tripID, favorites = JSON.stringify([ pids ]), events = JSON.stringify([ events{} ]) --> /trip/save_trip?tripID=2&favorites=stringifiedPIDs&events=stringifiedEvents
 // returns true if successfully saved trip
 app.get('/trip/save_trip', routes.save_trip)
 
@@ -136,6 +126,11 @@ app.get('/trip/update_trip', routes.update_trip)
 // requires tripID --> /delete_trip?tripID=2
 // always returns true
 app.get('/delete_trip', routes.delete_trip)
+
+// Delete trip permanently from user account
+// requires tripID --> /delete_trip?tripID=2
+// always returns true
+app.get('/stringify_test', routes.stringify_test)
 
 
 app.listen(config.server_port, () => {
