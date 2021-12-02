@@ -233,7 +233,7 @@ function all_trips (req, res) {
 
   var myQuery = `
     SELECT tripID, tripName, city, state
-    FROM UserTrips NATURAL JOIN TripProfile
+    FROM TripProfile
     WHERE username = '${username}';
   `
   console.log(myQuery)
@@ -342,8 +342,8 @@ function new_trip (req, res) {
 
   // create new entry in tripProfile
   var myQuery = `
-    INSERT INTO TripProfile (tripName, city, state, CoolCat, Adventurer, Entertainer, Family, Enthusiast, Investigator)
-    VALUES (${tripName}, '${city}', '${state}', ${CoolCat}, ${Adventurer}, ${Entertainer}, ${Family}, ${Enthusiast}, ${Investigator});
+    INSERT INTO TripProfile (username, tripName, city, state, CoolCat, Adventurer, Entertainer, Family, Enthusiast, Investigator)
+    VALUES ('${username}', ${tripName}, '${city}', '${state}', ${CoolCat}, ${Adventurer}, ${Entertainer}, ${Family}, ${Enthusiast}, ${Investigator});
   `
   console.log(myQuery)
 
@@ -368,12 +368,27 @@ function new_trip (req, res) {
         } else if (results) {
           tripID = results[0].tripID
           console.log('Trip ID: ' + tripID.toString())
+          // generate filtered POIs
+          createPersonalityViews()
 
-          // add trip to userTrips
+          var personalitiesQuery = createPersonalitiesQuery(
+            CoolCat,
+            Adventurer,
+            Entertainer,
+            Family,
+            Enthusiast,
+            Investigator
+          )
+
+          var viewName = 'Trip_' + tripID.toString()
+
           var myQuery = `
-            INSERT INTO UserTrips (username, tripID)
-            VALUES ('${username}', ${tripID});
-          `
+                CREATE OR REPLACE VIEW ${viewName} AS
+                ${personalitiesQuery}
+                SELECT DISTINCT pid
+                FROM POI NATURAL JOIN personalityPID
+                WHERE POI.city = '${city}' AND POI.state = '${state}';
+              `
           console.log(myQuery)
 
           connection.query(myQuery, function (error, results, fields) {
@@ -381,46 +396,14 @@ function new_trip (req, res) {
               console.log(error)
               res.json({ error: error })
             } else if (results) {
-              console.log('Added new trip to UserTrips')
-
-              // generate filtered POIs
-              createPersonalityViews()
-
-              var personalitiesQuery = createPersonalitiesQuery(
-                CoolCat,
-                Adventurer,
-                Entertainer,
-                Family,
-                Enthusiast,
-                Investigator
+              console.log(
+                'Generated filtered POIs based on city, state, and personalities'
               )
-
-              var viewName = 'Trip_' + tripID.toString()
-
-              var myQuery = `
-                CREATE OR REPLACE VIEW ${viewName} AS
-                ${personalitiesQuery}
-                SELECT DISTINCT pid
-                FROM POI NATURAL JOIN personalityPID
-                WHERE POI.city = '${city}' AND POI.state = '${state}';
-              `
-              console.log(myQuery)
-
-              connection.query(myQuery, function (error, results, fields) {
-                if (error) {
-                  console.log(error)
-                  res.json({ error: error })
-                } else if (results) {
-                  console.log(
-                    'Generated filtered POIs based on city, state, and personalities'
-                  )
-                }
-              })
-
-              // return tripID
-              res.json({ results: tripID })
             }
           })
+
+          // return tripID
+          res.json({ results: tripID })
         }
       })
     }
@@ -634,7 +617,7 @@ function save_trip (req, res) {
             if (error) {
               console.log(error)
               res.json({ error: error })
-            } 
+            }
             // else if (results) {
             //   console.log('Saved trip Favorites')
             // }
@@ -680,7 +663,7 @@ function save_trip (req, res) {
             if (error) {
               console.log(error)
               res.json({ error: error })
-            } 
+            }
             // else if (results) {
             //   console.log('Saved trip Events')
             // }
