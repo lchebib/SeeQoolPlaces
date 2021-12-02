@@ -10,12 +10,8 @@ class TabsCard extends React.Component {
       currentTab: "trails",
       minValue: 0,
       currentPage: 1,
-      pageSize: 9,
+      pageSize: 12,
       keyArr: []
-      // bigPOIPhoto: null,
-      // tripAttractions: [],
-      // tripRestaurants: [],
-      // tripTrails: []
     };
 
     this.onChangePage = this.onChangePage.bind(this);
@@ -27,9 +23,6 @@ class TabsCard extends React.Component {
   }
 
   componentWillMount() {
-    // this.setTripAttractions();
-    // this.setTripRestaurants();
-    // this.setTripTrails();
     this.setKeyArr(this.state.currentTab);
   }
 
@@ -49,14 +42,6 @@ class TabsCard extends React.Component {
     this.props.onRemoveFavorite(this.props.bigPOI);
   }
 
-  // setKeyArr(key) {
-  //   let keyArr = this.props.POIS.filter(obj => {
-  //     return obj.category === key;
-  //   })
-  //   this.setState({ keyArr: keyArr });
-  // };
-
-  // new one
   setKeyArr(key) {
     switch (key) {
       case 'trails':
@@ -79,27 +64,6 @@ class TabsCard extends React.Component {
     }
   }
 
-  /*
-  new functions for trip POI arrays
-  */
-
-  // setTripAttractions() {
-  //   let attractArr = this.props.tripAttractions;
-  //   this.setState({ tripAttractions: attractArr });
-  // };
-
-  // setTripRestaurants() {
-  //   let restArr = this.props.tripRestaurants;
-  //   this.setState({ tripRestaurants: restArr });
-  // };
-
-  // setTripTrails() {
-  //   let trailArr = this.props.tripTrails;
-  //   this.setState({ tripTrails: trailArr });
-  // };
-
-  //////////////////////////////////
-
   onChangeTab(key) {
     this.setState({ currentTab: key });
     this.setState({ currentPage: 1 });
@@ -114,28 +78,14 @@ class TabsCard extends React.Component {
   }
 
   onChangePage(page, size) {
-    this.setState({ minValue: (page - 1), pageSize: size });
-    this.setState({ currentPage: page });
+    this.setState({ currentPage: page, pageSize: size, minValue: (page - 1) * size });
   }
-
 
   render() {
 
     // if (this.state.keyArr.length === 0) {
     //   return null
     // }
-
-    const favoritesButton = (POI) => {
-      if (this.props.favorites.some(fav => fav.pid === POI.pid)) {
-        /* not compatible with some browsers */
-        return <Button type='primary' onClick={this.onRemoveFavorite} key={POI} shape='round' style={{ border: 'none', background: 'black', color: 'white' }}>Remove from Favorites</Button>
-      }
-      return <Button type='primary' onClick={this.onAddFavorite} key={POI} shape='round' style={{ border: 'none', background: 'black', color: 'white' }}>Add to Favorites</Button>
-    }
-
-    const scheduleButton = (POI) => {
-      return <Button type='primary' onClick={this.onSchedule} key={POI} shape='round' style={{ border: 'none', background: 'black', color: 'white' }}>Add to Schedule</Button>
-    }
 
 
     const renderRadio = (POI) => {
@@ -145,9 +95,6 @@ class TabsCard extends React.Component {
             <Col span={7} >
               <Card style={{
                 backgroundImage: `url(${this.getBackgroundImage(POI)})`,
-                // backgroundImage: `url(${POI.photo ? POI.photo : '/Users/emilyconnor/Documents/Documents - Emily’s MacBook Pro/550-group-project/SeeQoolPlaces/webapp/client/public/no-image-available-icon-photo-camera-flat-vector-illustration-132483141.jpg'})`,
-                // backgroundImage: `url(${POI.photo})`,
-
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
@@ -239,12 +186,26 @@ class TabsCard extends React.Component {
     }
 
 
+
+    const favoritesButton = (POI) => {
+      if (this.props.favorites.some(fav => fav.pid === POI.pid)) {
+        /* not compatible with some browsers */
+        return <Button type='primary' onClick={this.onRemoveFavorite} key={POI} shape='round' style={{ border: 'none', background: 'black', color: 'white' }}>Remove Favorite</Button>
+      }
+      return <Button type='primary' onClick={this.onAddFavorite} key={POI} shape='round' style={{ border: 'none', background: 'black', color: 'white', width: 145 }}> Add Favorite</Button>
+    }
+
+    const scheduleButton = (POI) => {
+      return <Button type='primary' onClick={this.onSchedule} key={POI} shape='round' style={{ border: 'none', background: 'black', color: 'white', width: 145 }}>Add Event</Button>
+    }
+
+
     const renderBigPOI = (bigPOI) => {
       if (bigPOI.category === 'attractions') {
         return (
           <Card >
             <Space direction='vertical'>
-              <Row >
+              <Row gutter={0, 5}>
                 <Col lg={24} xl={14} >
                   <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
                     bigPOI.name}
@@ -258,11 +219,7 @@ class TabsCard extends React.Component {
                   </div>
                 </Col>
                 <Col lg={24} xl={10} >
-                  <img src={(this.getBackgroundImage(bigPOI))}
-                    alt="POI"
-                    style={{
-                      maxWidth: '100%'
-                    }} />
+                  <img src={(this.getBackgroundImage(bigPOI))} alt="POI" style={{ maxWidth: '100%' }} />
                 </Col>
               </Row>
               <Row align='middle' >
@@ -291,7 +248,7 @@ class TabsCard extends React.Component {
         return (
           <Card >
             <Space direction='vertical'>
-              <Row >
+              <Row gutter={0, 5}>
                 <Col lg={24} xl={14} >
                   <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>
                     {bigPOI.name}
@@ -302,11 +259,7 @@ class TabsCard extends React.Component {
                   </div>
                 </Col>
                 <Col lg={24} xl={10} >
-                  <img src={(this.getBackgroundImage(bigPOI))}
-                    alt="POI"
-                    style={{
-                      maxWidth: '100%'
-                    }} />
+                  <img src={(this.getBackgroundImage(bigPOI))} alt="POI" style={{ maxWidth: '100%' }} />
                 </Col>
               </Row>
               <Row align='middle' >
@@ -415,6 +368,8 @@ class TabsCard extends React.Component {
                 showTotal={total => `Total ${total} items`}
                 onChange={this.onChangePage}
                 total={this.state.keyArr.length}
+                pageSizeOptions={[6, 12, 18, 30]}
+                showSizeChanger='true'
                 responsive
               />
             </Row>
