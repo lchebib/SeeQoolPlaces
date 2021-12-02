@@ -30,7 +30,6 @@ class SideBar extends React.Component {
 
     var username = localStorage.getItem("username")
     getAllTrips(username).then(res => {
-      //tripID, tripName, city, state
       this.setState({ trips: res.results })
       this.storeTrips(this.state.trips)
     })
@@ -51,7 +50,6 @@ class SideBar extends React.Component {
 
       localStorage.setItem(tripDetails.tripID, JSON.stringify(tripDetails))
     });
-
   }
 
 
@@ -75,7 +73,7 @@ class SideBar extends React.Component {
             zIndex: 100
           }}
         >
-          <a href="/">
+          <a href="/home">
             <img src={`${process.env.PUBLIC_URL + "/logo-header.svg"}`} alt="" style={{ maxWidth: '100%', height: 'auto', padding: '10px', paddingTop: '15px', paddingBottom: '15px' }} />
           </a>
           <SubMenu key="NewTrip" title="New Trip" style={{ fontWeight: "bold", fontSize: 15, }}>

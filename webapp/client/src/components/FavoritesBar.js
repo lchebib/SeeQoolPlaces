@@ -32,14 +32,6 @@ class FavoritesBar extends React.Component {
       message.success('Trip saved', 3);
     };
 
-    // const deleteNotification = () => {
-    //   return (
-    //     <Popconfirm placement="left" title={'Are you sure to delete this trip?'} onConfirm={this.props.onDelete} okText="Yes" cancelText="No">
-    //       <Button>Left</Button>
-    //     </Popconfirm>
-    //   )
-    // };
-
 
     return (
       <div style={{

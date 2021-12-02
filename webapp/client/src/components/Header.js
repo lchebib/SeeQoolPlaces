@@ -46,12 +46,12 @@ class Header extends React.Component {
         }}>
           <Row align='middle' justify='space-between'>
             <Col span={8} offset={8} >
-              <Input
+              {/* <Input
                 allowClear
                 prefix={<SearchOutlined />}
                 onSearch={(value) => this.onSearch(value)}
                 style={{ borderRadius: '25px' }}
-              />
+              /> */}
             </Col>
 
             <Col>

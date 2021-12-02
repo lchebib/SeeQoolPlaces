@@ -97,7 +97,6 @@ class CreateTripPage extends React.Component {
       this.state.selectedPersonalities.enthusiast,
       this.state.selectedPersonalities.investigator,
     ).then(res => {
-      // this.state.tripID = res.results
       tripID = res.results
       console.log(tripID);
       this.storeTrip(tripID)

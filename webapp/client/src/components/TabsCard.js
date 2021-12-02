@@ -85,9 +85,6 @@ class TabsCard extends React.Component {
     //   return null
     // }
 
-    console.log(this.state.keyArr)
-    console.log(this.props.bigPOI)
-
 
     const renderRadio = (POI) => {
       if (POI.category === 'attractions') {
@@ -179,6 +176,10 @@ class TabsCard extends React.Component {
                 <Col>
                   {POI.duration_high} hr
                 </Col>
+                •
+                <Col>
+                  {handleRestaurantCost(POI.costHigh, POI.costLow)}
+                </Col>
               </Row>
             </Col>
           </>
@@ -213,6 +214,20 @@ class TabsCard extends React.Component {
       } else {
         return `${dur_low} - ${dur_high} hours`
       }
+    }
+
+    const handleRestaurantCost = (cost_high, cost_low) => {
+      let moneyString = "";
+      let costLow = "";
+      let costHigh = "";
+      for (let i = cost_low; i > 0; cost_low--) {
+        costLow = costLow.concat('$');
+      }
+      for (let i = cost_high; i > 0; cost_high--) {
+        costHigh = costHigh.concat('$');
+      }
+      moneyString = moneyString.concat(costLow, ' - ', costHigh);
+      return moneyString;
     }
 
     const handleDescription = (description) => {
@@ -358,6 +373,10 @@ class TabsCard extends React.Component {
                     {handleSuggestedDuration(bigPOI.duration_high, bigPOI.duration_low)}
                   </Col>
                 </Space>
+                <Col span={24} >
+                  <span style={{ fontWeight: 'bold' }}></span>
+                  {handleRestaurantCost(bigPOI.costHigh, bigPOI.costLow)}
+                </Col>
               </Row>
               <Row align='middle' justify='center' gutter={[20, 5]} style={{ fontFamily: 'Work Sans', marginTop: '15px' }}>
                 <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
