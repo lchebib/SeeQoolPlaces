@@ -20,7 +20,7 @@ class Header extends React.Component {
   onLogout() {
 
     logout(this.state.username)
-    localStorage.removeItem("username")
+    localStorage.clear()
     window.location = `/`
   }
 

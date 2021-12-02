@@ -220,13 +220,11 @@ class TripPage extends React.Component {
 
   deleteTrip() {
     postDeleteTrip(this.state.trip.tripID)
+    localStorage.removeItem(this.state.trip.tripID)
     window.location = "/home"
   }
 
   render() {
-    // if (this.state.tripTrails.length === 0 || this.state.tripAttractions.length === 0 || this.state.tripRestaurants.length === 0) {
-    //   return null
-    // }
 
     if (!this.state.bigPOI) {
       return null
@@ -237,6 +235,7 @@ class TripPage extends React.Component {
     }
 
     console.log(this.state.bigPOI)
+
 
     return (
       <Layout style={{ minWidth: 1200, background: 'white' }}>

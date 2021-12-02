@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Row, Col, Menu, Space, Divider } from 'antd';
+import { Button, Row, Col, Space, Divider, Popconfirm, message } from 'antd';
 
 class FavoritesBar extends React.Component {
 
@@ -28,13 +28,24 @@ class FavoritesBar extends React.Component {
 
     }
 
+    const saveNotification = () => {
+      message.success('Trip saved', 3);
+    };
+
+    // const deleteNotification = () => {
+    //   return (
+    //     <Popconfirm placement="left" title={'Are you sure to delete this trip?'} onConfirm={this.props.onDelete} okText="Yes" cancelText="No">
+    //       <Button>Left</Button>
+    //     </Popconfirm>
+    //   )
+    // };
+
 
     return (
       <div style={{
         paddingTop: '15px',
         width: '200px',
         height: 900,
-        // position: 'fixed'
 
       }}>
         <Row align="top" justify="center" >
@@ -50,8 +61,9 @@ class FavoritesBar extends React.Component {
           </Col>
         </Row>
 
+        {/* UNCOMMENT TO IMPLEMENT FILTER BAR */}
         {/* <Divider />
-        <Row align="top" justify="center" style={{ 'height': '35vh' }}>
+        <Row align="top" justify="center" style={{ 'height': 'ADJUST HEIGHT TO LIKING' }}>
 
           <Col style={{ width: '160px' }}>
             <Space direction='vertical'>
@@ -63,8 +75,10 @@ class FavoritesBar extends React.Component {
         <Row align="top" justify="center" style={{ fontFamily: 'Work Sans' }}>
           <Col style={{ width: 160 }}>
             <Space direction='vertical'>
-              <Button onClick={this.props.onSave} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: 160 }}>Save</Button>
-              <Button onClick={this.props.onDelete} shape='round' size='large' style={{ border: 'none', background: 'red', color: 'white', width: 160 }}>Delete Trip</Button>
+              <Button onClick={() => { this.props.onSave(); saveNotification(); }} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: 160 }}>Save</Button>
+              <Popconfirm placement="left" title={'Are you sure to delete this trip?'} onConfirm={this.props.onDelete} okText="Yes" cancelText="No">
+                <Button shape='round' size='large' style={{ border: 'none', background: 'red', color: 'white', width: 160 }}>Delete Trip</Button>
+              </Popconfirm>
             </Space>
           </Col>
         </Row>

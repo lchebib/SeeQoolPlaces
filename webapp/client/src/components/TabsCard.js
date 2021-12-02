@@ -215,6 +215,22 @@ class TabsCard extends React.Component {
       }
     }
 
+    const handleDescription = (description) => {
+      if (description) {
+        if (description.length > 254) {
+          description += "..."
+        }
+      }
+
+      return description
+    }
+
+    const handleDifficulty = (difficulty) => {
+      var arr = ['Easy', 'Medium', 'Hard']
+      return arr[difficulty - 1]
+    }
+
+
     const renderBigPOI = (bigPOI) => {
       if (bigPOI.category === 'attractions') {
         return (
@@ -240,7 +256,7 @@ class TabsCard extends React.Component {
                 </Col>
               </Row>
               <Row align='middle' >
-                {bigPOI.description}
+                {handleDescription(bigPOI.description)}
               </Row>
               <Row align='middle' >
                 <Space wrap='true'>
@@ -282,17 +298,17 @@ class TabsCard extends React.Component {
                 </Col>
               </Row>
               <Row align='middle' >
-                {bigPOI.description}
+                {handleDescription(bigPOI.description)}
               </Row>
               <Row align='middle' >
                 <Space wrap='true'>
                   <div >
                     <span style={{ fontWeight: 'bold' }}>Route type: </span>
-                    {bigPOI.routeType}
+                    {bigPOI.route_type}
                   </div>
                   <div >
                     <span style={{ fontWeight: 'bold' }}>Difficulty: </span>
-                    {bigPOI.difficulty}
+                    {handleDifficulty(bigPOI.difficulty)}
                   </div>
                   <div >
                     <span style={{ fontWeight: 'bold' }}>Length: </span>

@@ -44,7 +44,6 @@ class CreateTripPage extends React.Component {
       selectedPersonalities: { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
       tripName: "",
       tripNameValidateStatus: { validateStatus: "", errorMsg: "" },
-      // tripID: 0,
       tripDates: []
     }
 
@@ -76,6 +75,15 @@ class CreateTripPage extends React.Component {
 
     var username = localStorage.getItem("username")
     var tripID
+
+    var numPersonalities = 0;
+    Object.values(this.state.selectedPersonalities).forEach(val => {
+      if (val == 1) { numPersonalities++; }
+    });
+
+    if (numPersonalities == 0) {
+      this.state.selectedPersonalities.enthusiast = 1;
+    }
 
     newTrip(
       username,
