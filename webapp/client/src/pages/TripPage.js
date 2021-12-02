@@ -275,16 +275,25 @@ class TripPage extends React.Component {
                 />
               </Row>
             </Content>
-            {/* <Sider style={{ background: 'white', border: '1px solid #F0F0F0' }}>
+            <Sider
+              style={{
+                background: 'white',
+                border: '1px solid #F0F0F0',
+                height: 920,
+                // position: 'fixed',
+                // zIndex: 100
+              }}>
               <FavoritesBar
                 favorites={this.state.favorites}
                 onClickFavorite={this.changeBigPOI}
+                onSave={this.saveTrip}
+                onDelete={this.deleteTrip}
               />
-            </Sider> */}
+            </Sider>
           </Layout>
           <Footer />
         </Layout>
-        <Sider
+        {/* <Sider
           style={{
             background: 'white',
             border: '1px solid #F0F0F0',
@@ -298,7 +307,7 @@ class TripPage extends React.Component {
             onSave={this.saveTrip}
             onDelete={this.deleteTrip}
           />
-        </Sider>
+        </Sider> */}
       </Layout >
     );
   }

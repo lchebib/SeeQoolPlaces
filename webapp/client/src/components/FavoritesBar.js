@@ -24,7 +24,7 @@ class FavoritesBar extends React.Component {
       } else {
         color = '#EC7878'
       }
-      return <Button onClick={() => { this.props.onClickFavorite(POI) }} shape='round' style={{ background: color, border: 'none', width: '100%', textAlign: 'left' }}>{POI.name}</Button>
+      return <Button onClick={() => { this.props.onClickFavorite(POI) }} shape='round' style={{ background: color, border: 'none', width: 170, textAlign: 'left', overflow: 'hidden', }}>{POI.name}</Button>
 
     }
 
@@ -33,40 +33,20 @@ class FavoritesBar extends React.Component {
       <div style={{
         paddingTop: '15px',
         width: '200px',
-        height: '100vh',
-        overflow: 'auto',
-        position: 'fixed'
+        height: 900,
+        // position: 'fixed'
 
       }}>
-        <Row align="top" justify="center" style={{ 'height': '80vh' }}>
-          {/* <Row align="top" justify="center" style={{ 'height': '30vh' }}> */}
-          <Col style={{ width: '160px' }}>
+        <Row align="top" justify="center" >
+          <div style={{ fontFamily: 'Work Sans', fontSize: 20, paddingBottom: 10 }}>Favorites</div>
+          <Col style={{ width: 170, overflow: 'auto', 'height': 700 }}>
             <Space direction='vertical'>
-              <div style={{ fontFamily: 'Work Sans', fontSize: 20 }}>Favorites</div>
               {this.props.favorites.map((POI) =>
                 <div>
                   {favoriteButton(POI)}
                 </div>
               )}
             </Space>
-            {/* <Menu
-              theme="light"
-              onClick={(menuItem) => this.onMenuClick(menuItem)}
-              defaultOpenKeys={['NewTrip', 'MyTrips']}
-              mode="inline"
-              style={{
-                paddingTop: '15px',
-                width: '200px',
-                height: '100vh',
-              }}
-            >
-              <SubMenu key="Favorites" title="Favorites" style={{ fontWeight: "bold", fontSize: 15, }}>
-                {this.props.favorites.map((fav) =>
-                  <Menu.Item key={fav.pid} style={{ fontWeight: "normal", fontSize: 15, }}>{fav.name}</Menu.Item>
-                )}
-              </SubMenu>
-
-            </Menu> */}
           </Col>
         </Row>
 
@@ -80,11 +60,11 @@ class FavoritesBar extends React.Component {
           </Col>
         </Row> */}
         <Divider />
-        <Row align="top" justify="center" style={{ 'height': '10vh', fontFamily: 'Work Sans' }}>
-          <Col style={{ width: '160px' }}>
+        <Row align="top" justify="center" style={{ fontFamily: 'Work Sans' }}>
+          <Col style={{ width: 160 }}>
             <Space direction='vertical'>
-              <Button onClick={this.props.onSave} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: '180px' }}>Save</Button>
-              <Button onClick={this.props.onDelete} shape='round' size='large' style={{ border: 'none', background: 'red', color: 'white', width: '180px' }}>Delete Trip</Button>
+              <Button onClick={this.props.onSave} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: 160 }}>Save</Button>
+              <Button onClick={this.props.onDelete} shape='round' size='large' style={{ border: 'none', background: 'red', color: 'white', width: 160 }}>Delete Trip</Button>
             </Space>
           </Col>
         </Row>
