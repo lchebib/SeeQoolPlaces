@@ -71,7 +71,8 @@ class SideBar extends React.Component {
             position: 'fixed',
             width: '200px',
             height: '100vh',
-            overflow: 'auto'
+            overflow: 'auto',
+            zIndex: 100
           }}
         >
           <a href="/">
