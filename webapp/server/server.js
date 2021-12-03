@@ -32,6 +32,11 @@ app.get('/test', routes.test)
 app.get('/add_user', routes.add_user)
 
 // Log in user
+// requires: none --> /auto_login
+// returns username if client IP is already logged in; false otherwise
+app.get('/auto_login', routes.auto_login)
+
+// Log in user
 // requires: username and password --> /login?username=<username>&password=<password> (no quotations)
 // returns true if successful; redirects to localhost:3000/failed otherwise
 app.get('/login', routes.login)
