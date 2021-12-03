@@ -132,11 +132,6 @@ app.get('/trip/update_trip', routes.update_trip)
 // always returns true
 app.get('/delete_trip', routes.delete_trip)
 
-// Delete trip permanently from user account
-// requires tripID --> /delete_trip?tripID=2
-// always returns true
-app.get('/stringify_test', routes.stringify_test)
-
 
 app.listen(config.server_port, () => {
   console.log(`Server running at http://${config.server_host}:${config.server_port}/`);
