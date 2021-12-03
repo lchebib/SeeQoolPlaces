@@ -366,14 +366,17 @@ function new_trip (req, res) {
   var tripName = req.query.tripName
   var city = req.query.city
   var state = req.query.state
-  var startDate = req.query.startDate
-  var endDate = req.query.endDate
+  var startDate = parseDate(req.query.startDate)
+  var endDate = parseDate(req.query.endDate)
   var CoolCat = parseInt(req.query.p0) === 1
   var Adventurer = parseInt(req.query.p1) === 1
   var Entertainer = parseInt(req.query.p2) === 1
   var Family = parseInt(req.query.p3) === 1
   var Enthusiast = parseInt(req.query.p4) === 1
   var Investigator = parseInt(req.query.p5) === 1
+
+  console.log(startDate)
+  console.log(endDate)
 
   // create new entry in tripProfile
   var myQuery = `
@@ -1128,6 +1131,46 @@ function generateFilteredPOIs (tripID) {
       )
     }
   })
+}
+
+// ********************************************
+//             Filter POIs
+// ********************************************
+
+function parseDate(rawDate) {
+  dateValues = rawDate.split(" ")
+  console.log("Date Values: ")
+  console.log(dateValues)
+
+  // format e.g. Sun Dec 12 2021 20:10:22 GMT 0900
+  formattedDate = dateValues[3].toString() + '-' + parseMonth(dateValues[1].toString()) + '-' + dateValues[2].toString()
+  console.log("Formatted date = " + formattedDate)
+
+  return formattedDate
+}
+
+function parseMonth(month) {
+  strMonth = month.toString()
+
+  var numericalMonths = new Array()
+  numericalMonths[0] = new Array('Jan', '01')
+  numericalMonths[1] = new Array('Feb', '02')
+  numericalMonths[2] = new Array('Mar', '03')
+  numericalMonths[3] = new Array('Apr', '04')
+  numericalMonths[4] = new Array('May', '05')
+  numericalMonths[5] = new Array('Jun', '06')
+  numericalMonths[6] = new Array('Jul', '07')
+  numericalMonths[7] = new Array('Aug', '08')
+  numericalMonths[8] = new Array('Sep', '09')
+  numericalMonths[9] = new Array('Oct', '10')
+  numericalMonths[10] = new Array('Nov', '11')
+  numericalMonths[11] = new Array('Dec', '12')
+
+  for (let numericalMonth of numericalMonths) {
+    if (strMonth === numericalMonth[0]) {
+      return numericalMonth[1]
+    }
+  }
 }
 
 // ********************************************
