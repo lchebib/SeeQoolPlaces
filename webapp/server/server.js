@@ -82,7 +82,7 @@ app.get('/quizCities', routes.quizCities)
 // ********************************************
 
 // Create new trip
-// requires username, "tripName", city, state, and personalities --> /new_trip?username=admin&tripName="trip name with spaces"&city=<city>&state=<state>&p0=0&p1=1&...&p5=0 
+// requires username, "tripName", city, state, startDate, endDate, and personalities --> /new_trip?username=admin&tripName="trip name with spaces"&city=<city>&state=<state>&p0=0&p1=1&...&p5=0 
 // only tripName has quotations; username, city, and state no quotations; [0,1] for false/true in personalities
 // returns {tripID: int}
 app.get('/new_trip', routes.new_trip)
