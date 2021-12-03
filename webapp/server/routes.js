@@ -333,6 +333,8 @@ function new_trip(req, res) {
   var tripName = req.query.tripName
   var city = req.query.city
   var state = req.query.state
+  var startDate = req.query.startDate
+  var endDate = req.query.endDate
   var CoolCat = parseInt(req.query.p0) === 1
   var Adventurer = parseInt(req.query.p1) === 1
   var Entertainer = parseInt(req.query.p2) === 1
@@ -342,8 +344,8 @@ function new_trip(req, res) {
 
   // create new entry in tripProfile
   var myQuery = `
-    INSERT INTO TripProfile (username, tripName, city, state, CoolCat, Adventurer, Entertainer, Family, Enthusiast, Investigator)
-    VALUES ('${username}', ${tripName}, '${city}', '${state}', ${CoolCat}, ${Adventurer}, ${Entertainer}, ${Family}, ${Enthusiast}, ${Investigator});
+    INSERT INTO TripProfile (username, tripName, city, state, startDate, endDate, CoolCat, Adventurer, Entertainer, Family, Enthusiast, Investigator)
+    VALUES ('${username}', ${tripName}, '${city}', '${state}', ${startDate}, ${endDate}, ${CoolCat}, ${Adventurer}, ${Entertainer}, ${Family}, ${Enthusiast}, ${Investigator});
   `
   console.log(myQuery)
 
