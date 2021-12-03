@@ -232,7 +232,7 @@ function all_trips(req, res) {
   var username = req.query.username
 
   var myQuery = `
-    SELECT tripID, tripName, city, state
+    SELECT tripID, tripName, city, state, startDate, endDate
     FROM TripProfile
     WHERE username = '${username}';
   `
