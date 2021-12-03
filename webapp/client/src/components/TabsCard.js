@@ -216,17 +216,22 @@ class TabsCard extends React.Component {
       }
     }
 
-    const handleRestaurantCost = (cost_high, cost_low) => {
+    const handleRestaurantCost = (costHigh, costLow) => {
+
       let moneyString = "";
-      let costLow = "";
-      let costHigh = "";
-      for (let i = cost_low; i > 0; cost_low--) {
-        costLow = costLow.concat('$');
+      let costLowStr = "";
+      let costHighStr = "";
+      for (let i = costLow; i > 0; i--) {
+        costLowStr = costLowStr.concat('$');
       }
-      for (let i = cost_high; i > 0; cost_high--) {
-        costHigh = costHigh.concat('$');
+      for (let i = costHigh; i > 0; i--) {
+        costHighStr = costHighStr.concat('$');
       }
-      moneyString = moneyString.concat(costLow, ' - ', costHigh);
+
+      if (costHigh === costLow) {
+        return costLowStr;
+      }
+      moneyString = moneyString.concat(costLowStr, ' - ', costHighStr);
       return moneyString;
     }
 
@@ -374,7 +379,7 @@ class TabsCard extends React.Component {
                   </Col>
                 </Space>
                 <Col span={24} >
-                  <span style={{ fontWeight: 'bold' }}></span>
+                  <span style={{ fontWeight: 'bold' }}>Cost: </span>
                   {handleRestaurantCost(bigPOI.costHigh, bigPOI.costLow)}
                 </Col>
               </Row>
