@@ -90,6 +90,8 @@ class CreateTripPage extends React.Component {
       this.state.tripName,
       this.state.selectedDest[1],
       this.state.selectedDest[0],
+      this.state.tripDates[0],
+      this.state.tripDates[1],
       this.state.selectedPersonalities.coolCat,
       this.state.selectedPersonalities.adventurer,
       this.state.selectedPersonalities.entertainer,
