@@ -19,6 +19,7 @@ import { newTrip } from '../fetcher'
 
 const { Content } = Layout;
 const { RangePicker } = DatePicker;
+var moment = require('moment'); // require
 
 const formItemLayout = {
   labelCol: {
@@ -44,7 +45,8 @@ class CreateTripPage extends React.Component {
       selectedPersonalities: { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
       tripName: "",
       tripNameValidateStatus: { validateStatus: "", errorMsg: "" },
-      tripDates: []
+      startDate: null,
+      endDate: null
     }
 
     this.onCheckConfirmDetails = this.onCheckConfirmDetails.bind(this)
@@ -54,6 +56,7 @@ class CreateTripPage extends React.Component {
     this.onDestChange = this.onDestChange.bind(this)
     this.onTripNameChange = this.onTripNameChange.bind(this)
     this.storeTrip = this.storeTrip.bind(this)
+    this.setDate = this.setDate.bind(this)
   }
 
   onDestChange(value) {
@@ -90,8 +93,8 @@ class CreateTripPage extends React.Component {
       this.state.tripName,
       this.state.selectedDest[1],
       this.state.selectedDest[0],
-      this.state.tripDates[0],
-      this.state.tripDates[1],
+      this.state.startDate,
+      this.state.endDate,
       this.state.selectedPersonalities.coolCat,
       this.state.selectedPersonalities.adventurer,
       this.state.selectedPersonalities.entertainer,
@@ -106,14 +109,20 @@ class CreateTripPage extends React.Component {
     })
   }
 
+  setDate(dateArr) {
+    var start = moment(dateArr[0]).format("YYYY-MM-DD");
+    var end = moment(dateArr[1]).format("YYYY-MM-DD");
+    this.setState({ startDate: start, endDate: end })
+  }
+
   storeTrip(tripID) {
     let tripDetails = {
       tripID: tripID,
       tripName: this.state.tripName,
       city: this.state.selectedDest[1],
       state: this.state.selectedDest[0],
-      startDate: this.state.tripDates[0],
-      endDate: this.state.tripDates[1]
+      startDate: this.state.startDate,
+      endDate: this.state.endDate
     }
 
     localStorage.setItem(tripDetails.tripID, JSON.stringify(tripDetails))
@@ -121,7 +130,6 @@ class CreateTripPage extends React.Component {
 
   clickNextPage(tripID) {
     console.log(tripID)
-    // window.location = `/trip?id=${this.state.tripID}`;
     window.location = `/trip?id=${tripID}`;
   }
 
@@ -218,7 +226,8 @@ class CreateTripPage extends React.Component {
                         { required: true, message: 'Please select your trip dates!' },
                       ]}
                     >
-                      <RangePicker onChange={value => this.setState({ tripDates: value })} />
+                      <RangePicker onChange={value => this.setDate(value)} />
+
                     </Form.Item>
 
                     <Form.Item

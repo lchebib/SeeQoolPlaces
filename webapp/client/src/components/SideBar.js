@@ -39,15 +39,14 @@ class SideBar extends React.Component {
   storeTrips() {
 
     this.state.trips.map((trip) => {
+      console.log(trip)
       let tripDetails = {
         tripID: trip.tripID,
         tripName: trip.tripName,
         city: trip.city,
         state: trip.state,
-        startDate: new Date('December 24, 2021 00:00:00'), // temp
-        endDate: new Date('January 4, 2022 23:00:00'), // temp
-        // startDate: new Date(trip.startDate),
-        // endDate: new Date(trip.endDate),
+        startDate: new Date(trip.startDate),
+        endDate: new Date(trip.endDate),
       }
 
       localStorage.setItem(tripDetails.tripID, JSON.stringify(tripDetails))

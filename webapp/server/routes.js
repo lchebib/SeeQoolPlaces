@@ -17,7 +17,7 @@ connection.connect()
 // ********************************************
 
 // Basic route to test server connection
-async function hello (req, res) {
+async function hello(req, res) {
   if (req.query.name) {
     res.send(`Hello, ${req.query.name}! Welcome to the SeeQoolPlaces server!`)
   } else {
@@ -30,7 +30,7 @@ async function hello (req, res) {
 // ********************************************
 
 // Add new username and password
-async function add_user (req, res) {
+async function add_user(req, res) {
   var username = req.query.username
   var password = req.query.password
 
@@ -71,7 +71,7 @@ async function add_user (req, res) {
 }
 
 // Auto log in user
-async function auto_login (req, res) {
+async function auto_login(req, res) {
   var clientIP = req.socket.remoteAddress
 
   // check if user is already logged in
@@ -106,7 +106,7 @@ async function auto_login (req, res) {
 }
 
 // Manually log in user
-async function login (req, res) {
+async function login(req, res) {
   var username = req.query.username
   var password = req.query.password
   var clientIP = req.socket.remoteAddress
@@ -176,7 +176,7 @@ async function login (req, res) {
 }
 
 // Log out user
-async function logout (req, res) {
+async function logout(req, res) {
   var username = req.query.username
   var clientIP = req.socket.remoteAddress
 
@@ -221,7 +221,7 @@ async function logout (req, res) {
 // ********************************************
 
 // Return a random city, and a photo of an attraction or hike
-function random_city (req, res) {
+function random_city(req, res) {
   // top 24 'random' cities that we we select from database to show on landing page
   // BC ideas from here: https://www.planetware.com/canada/best-cities-in-british-columbia-cdn-1-284.htm
   // CA ideas from here: https://www.planetware.com/california/best-places-to-visit-in-california-us-ca-138.htm
@@ -263,7 +263,7 @@ function random_city (req, res) {
 }
 
 // Return names of existing user-made trips to be displayed in sidebar
-function all_trips (req, res) {
+function all_trips(req, res) {
   var username = req.query.username
 
   var myQuery = `
@@ -289,7 +289,7 @@ function all_trips (req, res) {
 // ********************************************
 
 // Returns the list of all cities with at least one POI
-function all_cities (req, res) {
+function all_cities(req, res) {
   var myQuery = `
     SELECT DISTINCT state, city
     FROM POI
@@ -310,7 +310,7 @@ function all_cities (req, res) {
 }
 
 // Returns the top 3 cities based on target city size and travel personalities
-function quizCities (req, res) {
+function quizCities(req, res) {
   var population = req.query.population
   var CoolCat = parseInt(req.query.p0) === 1
   var Adventurer = parseInt(req.query.p1) === 1
@@ -362,14 +362,19 @@ function quizCities (req, res) {
 // ********************************************
 
 // Creates new trip in the database, filters POIs based on city, state, and personalities, and returns unique tripID.
-function new_trip (req, res) {
+function new_trip(req, res) {
+
+  console.log(req.query)
+
   // get trip profile parameters
   var username = req.query.username
   var tripName = req.query.tripName
   var city = req.query.city
   var state = req.query.state
-  var startDate = parseDate(req.query.startDate)
-  var endDate = parseDate(req.query.endDate)
+  var startDate = req.query.startDate
+  var endDate = req.query.endDate
+  // var startDate = parseDate(req.query.startDate)
+  // var endDate = parseDate(req.query.endDate)
   var CoolCat = parseInt(req.query.p0) === 1
   var Adventurer = parseInt(req.query.p1) === 1
   var Entertainer = parseInt(req.query.p2) === 1
@@ -380,7 +385,7 @@ function new_trip (req, res) {
   // create new entry in tripProfile
   var myQuery = `
     INSERT INTO TripProfile (username, tripName, city, state, startDate, endDate, CoolCat, Adventurer, Entertainer, Family, Enthusiast, Investigator)
-    VALUES ('${username}', ${tripName}, '${city}', '${state}', ${startDate}, ${endDate}, ${CoolCat}, ${Adventurer}, ${Entertainer}, ${Family}, ${Enthusiast}, ${Investigator});
+    VALUES ('${username}', ${tripName}, '${city}', '${state}', '${startDate}', '${endDate}', ${CoolCat}, ${Adventurer}, ${Entertainer}, ${Family}, ${Enthusiast}, ${Investigator});
   `
   console.log(myQuery)
 
@@ -448,7 +453,7 @@ function new_trip (req, res) {
 }
 
 // Retrieve filtered POIs based on tripID
-function retrieve_trip (req, res) {
+function retrieve_trip(req, res) {
   var tripID = req.query.tripID
 
   // retrieve trip profile
@@ -512,7 +517,7 @@ function retrieve_trip (req, res) {
 }
 
 // Returns the attractions from filtered POIs
-function trip_attractions (req, res) {
+function trip_attractions(req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
   var viewName = 'Trip_' + tripID.toString()
 
@@ -534,7 +539,7 @@ function trip_attractions (req, res) {
 }
 
 // Returns the restaurants from filtered POIs
-function trip_restaurants (req, res) {
+function trip_restaurants(req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
   var viewName = 'Trip_' + tripID.toString()
 
@@ -556,7 +561,7 @@ function trip_restaurants (req, res) {
 }
 
 // Returns the trails from filtered POIs
-function trip_trails (req, res) {
+function trip_trails(req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
   var viewName = 'Trip_' + tripID.toString()
 
@@ -578,7 +583,7 @@ function trip_trails (req, res) {
 }
 
 // Returns the trip Favorited POIs
-function trip_favorites (req, res) {
+function trip_favorites(req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
 
   var trailResults = []
@@ -643,7 +648,7 @@ function trip_favorites (req, res) {
 }
 
 // Returns the trip Events
-function trip_events (req, res) {
+function trip_events(req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
 
   var myQuery = `
@@ -665,7 +670,7 @@ function trip_events (req, res) {
 }
 
 // Save trip Favorites and Events
-function save_trip (req, res) {
+function save_trip(req, res) {
   var tripID = req.query.tripID ? req.query.tripID : 0
   var favorites = JSON.parse(req.query.favorites)
   var events = JSON.parse(req.query.events)
@@ -761,7 +766,7 @@ function save_trip (req, res) {
 }
 
 // Update trip details
-function update_trip (req, res) {
+function update_trip(req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
   const tripName = req.query.tripName ? req.query.tripName : ''
   const city = req.query.city ? req.query.city : ''
@@ -788,7 +793,7 @@ function update_trip (req, res) {
 }
 
 // Deletes trip given tripID
-function delete_trip (req, res) {
+function delete_trip(req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
   console.log('Trip ID to delete: )' + tripID.toString())
   console.log(`Type of tripID is ${typeof tripID}`)
@@ -810,48 +815,48 @@ function delete_trip (req, res) {
   })
 }
 
-// ********************************************
-//             Parse Date / Time
-// ********************************************
+// // ********************************************
+// //             Parse Date / Time
+// // ********************************************
 
-// Convert date received from CreateTripPage into a db-compatible format
-function parseDate (rawDate) {
-  dateValues = rawDate.split(' ')
-  // console.log('Date Values: ')
-  // console.log(dateValues)
+// // Convert date received from CreateTripPage into a db-compatible format
+// function parseDate(rawDate) {
+//   dateValues = rawDate.split(' ')
+//   // console.log('Date Values: ')
+//   // console.log(dateValues)
 
-  // format e.g. Sun Dec 12 2021 20:10:22 GMT 0900
-  formattedDate =
-    dateValues[3].toString() +
-    '-' +
-    parseMonth(dateValues[1].toString()) +
-    '-' +
-    dateValues[2].toString()
-  // console.log("Formatted date = " + formattedDate)
+//   // format e.g. Sun Dec 12 2021 20:10:22 GMT 0900
+//   formattedDate =
+//     dateValues[3].toString() +
+//     '-' +
+//     parseMonth(dateValues[1].toString()) +
+//     '-' +
+//     dateValues[2].toString()
+//   // console.log("Formatted date = " + formattedDate)
 
-  return formattedDate
-}
+//   return formattedDate
+// }
 
-// Converts written month into its int equivalent
-function parseMonth (month) {
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+// // Converts written month into its int equivalent
+// function parseMonth(month) {
+//   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-  var monthIndex = months.indexOf(month) + 1
+//   var monthIndex = months.indexOf(month) + 1
 
-  if (monthIndex < 10) {
-    return '0' + monthIndex.toString()
-  }
-  else {
-    return monthIndex.toString()
-  }
-}
+//   if (monthIndex < 10) {
+//     return '0' + monthIndex.toString()
+//   }
+//   else {
+//     return monthIndex.toString()
+//   }
+// }
 
 // ********************************************
 //             Filter POIs
 // ********************************************
 
 // Creates views of filtered POIs based on travel personality type
-async function createPersonalityViews () {
+async function createPersonalityViews() {
   // Case 1: Cool Cat
   var CoolCat = `
     CREATE OR REPLACE VIEW CoolCat AS
@@ -1078,7 +1083,7 @@ async function createPersonalityViews () {
 }
 
 // Dynamically generates the SQL query based on travel personalities
-function createPersonalitiesQuery (p0, p1, p2, p3, p4, p5) {
+function createPersonalitiesQuery(p0, p1, p2, p3, p4, p5) {
   var personalities = new Array()
   personalities[0] = new Array(p0, 'CoolCat')
   personalities[1] = new Array(p1, 'Adventurer')
@@ -1106,7 +1111,7 @@ function createPersonalitiesQuery (p0, p1, p2, p3, p4, p5) {
 }
 
 // Dynamically creates the city size filter query
-function createPopulationQuery (pop) {
+function createPopulationQuery(pop) {
   var population = parseInt(pop)
 
   // city size based on https://data.oecd.org/popregion/urban-population-by-city-size.htm
@@ -1135,7 +1140,7 @@ function createPopulationQuery (pop) {
   return populationQuery
 }
 
-function generateFilteredPOIs (tripID) {
+function generateFilteredPOIs(tripID) {
   // generate filtered POIs
   createPersonalityViews()
 
@@ -1175,7 +1180,7 @@ function generateFilteredPOIs (tripID) {
 //             Authenticate
 // ********************************************
 
-function test (req, res) {
+function test(req, res) {
   var username = req.query.username
   var clientIP = req.socket.remoteAddress
   // console.log('Username: ' + username.toString())
@@ -1190,7 +1195,7 @@ function test (req, res) {
   }
 }
 
-function authenticate (username, clientIP) {
+function authenticate(username, clientIP) {
   var myQuery = `
     SELECT *
     FROM LoggedIn
