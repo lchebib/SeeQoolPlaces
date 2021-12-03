@@ -817,8 +817,8 @@ function delete_trip (req, res) {
 // Convert date received from CreateTripPage into a db-compatible format
 function parseDate (rawDate) {
   dateValues = rawDate.split(' ')
-  console.log('Date Values: ')
-  console.log(dateValues)
+  // console.log('Date Values: ')
+  // console.log(dateValues)
 
   // format e.g. Sun Dec 12 2021 20:10:22 GMT 0900
   formattedDate =
@@ -832,28 +832,17 @@ function parseDate (rawDate) {
   return formattedDate
 }
 
-// Takes a written month and returns the int equivalent
+// Converts written month into its int equivalent
 function parseMonth (month) {
-  strMonth = month.toString()
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-  var numericalMonths = new Array()
-  numericalMonths[0] = new Array('Jan', '01')
-  numericalMonths[1] = new Array('Feb', '02')
-  numericalMonths[2] = new Array('Mar', '03')
-  numericalMonths[3] = new Array('Apr', '04')
-  numericalMonths[4] = new Array('May', '05')
-  numericalMonths[5] = new Array('Jun', '06')
-  numericalMonths[6] = new Array('Jul', '07')
-  numericalMonths[7] = new Array('Aug', '08')
-  numericalMonths[8] = new Array('Sep', '09')
-  numericalMonths[9] = new Array('Oct', '10')
-  numericalMonths[10] = new Array('Nov', '11')
-  numericalMonths[11] = new Array('Dec', '12')
+  var monthIndex = months.indexOf(month)
 
-  for (let numericalMonth of numericalMonths) {
-    if (strMonth === numericalMonth[0]) {
-      return numericalMonth[1]
-    }
+  if (monthIndex < 10) {
+    return '0' + monthIndex.toString()
+  }
+  else {
+    return monthIndex.toString()
   }
 }
 
@@ -1244,6 +1233,5 @@ module.exports = {
   save_trip,
   update_trip,
   delete_trip,
-  stringify_test,
   test
 }
