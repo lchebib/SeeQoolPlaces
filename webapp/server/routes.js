@@ -836,7 +836,7 @@ function parseDate (rawDate) {
 function parseMonth (month) {
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-  var monthIndex = months.indexOf(month)
+  var monthIndex = months.indexOf(month) + 1
 
   if (monthIndex < 10) {
     return '0' + monthIndex.toString()
