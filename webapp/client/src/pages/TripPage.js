@@ -81,6 +81,7 @@ class TripPage extends React.Component {
       this.setState({ tripRestaurants: res.results })
       if (!this.state.bigPOI) {
         this.setState({ bigPOI: res.results[0] })
+
       }
       // console.log(res.results)
     })
@@ -146,6 +147,7 @@ class TripPage extends React.Component {
     // console.log(POI)
 
     this.setState({ bigPOI: POI })
+
   }
 
   saveTrip() {

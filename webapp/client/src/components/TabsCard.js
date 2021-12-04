@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Card, Button, Radio, Rate, Pagination, Space } from 'antd';
+import { Row, Col, Card, Button, Radio, Rate, Pagination, Space, Form } from 'antd';
 
 class TabsCard extends React.Component {
 
@@ -106,8 +106,8 @@ class TabsCard extends React.Component {
                 {POI.name}
               </Row>
               <Row justify='start' style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
-                <Rate disabled allowHalf defaultValue={handleRating(POI.rating)} style={{ color: '#006400', zoom: '0.55' }} />
-                <span className="ant-rate-text">{POI.num_reviews}</span>
+                <Rate disabled allowHalf='true' value={handleRating(POI.rating)} style={{ color: '#006400', zoom: '0.55' }} />
+                {/* <span className="ant-rate-text">{POI.num_reviews}</span> */}
               </Row>
               <Row gutter={[12]} style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
                 <Col>
@@ -139,8 +139,8 @@ class TabsCard extends React.Component {
                 {POI.name}
               </Row>
               <Row justify='start' style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
-                <Rate disabled allowHalf defaultValue={handleRating(POI.rating)} style={{ color: '#006400', zoom: '0.55' }} />
-                <span className="ant-rate-text">{POI.num_reviews}</span>
+                <Rate disabled allowHalf='true' value={handleRating(POI.rating)} style={{ color: '#006400', zoom: '0.55' }} />
+                {/* <span className="ant-rate-text">{POI.num_reviews}</span> */}
               </Row>
               <Row gutter={[12]} style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
                 <Col>
@@ -163,8 +163,8 @@ class TabsCard extends React.Component {
                 {POI.name}
               </Row>
               <Row justify='start' style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
-                <Rate disabled allowHalf defaultValue={handleRating(POI.rating)} style={{ color: '#006400', zoom: '0.55' }} />
-                <span className="ant-rate-text">{POI.num_reviews}</span>
+                <Rate disabled allowHalf='true' value={handleRating(POI.rating)} style={{ color: '#006400', zoom: '0.55' }} />
+                {/* <span className="ant-rate-text">{POI.num_reviews}</span> */}
               </Row>
               <Row gutter={[12]} style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
                 <Col>
@@ -215,10 +215,21 @@ class TabsCard extends React.Component {
     }
 
     const handleRating = (rating) => {
-      if (rating === null) {
+      if (!rating) {
         return 0;
       } else {
+        console.log(rating);
         return rating;
+      }
+    }
+
+    const handleNumReviews = (num_reviews) => {
+      if (!num_reviews) {
+        return '';
+      } else if (num_reviews === 1) {
+        return num_reviews + ' review';
+      } else {
+        return num_reviews + ' reviews';
       }
     }
 
@@ -269,8 +280,10 @@ class TabsCard extends React.Component {
                       bigPOI.name}
                     </div>
                     <div >
-                      <Rate disabled defaultValue={handleRating(bigPOI.rating)} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
-                      {bigPOI.num_reviews} reviews
+                      <Rate disabled allowHalf='true' value={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
+                      {/* {bigPOI.rating} rating */}
+                      {/* {bigPOI.num_reviews} reviews */}
+                      {handleNumReviews(bigPOI.num_reviews)}
                     </div>
                     <div>
                       <span style={{ fontSize: '110%' }}>{bigPOI.tags.split(',').join(' • ')}</span>
@@ -314,8 +327,9 @@ class TabsCard extends React.Component {
                       {bigPOI.name}
                     </div>
                     <div>
-                      <Rate disabled defaultValue={handleRating(bigPOI.rating)} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
-                      {bigPOI.num_reviews} reviews
+                      <Rate disabled allowHalf='true' value={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
+                      {/* {bigPOI.num_reviews} reviews */}
+                      {handleNumReviews(bigPOI.num_reviews)}
                     </div>
                   </Space>
                 </Col>
@@ -372,8 +386,9 @@ class TabsCard extends React.Component {
                       bigPOI.name}
                     </div>
                     <div >
-                      <Rate disabled defaultValue={handleRating(bigPOI.rating)} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
-                      {bigPOI.num_reviews} reviews
+                      <Rate disabled allowHalf='true' value={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
+                      {/* {bigPOI.num_reviews} reviews */}
+                      {handleNumReviews(bigPOI.num_reviews)}
                     </div>
                   </Space>
                   <Col span={24} >
