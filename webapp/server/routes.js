@@ -266,6 +266,8 @@ function random_city(req, res) {
 function all_trips(req, res) {
   var username = req.query.username
 
+
+
   var myQuery = `
     SELECT tripID, tripName, city, state, startDate, endDate
     FROM TripProfile
@@ -562,6 +564,7 @@ function trip_restaurants(req, res) {
 
 // Returns the trails from filtered POIs
 function trip_trails(req, res) {
+
   const tripID = req.query.tripID ? req.query.tripID : 0
   var viewName = 'Trip_' + tripID.toString()
 
@@ -1188,14 +1191,17 @@ function test(req, res) {
 
   // TODO: make this function work...
 
-  if (authenticate(username, clientIP) == true) {
+  if (authenticateUser(username, clientIP) == true) {
     res.send('Logged In!!')
   } else {
     res.redirect('http://localhost:3000/failed')
   }
 }
 
-function authenticate(username, clientIP) {
+function authenticate_user(req, res) {
+  var username = req.query.username
+  var clientIP = req.socket.remoteAddress
+
   var myQuery = `
     SELECT *
     FROM LoggedIn
@@ -1207,16 +1213,43 @@ function authenticate(username, clientIP) {
     if (results) {
       if (results.length > 0) {
         console.log('Authenticated user')
-        return true
+        res.json({ results: true })
       } else {
         console.log('Username NOT logged in with this client IP')
-        return false
+        res.json({ results: false })
       }
     } else {
       console.log(error)
     }
   })
 }
+
+function authenticate_trip(req, res) {
+  var username = req.query.username
+  var tripID = req.query.tripID
+
+  var myQuery = `
+  SELECT *
+  FROM TripProfile
+  WHERE username = '${username}' AND tripID=${tripID};
+`
+  console.log(myQuery)
+
+  connection.query(myQuery, function (error, results, fields) {
+    if (results) {
+      if (results.length > 0) {
+        console.log(`Authenticated trip ${tripID}`)
+        res.json({ results: true })
+      } else {
+        console.log(`User does NOT have trip with tripID ${tripID}`)
+        res.json({ results: false })
+      }
+    } else {
+      console.log(error)
+    }
+  })
+}
+
 
 module.exports = {
   add_user,
@@ -1238,5 +1271,7 @@ module.exports = {
   save_trip,
   update_trip,
   delete_trip,
-  test
+  test,
+  authenticate_trip,
+  authenticate_user
 }

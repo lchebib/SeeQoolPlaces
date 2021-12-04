@@ -1,6 +1,6 @@
 import React from 'react';
 import { Menu } from 'antd';
-import { getAllTrips } from '../fetcher'
+import { authenticateUser, getAllTrips } from '../fetcher'
 
 const { SubMenu } = Menu;
 
@@ -16,7 +16,22 @@ class SideBar extends React.Component {
 
     this.onMenuClick = this.onMenuClick.bind(this)
     this.storeTrips = this.storeTrips.bind(this)
+    this.authenticate = this.authenticate.bind(this)
   }
+
+  authenticate() {
+    var username = localStorage.getItem("username")
+    if (!username) {
+      window.location = '/';
+    } else {
+      authenticateUser(username).then(res => {
+        if (res.results == false) {
+          window.location = '/';
+        }
+      })
+    }
+  }
+
 
   onMenuClick(menuItem) {
     if (isNaN(menuItem.key)) {
@@ -27,6 +42,8 @@ class SideBar extends React.Component {
   }
 
   componentDidMount() {
+
+    this.authenticate()
 
     var username = localStorage.getItem("username")
     getAllTrips(username).then(res => {

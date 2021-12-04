@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import TabsCard from '../components/TabsCard';
 import Scheduler from '../components/Scheduler';
 import FavoritesBar from '../components/FavoritesBar';
-import { getTripRestaurants, getTripAttractions, getTripTrails, postDeleteTrip, postSaveTrip, getTripFavorites, getTripEvents } from '../fetcher';
+import { authenticateTrip, getTripRestaurants, getTripAttractions, getTripTrails, postDeleteTrip, postSaveTrip, getTripFavorites, getTripEvents } from '../fetcher';
 
 const { Content, Sider } = Layout;
 
@@ -36,14 +36,23 @@ class TripPage extends React.Component {
     this.changeBigPOI = this.changeBigPOI.bind(this)
     this.saveTrip = this.saveTrip.bind(this)
     this.deleteTrip = this.deleteTrip.bind(this)
+    this.authenticate = this.authenticate.bind(this)
+  }
+
+  authenticate(tripID) {
+    var username = localStorage.getItem("username")
+    authenticateTrip(username, tripID).then(res => {
+      if (res.results == false) {
+        window.location = '/home';
+      }
+    })
   }
 
   componentWillMount() {
     var tripID = window.location.href.split('=')[1]
 
-    if (isNaN(tripID)) {
-      tripID = 100
-    }
+    this.authenticate(tripID)
+
 
     var trip = JSON.parse(localStorage.getItem(tripID))
     this.setState({ trip: trip })

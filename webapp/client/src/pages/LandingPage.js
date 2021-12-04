@@ -1,9 +1,32 @@
 import React from 'react';
 import { Row, Col } from 'antd';
 import Login from '../components/Login';
+import { authenticateUser } from '../fetcher';
+
 
 
 class LandingPage extends React.Component {
+
+  constructor(props) {
+    super(props)
+
+    this.authenticate = this.authenticate.bind(this)
+  }
+
+  authenticate() {
+    var username = localStorage.getItem("username")
+    if (username) {
+      authenticateUser(username).then(res => {
+        if (res.results == true) {
+          window.location = '/home';
+        }
+      })
+    }
+  }
+
+  componentDidMount() {
+    this.authenticate()
+  }
 
   render() {
 

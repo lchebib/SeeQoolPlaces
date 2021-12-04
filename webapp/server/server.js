@@ -132,6 +132,16 @@ app.get('/trip/update_trip', routes.update_trip)
 // always returns true
 app.get('/delete_trip', routes.delete_trip)
 
+// Authenticate user has a trip with this tripID
+// requires username,tripID --> /authenticate/trip?username=string&tripID=int
+// returns true if user has trip, else returns false
+app.get('/authenticate/trip', routes.authenticate_trip)
+
+// Authenticate if user is logged in
+// requires username --> /authenticate/trip?username=string
+// returns true if user is logged in, else returns false
+app.get('/authenticate/user', routes.authenticate_user)
+
 
 app.listen(config.server_port, () => {
   console.log(`Server running at http://${config.server_host}:${config.server_port}/`);

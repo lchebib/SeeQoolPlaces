@@ -1,15 +1,5 @@
 import config from './config.json'
-import {
-  tempGetQuizCities,
-  tempGetRandomCity,
-  tempGetLoggedInUser,
-  tempMyTrips,
-  tempLogout,
-  tempLogin,
-  tempSignUp,
-  tempGetAllCities,
-  tempGetPOIS
-} from './tempData'
+
 
 // ********************************************
 //             All Page Fetchers
@@ -20,21 +10,9 @@ const getAllTrips = async (username) => {
     method: 'GET',
   })
   return res.json()
-  // var res = { results: tempMyTrips }
-
-  // res.results.map(trip => {
-  //   localStorage.setItem(trip.id, JSON.stringify(trip))
-  // })
-
-  // return res
 }
 
-const signUp = async (username, password) => {
-  var res = await fetch(`http://${config.server_host}:${config.server_port}/add_user?username=${username}&password=${password}`, {
-    method: 'GET',
-  })
-  return res.json();
-}
+
 
 const logout = async username => {
   var res = await fetch(`http://${config.server_host}:${config.server_port}/logout?username=${username}`, {
@@ -43,8 +21,31 @@ const logout = async username => {
   return res.json();
 }
 
+
+
+// ********************************************
+//             Landing Page Fetchers
+// ********************************************
+
+const authenticateUser = async (username) => {
+  var res = await fetch(
+    `http://${config.server_host}:${config.server_port}/authenticate/user?username=${username}`,
+    {
+      method: 'GET',
+    }
+  )
+  return res.json()
+}
+
 const login = async (username, password) => {
   var res = await fetch(`http://${config.server_host}:${config.server_port}/login?username=${username}&password=${password}`, {
+    method: 'GET',
+  })
+  return res.json();
+}
+
+const signUp = async (username, password) => {
+  var res = await fetch(`http://${config.server_host}:${config.server_port}/add_user?username=${username}&password=${password}`, {
     method: 'GET',
   })
   return res.json();
@@ -63,8 +64,6 @@ const getRandomCity = async () => {
     }
   )
   return res.json()
-  // var res = { results: tempGetRandomCity() }
-  // return res;
 }
 
 // ********************************************
@@ -83,8 +82,6 @@ const getAllCities = async () => {
     }
   )
   return res.json()
-  // var res = tempGetAllCities();
-  // return res;
 }
 
 
@@ -93,16 +90,6 @@ const getAllCities = async () => {
 // ********************************************
 
 const getQuizCities = async (population, p0, p1, p2, p3, p4, p5) => {
-
-  // population = JSON.stringify(population)
-  // p0 = JSON.stringify(p1)
-  // p1 = JSON.stringify(p2)
-  // p2 = JSON.stringify(p3)
-  // p3 = JSON.stringify(p4)
-  // p4 = JSON.stringify(p5)
-  // p5 = JSON.stringify(p6)
-
-
   var res = await fetch(
     `http://${config.server_host}:${config.server_port}/quizCities?population=${population}&p0=${p0}&p1=${p1}&p2=${p2}&p3=${p3}&p4=${p4}&p5=${p5}`,
     {
@@ -110,8 +97,6 @@ const getQuizCities = async (population, p0, p1, p2, p3, p4, p5) => {
     }
   )
   return res.json()
-  // var res = tempGetQuizCities();
-  // return res;
 }
 
 
@@ -119,19 +104,6 @@ const getQuizCities = async (population, p0, p1, p2, p3, p4, p5) => {
 //             CreateTripPage Fetchers
 // ********************************************
 
-
-// const getTripPOIS = async (tripID, username) => {
-//   // var res = await fetch(
-//   //   `http://${config.server_host}:${config.server_port}/trip_pois?tid=${tripID}&username=${username}`,
-//   //   {
-//   //     method: 'GET',
-//   //   }
-//   // )
-//   // return res.json()
-
-//   var res = { results: tempGetPOIS() };
-//   return res;
-// }
 
 
 const newTrip = async (username, tripName, city, state, startDate, endDate, p0, p1, p2, p3, p4, p5) => {
@@ -142,13 +114,21 @@ const newTrip = async (username, tripName, city, state, startDate, endDate, p0, 
     }
   )
   return res.json()
-  // const content = await rawResponse.json();
-  // console.log(content);
 }
 
 // ********************************************
 //             TripPage Fetchers
 // ********************************************
+
+const authenticateTrip = async (username, tripID) => {
+  var res = await fetch(
+    `http://${config.server_host}:${config.server_port}/authenticate/trip?username=${username}&tripID=${tripID}`,
+    {
+      method: 'GET',
+    }
+  )
+  return res.json()
+}
 
 const getTripAttractions = async (tripID) => {
   var res = await fetch(
@@ -200,15 +180,6 @@ const postDeleteTrip = async (tripID) => {
   return res.json()
 }
 
-// const testStringify = async (tripID, favorites, events) => {
-//   var res = await fetch(
-//     `http://${config.server_host}:${config.server_port}/stringify_test?tripID=${tripID}&favorites=${favorites}&events=${events}`,
-//     {
-//       method: 'GET',
-//     }
-//   )
-//   return res.json()
-// }
 
 const getTripFavorites = async (tripID) => {
   var res = await fetch(
@@ -246,5 +217,7 @@ export {
   postSaveTrip,
   postDeleteTrip,
   getTripEvents,
-  getTripFavorites
+  getTripFavorites,
+  authenticateTrip,
+  authenticateUser
 }
