@@ -225,7 +225,7 @@ class TabsCard extends React.Component {
 
     const handleNumReviews = (num_reviews) => {
       if (!num_reviews) {
-        return '';
+        return '0 reviews';
       } else if (num_reviews === 1) {
         return num_reviews + ' review';
       } else {
