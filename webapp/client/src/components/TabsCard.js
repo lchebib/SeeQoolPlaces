@@ -24,6 +24,7 @@ class TabsCard extends React.Component {
 
   componentDidMount() {
     this.setKeyArr(this.state.currentTab);
+    console.log(this.props.bigPOI);
   }
 
   onSchedule() {
@@ -69,6 +70,7 @@ class TabsCard extends React.Component {
 
   onChangePOI(e) {
     this.props.onClickPOI(e.target.value);
+    console.log(this.props.bigPOI);
   }
 
   onChangePage(page, size) {
@@ -104,7 +106,7 @@ class TabsCard extends React.Component {
                 {POI.name}
               </Row>
               <Row justify='start' style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
-                <Rate disabled allowHalf='true' defaultValue={POI.rating} style={{ color: '#006400', zoom: '0.55' }} />
+                <Rate disabled allowHalf defaultValue={handleRating(POI.rating)} style={{ color: '#006400', zoom: '0.55' }} />
                 <span className="ant-rate-text">{POI.num_reviews}</span>
               </Row>
               <Row gutter={[12]} style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
@@ -137,7 +139,7 @@ class TabsCard extends React.Component {
                 {POI.name}
               </Row>
               <Row justify='start' style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
-                <Rate disabled allowHalf='true' defaultValue={POI.rating} style={{ color: '#006400', zoom: '0.55' }} />
+                <Rate disabled allowHalf defaultValue={handleRating(POI.rating)} style={{ color: '#006400', zoom: '0.55' }} />
                 <span className="ant-rate-text">{POI.num_reviews}</span>
               </Row>
               <Row gutter={[12]} style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
@@ -161,7 +163,7 @@ class TabsCard extends React.Component {
                 {POI.name}
               </Row>
               <Row justify='start' style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
-                <Rate disabled allowHalf='true' defaultValue={POI.rating} style={{ color: '#006400', zoom: '0.55' }} />
+                <Rate disabled allowHalf defaultValue={handleRating(POI.rating)} style={{ color: '#006400', zoom: '0.55' }} />
                 <span className="ant-rate-text">{POI.num_reviews}</span>
               </Row>
               <Row gutter={[12]} style={{ fontFamily: 'sans-serif', lineHeight: '20px' }}>
@@ -212,6 +214,14 @@ class TabsCard extends React.Component {
       }
     }
 
+    const handleRating = (rating) => {
+      if (rating === null) {
+        return 0;
+      } else {
+        return rating;
+      }
+    }
+
     const handleRestaurantCost = (costHigh, costLow) => {
 
       let moneyString = "";
@@ -259,7 +269,7 @@ class TabsCard extends React.Component {
                       bigPOI.name}
                     </div>
                     <div >
-                      <Rate disabled defaultValue={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
+                      <Rate disabled defaultValue={handleRating(bigPOI.rating)} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
                       {bigPOI.num_reviews} reviews
                     </div>
                     <div>
@@ -304,7 +314,7 @@ class TabsCard extends React.Component {
                       {bigPOI.name}
                     </div>
                     <div>
-                      <Rate disabled defaultValue={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
+                      <Rate disabled defaultValue={handleRating(bigPOI.rating)} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
                       {bigPOI.num_reviews} reviews
                     </div>
                   </Space>
@@ -362,7 +372,7 @@ class TabsCard extends React.Component {
                       bigPOI.name}
                     </div>
                     <div >
-                      <Rate disabled defaultValue={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
+                      <Rate disabled defaultValue={handleRating(bigPOI.rating)} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
                       {bigPOI.num_reviews} reviews
                     </div>
                   </Space>

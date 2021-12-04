@@ -34,11 +34,11 @@ const answers = [
 const descriptions =
 {
   coolCat: "Your ideal night involves seeing your favorite band perform live or hitting up some local breweries. Also, you've probably worked as a barista at some point in life.",
-  adventurer: "You have an adventurous spirit, and love to get lost and explore whether its a bustling city or the middle of the woods. ",
-  entertainer: "You enjoy the finer things in life and your bucket-list includes a 3 Michelin star restaurant.",
+  adventurer: "You have an adventurous spirit and love to get lost and explore whether its a bustling city or the middle of the woods. ",
+  entertainer: "You enjoy the finer things in life and your bucket list includes a 3-Michelin star restaurant.",
   family: "You want to spend quality time with loved ones. ",
-  enthusiast: "You tend to go with the flow and you're up for anything that sounds fun.",
-  investigator: "You get to know a city by the stories of it's past. You're just happy when you're learning. "
+  enthusiast: "You tend to go with the flow, and you're up for anything that sounds fun.",
+  investigator: "You get to know a city by the stories of its past. You're just happy when you're learning. "
 };
 
 function scrollToBottom() {

@@ -136,6 +136,7 @@ class CreateTripPage extends React.Component {
   componentDidMount() {
     this.setState({ selectedDest: localStorage.getItem('selectedDest') ? JSON.parse(localStorage.getItem('selectedDest')) : [] })
     this.setState({ selectedPersonalities: localStorage.getItem('selectedPersonalities') ? JSON.parse(localStorage.getItem('selectedPersonalities')) : {} })
+    console.log(this.state.selectedDest);
   }
 
   onCheckConfirmDetails(e) {
@@ -145,6 +146,10 @@ class CreateTripPage extends React.Component {
   render() {
 
     console.log(this.state.selectedDest)
+
+    if (this.state.selectedDest.length === 0) {
+      return null;
+    }
 
     const defaultPersonalities = () => {
       if (this.state.selectedPersonalities) {
