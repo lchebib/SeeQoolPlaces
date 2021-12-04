@@ -22,7 +22,7 @@ class SideBar extends React.Component {
   authenticate() {
     var username = localStorage.getItem("username")
     if (!username) {
-      window.location = '/';
+      window.location = '/failed';
     } else {
       authenticateUser(username).then(res => {
         if (res.results == false) {

@@ -30,7 +30,7 @@ class Header extends React.Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     var username = localStorage.getItem("username")
     this.setState({ username: username })
   }

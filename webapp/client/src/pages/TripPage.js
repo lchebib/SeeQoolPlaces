@@ -41,6 +41,7 @@ class TripPage extends React.Component {
 
   authenticate(tripID) {
     var username = localStorage.getItem("username")
+
     authenticateTrip(username, tripID).then(res => {
       if (res.results == false) {
         window.location = '/home';
@@ -48,7 +49,7 @@ class TripPage extends React.Component {
     })
   }
 
-  componentWillMount() {
+  componentDidMount() {
     var tripID = window.location.href.split('=')[1]
 
     this.authenticate(tripID)

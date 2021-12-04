@@ -22,11 +22,7 @@ class TabsCard extends React.Component {
     this.onRemoveFavorite = this.onRemoveFavorite.bind(this);
   }
 
-  componentWillMount() {
-    this.setKeyArr(this.state.currentTab);
-  }
-
-  componentWillMount() {
+  componentDidMount() {
     this.setKeyArr(this.state.currentTab);
   }
 

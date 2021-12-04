@@ -44,17 +44,6 @@ const makeOptions = (arr) => {
       children: []
     }];
 
-  // let result = [
-  //   {
-  //     value: 'California',
-  //     label: 'California',
-  //     children: []
-  //   },
-  //   {
-  //     value: 'British Columbia',
-  //     label: 'British Columbia',
-  //     children: []
-  //   }];
   arr.forEach(obj => {
     let cityArr = Object.entries(obj);
     let cityObj = { value: cityArr[1][1], label: cityArr[1][1] };
@@ -68,16 +57,6 @@ const makeOptions = (arr) => {
   });
   return result;
 }
-
-// function tempStateChanger(arr) {
-
-//   if (arr[0] === 'CA') {
-//     arr[0] = 'California';
-//   } else {
-//     arr[0] = 'British Columbia';
-//   }
-//   return arr;
-// }
 
 class DestinationCascader extends React.Component {
 

@@ -133,7 +133,7 @@ class CreateTripPage extends React.Component {
     window.location = `/trip?id=${tripID}`;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({ selectedDest: localStorage.getItem('selectedDest') ? JSON.parse(localStorage.getItem('selectedDest')) : [] })
     this.setState({ selectedPersonalities: localStorage.getItem('selectedPersonalities') ? JSON.parse(localStorage.getItem('selectedPersonalities')) : {} })
   }
