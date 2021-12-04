@@ -10,7 +10,7 @@ class Header extends React.Component {
     super(props)
 
     this.state = {
-      username: {},
+      username: localStorage.getItem("username"),
     }
 
     this.onSearch = this.onSearch.bind(this)
@@ -28,11 +28,6 @@ class Header extends React.Component {
     if (searchString) {
       window.location = `/search?string=${searchString}`
     }
-  }
-
-  componentDidMount() {
-    var username = localStorage.getItem("username")
-    this.setState({ username: username })
   }
 
   render() {

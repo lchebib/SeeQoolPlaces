@@ -10,7 +10,6 @@ import { authenticateTrip, getTripRestaurants, getTripAttractions, getTripTrails
 
 const { Content, Sider } = Layout;
 
-
 class TripPage extends React.Component {
 
   constructor(props) {
@@ -41,19 +40,25 @@ class TripPage extends React.Component {
 
   authenticate(tripID) {
     var username = localStorage.getItem("username")
+    if (!username) {
+      window.location = '/failed';
+    }
 
-    authenticateTrip(username, tripID).then(res => {
-      if (res.results == false) {
-        window.location = '/home';
-      }
-    })
+    if (tripID < 0) {
+      window.location = '/failed?redirect=home';
+    } else {
+      authenticateTrip(username, tripID).then(res => {
+        if (res.results == false) {
+          window.location = '/failed?redirect=home';
+        }
+      })
+    }
   }
 
   componentDidMount() {
-    var tripID = window.location.href.split('=')[1]
 
+    var tripID = window.location.href.split('=').length > 1 ? window.location.href.split('=')[1] : -1
     this.authenticate(tripID)
-
 
     var trip = JSON.parse(localStorage.getItem(tripID))
     this.setState({ trip: trip })
@@ -188,8 +193,7 @@ class TripPage extends React.Component {
     }
 
     // console.log(this.state.favorites)
-    console.log(this.state.events)
-
+    // console.log(this.state.events)
 
 
     return (

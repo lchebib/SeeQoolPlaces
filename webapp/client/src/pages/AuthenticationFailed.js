@@ -5,8 +5,10 @@ class AuthenticationFailed extends React.Component {
   constructor(props) {
     super(props)
     setTimeout(function () {
-      window.location = `/`
-    }, 3000)
+      var redirect = window.location.href.split('=')[1]
+      console.log(redirect)
+      window.location = `/${redirect ? redirect : ""}`
+    }, 2000)
   }
 
   render() {

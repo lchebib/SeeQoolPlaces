@@ -11,7 +11,7 @@ class TabsCard extends React.Component {
       minValue: 0,
       currentPage: 1,
       pageSize: 12,
-      keyArr: []
+      keyArr: null
     };
 
     this.onChangePage = this.onChangePage.bind(this);
@@ -77,9 +77,9 @@ class TabsCard extends React.Component {
 
   render() {
 
-    // if (this.state.keyArr.length === 0) {
-    //   return null
-    // }
+    if (!this.state.keyArr) {
+      return null
+    }
 
 
     const renderRadio = (POI) => {

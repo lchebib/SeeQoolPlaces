@@ -26,7 +26,7 @@ class SideBar extends React.Component {
     } else {
       authenticateUser(username).then(res => {
         if (res.results == false) {
-          window.location = '/';
+          window.location = '/failed';
         }
       })
     }
