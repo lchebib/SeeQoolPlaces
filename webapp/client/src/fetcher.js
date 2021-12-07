@@ -66,9 +66,6 @@ const getRandomCity = async () => {
   return res.json()
 }
 
-// ********************************************
-//             QuizPage0 Fetchers
-// ********************************************
 
 // ********************************************
 //             SelectCityPage Fetchers
@@ -109,6 +106,16 @@ const getQuizCities = async (population, p0, p1, p2, p3, p4, p5) => {
 const newTrip = async (username, tripName, city, state, startDate, endDate, p0, p1, p2, p3, p4, p5) => {
   var res = await fetch(
     `http://${config.server_host}:${config.server_port}/new_trip?username=${username}&tripName='${tripName}'&city=${city}&state=${state}&startDate=${startDate}&endDate=${endDate}&p0=${p0}&p1=${p1}&p2=${p2}&p3=${p3}&p4=${p4}&p5=${p5}`,
+    {
+      method: 'GET',
+    }
+  )
+  return res.json()
+}
+
+const getPopulation = async (city, state) => {
+  var res = await fetch(
+    `http://${config.server_host}:${config.server_port}/population?city=${city}&state=${state}`,
     {
       method: 'GET',
     }
@@ -219,5 +226,6 @@ export {
   getTripEvents,
   getTripFavorites,
   authenticateTrip,
-  authenticateUser
+  authenticateUser,
+  getPopulation
 }

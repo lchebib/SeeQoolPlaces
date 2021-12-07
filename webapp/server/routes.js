@@ -293,8 +293,8 @@ function all_trips(req, res) {
 // Returns the list of all cities with at least one POI
 function all_cities(req, res) {
   var myQuery = `
-    SELECT DISTINCT state, city
-    FROM POI
+    SELECT DISTINCT state, city, population
+    FROM POI NATURAL JOIN City
     WHERE state IS NOT NULL AND city IS NOT NULL
     ORDER BY city  
   `
@@ -312,7 +312,8 @@ function all_cities(req, res) {
 }
 
 // Returns the top 3 cities based on target city size and travel personalities
-function quizCities(req, res) {
+function quiz_cities(req, res) {
+  console.log(req.query)
   var population = req.query.population
   var CoolCat = parseInt(req.query.p0) === 1
   var Adventurer = parseInt(req.query.p1) === 1
@@ -798,8 +799,7 @@ function update_trip(req, res) {
 // Deletes trip given tripID
 function delete_trip(req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
-  console.log('Trip ID to delete: )' + tripID.toString())
-  console.log(`Type of tripID is ${typeof tripID}`)
+  console.log('TripID to delete: ' + tripID.toString())
 
   var myQuery = `
     DELETE FROM TripProfile
@@ -1121,8 +1121,8 @@ function createPopulationQuery(pop) {
   var citySize = new Array()
   citySize[0] = new Array(0, '1') // any city
   citySize[1] = new Array(1, '500000') // (large) metropolitan
-  citySize[2] = new Array(2, '200000') // mid-size urban area
-  citySize[3] = new Array(3, '50000') // small urban area
+  citySize[2] = new Array(2, '100000') // mid-size urban area
+  citySize[3] = new Array(3, '30000') // small urban area
 
   var populationQuery = ''
 
@@ -1175,6 +1175,29 @@ function generateFilteredPOIs(tripID) {
       console.log(
         'Generated filtered POIs based on city, state, and personalities'
       )
+    }
+  })
+}
+
+function population(req, res) {
+  console.log(req.query)
+  var city = req.query.city
+  var state = req.query.state
+
+  var myQuery = `
+    SELECT population
+    FROM City
+    WHERE city = '${city}' AND state = '${state}';  
+  `
+  console.log(myQuery)
+
+  connection.query(myQuery, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+      res.json({ error: error })
+    } else if (results) {
+      res.json({ results: results })
+      console.log(`Got population:${results}`)
     }
   })
 }
@@ -1260,7 +1283,7 @@ module.exports = {
   random_city,
   all_trips,
   all_cities,
-  quizCities,
+  quiz_cities,
   new_trip,
   retrieve_trip,
   trip_attractions,
@@ -1273,5 +1296,6 @@ module.exports = {
   delete_trip,
   test,
   authenticate_trip,
-  authenticate_user
+  authenticate_user,
+  population
 }

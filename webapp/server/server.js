@@ -46,6 +46,12 @@ app.get('/login', routes.login)
 // always returns true
 app.get('/logout', routes.logout)
 
+// Authenticate if user is logged in
+// requires username --> /authenticate/trip?username=string
+// returns true if user is logged in, else returns false
+app.get('/authenticate/user', routes.authenticate_user)
+
+
 
 // ********************************************
 //             Home Page Routes
@@ -72,9 +78,9 @@ app.get('/trips', routes.all_trips)
 app.get('/cities/', routes.all_cities)
 
 // Top 3 Cities based on quiz results
-// requires population and personalities --> /quizCities?population=1&p0=0&p1=1&...&p5=0 (population=[0,3], [0,1] for false/true)
+// requires population and personalities --> /quiz_cities?population=1&p0=0&p1=1&...&p5=0 (population=[0,3], [0,1] for false/true)
 // returns [{city, state}]
-app.get('/quizCities', routes.quizCities)
+app.get('/quizCities', routes.quiz_cities)
 
 
 // ********************************************
@@ -86,6 +92,11 @@ app.get('/quizCities', routes.quizCities)
 // only tripName has quotations; username, city, and state no quotations; [0,1] for false/true in personalities
 // returns {tripID: int}
 app.get('/new_trip', routes.new_trip)
+
+// Get population
+// requires city, state--> /population?city=string&state=string 
+// returns {population (int)}
+app.get('/population', routes.population)
 
 // Retrieve stored trip
 // requires tripID --> /retrieve_trip?tripID=3
@@ -136,12 +147,6 @@ app.get('/delete_trip', routes.delete_trip)
 // requires username,tripID --> /authenticate/trip?username=string&tripID=int
 // returns true if user has trip, else returns false
 app.get('/authenticate/trip', routes.authenticate_trip)
-
-// Authenticate if user is logged in
-// requires username --> /authenticate/trip?username=string
-// returns true if user is logged in, else returns false
-app.get('/authenticate/user', routes.authenticate_user)
-
 
 app.listen(config.server_port, () => {
   console.log(`Server running at http://${config.server_host}:${config.server_port}/`);

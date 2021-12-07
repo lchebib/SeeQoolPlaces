@@ -80,7 +80,7 @@ class DestinationCascader extends React.Component {
   render() {
 
     return (
-      <Cascader options={this.state.options} onChange={this.props.onChange} defaultValue={this.props.defaultValue} placeholder="Select City" />
+      <Cascader options={this.state.options} onChange={this.props.onChange} value={this.props.defaultValue} placeholder="Select City" />
     );
   }
 }

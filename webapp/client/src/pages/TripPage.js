@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Row, Col } from 'antd';
+import { Layout, Row, Col, Spin, Space } from 'antd';
 import SideBar from '../components/SideBar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -7,6 +7,8 @@ import TabsCard from '../components/TabsCard';
 import Scheduler from '../components/Scheduler';
 import FavoritesBar from '../components/FavoritesBar';
 import { authenticateTrip, getTripRestaurants, getTripAttractions, getTripTrails, postDeleteTrip, postSaveTrip, getTripFavorites, getTripEvents } from '../fetcher';
+import '../style/animation.css'
+
 
 const { Content, Sider } = Layout;
 
@@ -16,6 +18,7 @@ class TripPage extends React.Component {
     super(props)
 
     this.state = {
+      loading: true,
       trip: null,
       POIS: [],
       favorites: [],
@@ -67,30 +70,22 @@ class TripPage extends React.Component {
       this.setState({ tripTrails: res.results })
       this.setState({ bigPOI: res.results[0] })
       // console.log(res.results)
-    })
-
-    getTripAttractions(tripID).then(res => {
+    }).then(getTripAttractions(tripID).then(res => {
       this.setState({ tripAttractions: res.results })
       if (!this.state.bigPOI) {
         this.setState({ bigPOI: res.results[0] })
       }
       // console.log(res.results)
-    })
-
-    getTripRestaurants(tripID).then(res => {
+    })).then(getTripRestaurants(tripID).then(res => {
       this.setState({ tripRestaurants: res.results })
       if (!this.state.bigPOI) {
         this.setState({ bigPOI: res.results[0] })
       }
       // console.log(res.results)
-    })
-
-    getTripFavorites(tripID).then(res => {
+    })).then(getTripFavorites(tripID).then(res => {
       this.setState({ favorites: res.results })
       // console.log(res.results)
-    })
-
-    getTripEvents(tripID).then(res => {
+    })).then(getTripEvents(tripID).then(res => {
       var events = res.results
       events.forEach((event) => {
         event.allDay = false
@@ -98,8 +93,11 @@ class TripPage extends React.Component {
         event.end = new Date(event.end)
       })
       this.setState({ events: events })
+      this.setState({ loading: false })
       // console.log(res.results)
-    })
+    }))
+
+
   }
 
 
@@ -175,21 +173,41 @@ class TripPage extends React.Component {
 
   render() {
 
-    if (!this.state.tripTrails || !this.state.tripAttractions || !this.state.tripRestaurants) {
-      return null
+
+    if (this.state.loading) {
+      return (
+        <>
+          <Row justify='center' align='middle' style={{ paddingTop: 200, paddingBottom: 100 }}>
+            <img class="balloon"
+              src={process.env.PUBLIC_URL + '/logo.png'}
+              alt='Hot air balloon'
+            />
+          </Row>
+          <Row justify='center' align='middle' style={{ width: '100vw' }}>
+            <span style={{ color: '#90A3E8' }}>
+              Tiny fairies are manifesting your trip into existence...
+            </span>
+          </Row>
+        </>
+      )
     }
 
-    if (!this.state.bigPOI) {
-      return null
-    }
 
-    if (!this.state.trip) {
-      return null
-    }
+    // if (!this.state.tripTrails || !this.state.tripAttractions || !this.state.tripRestaurants) {
+    //   return null
+    // }
 
-    if (!this.state.events) {
-      return null
-    }
+    // if (!this.state.bigPOI) {
+    //   return null
+    // }
+
+    // if (!this.state.trip) {
+    //   return null
+    // }
+
+    // if (!this.state.events) {
+    //   return null
+    // }
 
     // console.log(this.state.favorites)
     // console.log(this.state.events)

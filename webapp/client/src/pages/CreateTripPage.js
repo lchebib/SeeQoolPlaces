@@ -8,7 +8,9 @@ import {
   Button,
   Checkbox,
   DatePicker,
-  Alert
+  Alert,
+  Spin,
+  Space
 } from 'antd';
 
 import { LeftSquareOutlined } from '@ant-design/icons';
@@ -16,7 +18,9 @@ import SideBar from '../components/SideBar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import DestinationCascader from '../components/DestinationCascader';
-import { newTrip, getTripRestaurants, getTripAttractions, getTripTrails, getQuizCities } from '../fetcher'
+import { newTrip, getTripRestaurants, getTripAttractions, getTripTrails, getQuizCities, getPopulation, postDeleteTrip } from '../fetcher'
+import '../style/animation.css'
+
 
 const { Content } = Layout;
 const { RangePicker } = DatePicker;
@@ -43,12 +47,13 @@ class CreateTripPage extends React.Component {
     super(props)
 
     this.state = {
+      loading: false,
       buttonStatus: false,
       options: [],
       selectedDest: [],
       selectedPersonalities: { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
       tripName: "",
-      tripNameValidateStatus: { validateStatus: "", errorMsg: "" },
+      // tripNameValidateStatus: { validateStatus: "", errorMsg: "" },
       startDate: null,
       endDate: null,
       quizCities: null
@@ -84,6 +89,8 @@ class CreateTripPage extends React.Component {
 
   createTrip() {
 
+    this.setState({ loading: true })
+
     var username = localStorage.getItem("username")
 
 
@@ -115,47 +122,66 @@ class CreateTripPage extends React.Component {
       this.state.selectedPersonalities.investigator,
     ).then(res => {
       tripID = res.results
-      this.storeTrip(tripID)
-      this.clickNextPage(tripID)
-      // this.checkValidTrip(tripID)
+      // this.storeTrip(tripID)
+      // this.clickNextPage(tripID)
+      this.checkValidTrip(tripID)
     })
   }
 
   checkValidTrip(tripID) {
 
-    var trails, restaurants, attractions;
+    var pois = []
 
     getTripTrails(tripID).then(res => {
-      trails = res.results
+      pois.push(...res.results)
     }).then(getTripAttractions(tripID).then(res => {
-      attractions = res.results
+      pois.push(...res.results)
     })).then(getTripRestaurants(tripID).then(res => {
-      restaurants = res.results
-    }))
+      pois.push(...res.results)
 
-    if (trails.length + restaurants.length + attractions.length < 10) {
-      this.suggestNewDestination()
-    } else {
-      this.storeTrip(tripID)
-      this.clickNextPage(tripID)
-    }
+      console.log(pois)
+
+      if (pois.length < 10) {
+        this.suggestNewDestination()
+        postDeleteTrip(tripID)
+      } else {
+        this.storeTrip(tripID)
+        this.clickNextPage(tripID)
+      }
+
+    }))
   }
 
   suggestNewDestination() {
-    var desiredPopulation = localStorage.getItem("selectedPopulation")
+    var desiredPopulation;
+    var populationScale;
 
-    getQuizCities(
-      desiredPopulation,
-      this.state.selectedPersonalities.coolCat,
-      this.state.selectedPersonalities.adventurer,
-      this.state.selectedPersonalities.entertainer,
-      this.state.selectedPersonalities.family,
-      this.state.selectedPersonalities.enthusiast,
-      this.state.selectedPersonalities.investigator
-    ).then(res => {
-      var quizCities = res.results
-      this.state.quizCities = quizCities;
-    });
+    getPopulation(this.state.selectedDest[1], this.state.selectedDest[0]).then(res => {
+      console.log(res.results[0].population)
+      desiredPopulation = res.results[0].population
+
+      if (desiredPopulation >= 500000) {
+        populationScale = 1
+      } else if (desiredPopulation >= 100000 & desiredPopulation < 500000) {
+        populationScale = 2
+      } else if (desiredPopulation < 100000) {
+        populationScale = 3
+      }
+
+      getQuizCities(
+        populationScale,
+        this.state.selectedPersonalities.coolCat,
+        this.state.selectedPersonalities.adventurer,
+        this.state.selectedPersonalities.entertainer,
+        this.state.selectedPersonalities.family,
+        this.state.selectedPersonalities.enthusiast,
+        this.state.selectedPersonalities.investigator
+      ).then(res => {
+        console.log(res.results)
+        this.setState({ quizCities: res.results })
+        this.setState({ loading: false })
+      })
+    })
   }
 
   setDate(dateArr) {
@@ -194,28 +220,66 @@ class CreateTripPage extends React.Component {
 
   render() {
 
-    // console.log(this.state.selectedDest)
-
     if (window.location.href.split('=').length > 1) {
       if (this.state.selectedDest.length === 0) {
         return null;
       }
     }
 
+    if (this.state.loading) {
+      return (
+        <>
+          <Row justify='center' align='middle' style={{ paddingTop: 200, paddingBottom: 100 }}>
+            <img class="balloon"
+              src={process.env.PUBLIC_URL + '/logo.png'}
+              alt='Hot air balloon'
+            />
+          </Row>
+          <Row justify='center' align='middle' style={{ width: '100vw' }}>
+            <span style={{ color: '#90A3E8' }}>
+              Forest creatures of {this.state.selectedDest[1]} whisper their favorite activites as we listen in...
+            </span>
+          </Row>
+        </>
+      )
+    }
+
     const invalidTripAlert = () => {
       if (this.state.quizCities) {
-        const invalidTripMsg = `
-          We can't seem to find any activities at that destination based on your chosen personality types.
-          Try changing your destination, or choosing fewer personalities.
 
-          Based on your selections, we recommend these destinations:
-          ${this.state.quizCities[0]}
-          ${this.state.quizCities[1]}
-          ${this.state.quizCities[2]}
-          `
+        var option0 = this.state.quizCities[0]
+        var option1 = this.state.quizCities[1]
+        var option2 = this.state.quizCities[2]
+
+        var invalidTripMsg =
+          <>
+            <p>Shoot. We can't seem to find any activities at that destination based on your chosen personality types.
+              Try changing your destination, or choosing fewer personalities.</p>
+            <p>Based on what you picked, we recommend these destinations:</p>
+            <Row justify='center'>
+              <Space size='middle'>
+                <Button size='small' shape='round' onClick={() => this.onDestChange([option0.state, option0.city])} style={{ border: 'none' }}>
+                  {option0.city}, {option0.state}
+                </Button>
+                <Button size='small' shape='round' onClick={() => this.onDestChange([option1.state, option1.city])} style={{ border: 'none' }}>
+                  {option1.city}, {option1.state}
+                </Button>
+                <Button size='small' shape='round' onClick={() => this.onDestChange([option2.state, option2.city])} style={{ border: 'none' }}>
+                  {option2.city}, {option2.state}
+                </Button>
+                {/* {this.state.quizCities.map((dest) => {
+                  // { console.log(dest) }
+                  <Button size='small' shape='round' onClick={() => this.setState({ selectedDest: [dest.state, dest.city] })} style={{ border: 'none' }}>
+                    {dest.city, dest.state}
+                  </Button>
+                })} */}
+              </Space>
+            </Row>
+          </>
+
         return (
           <Alert
-            message="Looks like you'll have to changes some details."
+            message="Adjust your trip details."
             description={invalidTripMsg}
             type="info"
             showIcon
@@ -269,14 +333,16 @@ class CreateTripPage extends React.Component {
                     {...formItemLayout}
                     onFinish={this.createTrip}
                     initialValues={{
+                      name: this.state.tripName,
                       destination: this.state.selectedDest,
-                      personalities: defaultPersonalities()
+                      personalities: defaultPersonalities(),
+                      dates: [this.state.startDate, this.state.endDate]
                     }}
                   >
                     <Form.Item
                       name="name"
                       label="Trip Name"
-                      validateStatus={this.state.tripNameValidateStatus.errorMsg}
+                      // validateStatus={this.state.tripNameValidateStatus.errorMsg}
                       rules={[
                         {
                           required: true,
@@ -362,13 +428,11 @@ class CreateTripPage extends React.Component {
                           </Checkbox>
                         </Form.Item>
 
-                        <Form.Item
-                        >
+                        <Form.Item>
                           {enableButton()}
-
                         </Form.Item>
-                        <Form.Item
-                        >
+
+                        <Form.Item>
                           <a href="./quiz" style={{ color: "black", marginTop: '50 px', marginBottom: '50 px' }}>
                             <LeftSquareOutlined /> Go Back
                           </a>

@@ -1,0 +1,20 @@
+/* The animation code */
+@keyframes float {
+	0% {
+		transform: translatey(0px);
+	}
+	50% {
+		transform: translatey(-20px);
+	}
+	100% {
+		transform: translatey(0px);
+	}
+}
+
+/* The element to apply the animation to */
+.balloon {
+  width: 20vw;
+  animation-name: float;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
