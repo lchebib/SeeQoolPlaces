@@ -8,6 +8,7 @@ import {
   Button,
   Checkbox,
   DatePicker,
+  Alert
 } from 'antd';
 
 import { LeftSquareOutlined } from '@ant-design/icons';
@@ -15,7 +16,7 @@ import SideBar from '../components/SideBar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import DestinationCascader from '../components/DestinationCascader';
-import { newTrip } from '../fetcher'
+import { newTrip, getTripRestaurants, getTripAttractions, getTripTrails, getQuizCities } from '../fetcher'
 
 const { Content } = Layout;
 const { RangePicker } = DatePicker;
@@ -32,7 +33,10 @@ const formItemLayout = {
   },
 };
 
+
+
 const personalityTooltip = "Let us get to know you so we can recommend some activities you're guaranteed to enjoy. Take the Trip Quiz to find out your travel personality!"
+
 
 class CreateTripPage extends React.Component {
   constructor(props) {
@@ -46,7 +50,8 @@ class CreateTripPage extends React.Component {
       tripName: "",
       tripNameValidateStatus: { validateStatus: "", errorMsg: "" },
       startDate: null,
-      endDate: null
+      endDate: null,
+      quizCities: null
     }
 
     this.onCheckConfirmDetails = this.onCheckConfirmDetails.bind(this)
@@ -57,9 +62,12 @@ class CreateTripPage extends React.Component {
     this.onTripNameChange = this.onTripNameChange.bind(this)
     this.storeTrip = this.storeTrip.bind(this)
     this.setDate = this.setDate.bind(this)
+    this.checkValidTrip = this.checkValidTrip.bind(this)
+    this.suggestNewDestination = this.suggestNewDestination.bind(this)
   }
 
   onDestChange(value) {
+    console.log(value)
     this.setState({ selectedDest: value });
   }
 
@@ -77,7 +85,7 @@ class CreateTripPage extends React.Component {
   createTrip() {
 
     var username = localStorage.getItem("username")
-    var tripID
+
 
     var numPersonalities = 0;
     Object.values(this.state.selectedPersonalities).forEach(val => {
@@ -88,13 +96,17 @@ class CreateTripPage extends React.Component {
       this.state.selectedPersonalities.enthusiast = 1;
     }
 
+    var start = moment(this.state.startDate).format("YYYY-MM-DD");
+    var end = moment(this.state.endDate).format("YYYY-MM-DD");
+    var tripID;
+
     newTrip(
       username,
       this.state.tripName,
       this.state.selectedDest[1],
       this.state.selectedDest[0],
-      this.state.startDate,
-      this.state.endDate,
+      start,
+      end,
       this.state.selectedPersonalities.coolCat,
       this.state.selectedPersonalities.adventurer,
       this.state.selectedPersonalities.entertainer,
@@ -103,16 +115,51 @@ class CreateTripPage extends React.Component {
       this.state.selectedPersonalities.investigator,
     ).then(res => {
       tripID = res.results
-      console.log(tripID);
       this.storeTrip(tripID)
       this.clickNextPage(tripID)
+      // this.checkValidTrip(tripID)
     })
   }
 
+  checkValidTrip(tripID) {
+
+    var trails, restaurants, attractions;
+
+    getTripTrails(tripID).then(res => {
+      trails = res.results
+    }).then(getTripAttractions(tripID).then(res => {
+      attractions = res.results
+    })).then(getTripRestaurants(tripID).then(res => {
+      restaurants = res.results
+    }))
+
+    if (trails.length + restaurants.length + attractions.length < 10) {
+      this.suggestNewDestination()
+    } else {
+      this.storeTrip(tripID)
+      this.clickNextPage(tripID)
+    }
+  }
+
+  suggestNewDestination() {
+    var desiredPopulation = localStorage.getItem("selectedPopulation")
+
+    getQuizCities(
+      desiredPopulation,
+      this.state.selectedPersonalities.coolCat,
+      this.state.selectedPersonalities.adventurer,
+      this.state.selectedPersonalities.entertainer,
+      this.state.selectedPersonalities.family,
+      this.state.selectedPersonalities.enthusiast,
+      this.state.selectedPersonalities.investigator
+    ).then(res => {
+      var quizCities = res.results
+      this.state.quizCities = quizCities;
+    });
+  }
+
   setDate(dateArr) {
-    var start = moment(dateArr[0]).format("YYYY-MM-DD");
-    var end = moment(dateArr[1]).format("YYYY-MM-DD");
-    this.setState({ startDate: start, endDate: end })
+    this.setState({ startDate: dateArr[0], endDate: dateArr[1] })
   }
 
   storeTrip(tripID) {
@@ -129,26 +176,52 @@ class CreateTripPage extends React.Component {
   }
 
   clickNextPage(tripID) {
-    console.log(tripID)
     window.location = `/trip?id=${tripID}`;
   }
 
   componentDidMount() {
-    this.setState({ selectedDest: localStorage.getItem('selectedDest') ? JSON.parse(localStorage.getItem('selectedDest')) : [] })
-    this.setState({ selectedPersonalities: localStorage.getItem('selectedPersonalities') ? JSON.parse(localStorage.getItem('selectedPersonalities')) : {} })
-    console.log(this.state.selectedDest);
+    if (window.location.href.split('=').length > 1) {
+      this.setState({ selectedDest: localStorage.getItem('selectedDest') ? JSON.parse(localStorage.getItem('selectedDest')) : [] })
+      this.setState({ selectedPersonalities: localStorage.getItem('selectedPersonalities') ? JSON.parse(localStorage.getItem('selectedPersonalities')) : {} })
+    }
   }
 
   onCheckConfirmDetails(e) {
     this.setState({ buttonStatus: e.target.checked });
   }
 
+
+
   render() {
 
-    console.log(this.state.selectedDest)
+    // console.log(this.state.selectedDest)
 
-    if (this.state.selectedDest.length === 0) {
-      return null;
+    if (window.location.href.split('=').length > 1) {
+      if (this.state.selectedDest.length === 0) {
+        return null;
+      }
+    }
+
+    const invalidTripAlert = () => {
+      if (this.state.quizCities) {
+        const invalidTripMsg = `
+          We can't seem to find any activities at that destination based on your chosen personality types.
+          Try changing your destination, or choosing fewer personalities.
+
+          Based on your selections, we recommend these destinations:
+          ${this.state.quizCities[0]}
+          ${this.state.quizCities[1]}
+          ${this.state.quizCities[2]}
+          `
+        return (
+          <Alert
+            message="Looks like you'll have to changes some details."
+            description={invalidTripMsg}
+            type="info"
+            showIcon
+          />
+        )
+      }
     }
 
     const defaultPersonalities = () => {
@@ -269,6 +342,8 @@ class CreateTripPage extends React.Component {
                         </Row>
                       </Checkbox.Group>
                     </Form.Item>
+
+                    {invalidTripAlert()}
 
                     <Row justify="space-around" align="middle" style={{ textAlign: 'center' }}>
                       <Col>

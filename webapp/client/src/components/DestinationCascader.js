@@ -30,7 +30,6 @@ const makeOptions = (arr) => {
   if (!Array.isArray(arr)) {
     return [];
   }
-  // console.log("got here");
 
   let result = [
     {
@@ -46,6 +45,8 @@ const makeOptions = (arr) => {
 
   arr.forEach(obj => {
     let cityArr = Object.entries(obj);
+    // console.log(cityArr);
+    // let cityObj = { value: cityArr[1][1], label: cityArr[1][1], population: cityArr[2][1] };
     let cityObj = { value: cityArr[1][1], label: cityArr[1][1] };
     // console.log(cityArr);
     // console.log(cityObj);
@@ -55,6 +56,7 @@ const makeOptions = (arr) => {
       result[1].children.push(cityObj);
     }
   });
+  console.log(result)
   return result;
 }
 
@@ -71,6 +73,7 @@ class DestinationCascader extends React.Component {
   componentDidMount() {
     getAllCities().then(res => {
       this.setState({ options: makeOptions(res) })
+      // console.log(this.state.options)
     })
   }
 

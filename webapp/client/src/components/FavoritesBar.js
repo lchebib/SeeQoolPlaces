@@ -14,6 +14,17 @@ class FavoritesBar extends React.Component {
       return null
     }
 
+    const handleButtonName = (name) => {
+      let shortName;
+      if (name) {
+        if (name.length > 18) {
+          shortName = name.slice(0, 18) + '...';
+          return shortName;
+        }
+      }
+      return name;
+    }
+
     const favoriteButton = (POI) => {
       var color;
 
@@ -24,7 +35,7 @@ class FavoritesBar extends React.Component {
       } else {
         color = '#EC7878'
       }
-      return <Button onClick={() => { this.props.onClickFavorite(POI) }} shape='round' style={{ background: color, border: 'none', width: 170, textAlign: 'left', overflow: 'hidden', }}>{POI.name}</Button>
+      return <Button onClick={() => { this.props.onClickFavorite(POI) }} shape='round' style={{ background: color, border: 'none', width: 170, textAlign: 'left', overflow: 'hidden', }}>{handleButtonName(POI.name)}</Button>
 
     }
 

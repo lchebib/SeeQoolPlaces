@@ -96,14 +96,16 @@ class Scheduler extends React.Component {
 
   addEvent(POI) {
 
-    console.log(POI)
+    // console.log(POI)
     var newEvents = [...this.state.events]
     var eid = 1
     if (this.state.events.length > 0) {
       eid = this.state.events.at(-1).id + 1
     }
-
+    console.log("trip start date")
+    console.log(this.state.trip.startDate)
     var start = new Date(this.state.trip.startDate)
+    console.log("event start date")
     console.log(start)
     start.setHours(0, 0, 0, 0)
     var duration = Math.floor(POI.duration_high * 60)
@@ -123,7 +125,7 @@ class Scheduler extends React.Component {
 
     newEvents.push(event)
     this.setState({ events: newEvents })
-    console.log(event)
+    // console.log(event)
   }
 
 
@@ -151,6 +153,8 @@ class Scheduler extends React.Component {
     if (!this.state.trip) {
       return null
     }
+
+    // console.log(this.state.trip)
 
     const EventComponent = ({ start, end, title }) => {
       return (

@@ -56,7 +56,7 @@ class SideBar extends React.Component {
   storeTrips() {
 
     this.state.trips.map((trip) => {
-      console.log(trip)
+      // console.log(trip)
       let tripDetails = {
         tripID: trip.tripID,
         tripName: trip.tripName,
@@ -72,6 +72,7 @@ class SideBar extends React.Component {
 
 
   render() {
+
 
 
     return (

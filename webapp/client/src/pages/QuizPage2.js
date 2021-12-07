@@ -148,7 +148,7 @@ class QuizPage2 extends React.Component {
 
   clickNextPage() {
     this.pushQuizResults()
-    window.location = '/createtrip'
+    window.location = '/createtrip?quiz=true';
   }
 
   pushQuizResults() {

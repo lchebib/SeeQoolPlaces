@@ -81,7 +81,6 @@ class TripPage extends React.Component {
       this.setState({ tripRestaurants: res.results })
       if (!this.state.bigPOI) {
         this.setState({ bigPOI: res.results[0] })
-
       }
       // console.log(res.results)
     })
@@ -104,10 +103,9 @@ class TripPage extends React.Component {
   }
 
 
-
   updateEvents(events) {
     this.setState({ events: events })
-    console.log(events)
+    // console.log(events)
   }
 
   addEvent(POI) {
@@ -133,8 +131,8 @@ class TripPage extends React.Component {
 
   removeFavorite(POI) {
     var favorites = [...this.state.favorites]
-    console.log(favorites)
-    console.log(POI)
+    // console.log(favorites)
+    // console.log(POI)
     const index = favorites.indexOf(POI);
     if (index > -1) {
       favorites.splice(index, 1);
@@ -152,9 +150,8 @@ class TripPage extends React.Component {
 
   saveTrip() {
 
-    console.log(this.state.events)
-    console.log(this.state.favorites)
-
+    // console.log(this.state.events)
+    // console.log(this.state.favorites)
 
     var favs = [...this.state.favorites]
     var favArr = []

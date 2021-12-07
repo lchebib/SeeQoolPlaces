@@ -24,7 +24,7 @@ class TabsCard extends React.Component {
 
   componentDidMount() {
     this.setKeyArr(this.state.currentTab);
-    console.log(this.props.bigPOI);
+    // console.log(this.props.bigPOI);
   }
 
   onSchedule() {
@@ -70,7 +70,7 @@ class TabsCard extends React.Component {
 
   onChangePOI(e) {
     this.props.onClickPOI(e.target.value);
-    console.log(this.props.bigPOI);
+    // console.log(this.props.bigPOI);
   }
 
   onChangePage(page, size) {
@@ -218,7 +218,6 @@ class TabsCard extends React.Component {
       if (!rating) {
         return 0;
       } else {
-        console.log(rating);
         return rating;
       }
     }
