@@ -7,7 +7,7 @@ import TabsCard from '../components/TabsCard';
 import Scheduler from '../components/Scheduler';
 import FavoritesBar from '../components/FavoritesBar';
 import { authenticateTrip, getTripRestaurants, getTripAttractions, getTripTrails, postDeleteTrip, postSaveTrip, getTripFavorites, getTripEvents } from '../fetcher';
-import '../style/animation.css'
+import '../style/style.css'
 
 
 const { Content, Sider } = Layout;
@@ -18,10 +18,9 @@ class TripPage extends React.Component {
     super(props)
 
     this.state = {
-      loading: true,
       trip: null,
       POIS: [],
-      favorites: [],
+      favorites: null,
       scheduledPOIS: [],
       events: null,
       bigPOI: null,
@@ -93,7 +92,6 @@ class TripPage extends React.Component {
         event.end = new Date(event.end)
       })
       this.setState({ events: events })
-      this.setState({ loading: false })
       // console.log(res.results)
     }))
 
@@ -106,9 +104,9 @@ class TripPage extends React.Component {
     // console.log(events)
   }
 
-  addEvent(POI) {
+  addEvent() {
     var scheduledPOIS = [...this.state.scheduledPOIS]
-    scheduledPOIS.push(POI)
+    scheduledPOIS.push(this.state.bigPOI)
     this.setState({ scheduledPOIS: scheduledPOIS })
   }
 
@@ -121,17 +119,15 @@ class TripPage extends React.Component {
     this.setState({ events: events })
   }
 
-  addFavorite(POI) {
+  addFavorite() {
     var favorites = [...this.state.favorites]
-    favorites.push(POI)
+    favorites.push(this.state.bigPOI)
     this.setState({ favorites: favorites })
   }
 
-  removeFavorite(POI) {
+  removeFavorite() {
     var favorites = [...this.state.favorites]
-    // console.log(favorites)
-    // console.log(POI)
-    const index = favorites.indexOf(POI);
+    const index = favorites.indexOf(this.state.bigPOI);
     if (index > -1) {
       favorites.splice(index, 1);
     }
@@ -139,9 +135,6 @@ class TripPage extends React.Component {
   }
 
   changeBigPOI(POI) {
-    // console.log(this.state.bigPOI)
-    // console.log(POI)
-
     this.setState({ bigPOI: POI })
 
   }
@@ -174,7 +167,13 @@ class TripPage extends React.Component {
   render() {
 
 
-    if (this.state.loading) {
+    if (!this.state.trip ||
+      !this.state.bigPOI ||
+      !this.state.tripTrails ||
+      !this.state.tripAttractions ||
+      !this.state.tripRestaurants ||
+      !this.state.events ||
+      !this.state.favorites) {
       return (
         <>
           <Row justify='center' align='middle' style={{ paddingTop: 200, paddingBottom: 100 }}>
@@ -192,7 +191,26 @@ class TripPage extends React.Component {
       )
     }
 
+    /**
+     * @description Renders start and end trip dates as a range: month/day/year-month/day/year
+     * @param {String} Date
+     * @return {String} date range for trip
+     */
+    const displayDates = (startDate, endDate) => {
 
+      let dateObj = new Date(startDate);
+      let startMonth = dateObj.getUTCMonth();
+      let startDay = dateObj.getUTCDate();
+      let startYear = dateObj.getUTCFullYear();
+
+      let dateObj2 = new Date(endDate);
+      let endMonth = dateObj2.getUTCMonth();
+      let endDay = dateObj2.getUTCDate();
+      let endYear = dateObj2.getUTCFullYear();
+
+      return startMonth + "/" + startDay + "/" + startYear + " to " + endMonth + "/" + endDay + "/" + endYear;
+
+    }
     // if (!this.state.tripTrails || !this.state.tripAttractions || !this.state.tripRestaurants) {
     //   return null
     // }
@@ -214,7 +232,7 @@ class TripPage extends React.Component {
 
 
     return (
-      <Layout style={{ minWidth: 1200, background: 'white' }}>
+      <Layout style={{ background: 'white' }}>
         <SideBar />
         <Layout style={{ background: 'white', marginLeft: 200 }}>
           <Header />
@@ -223,21 +241,24 @@ class TripPage extends React.Component {
               <Row justify='center' >
                 <Col >
                   <div style={{ fontFamily: 'Work Sans', textAlign: 'center' }}>
-                    <div style={{ fontSize: '30px' }}>{this.state.trip.tripName}</div>
+                    <div style={{ fontSize: '30px' }}> {this.state.trip.tripName}</div>
+                    <br />
+                  </div>
+                  <div style={{ fontFamily: 'Work Sans', textAlign: 'center' }}>
+                    <div style={{ fontSize: '15px' }}> Plan your trip to {this.state.trip.city} from {displayDates(this.state.trip.startDate, this.state.trip.endDate)}!</div>
                     <br />
                   </div>
                 </Col >
               </Row>
               <Row justify='center'>
                 <Scheduler
-                  trip={this.state.trip}
+                  startDate={this.state.trip.startDate}
                   events={this.state.events}
                   scheduledPOIS={this.state.scheduledPOIS}
                   updateEvents={this.updateEvents} />
               </Row>
               <Row justify='center' >
                 <TabsCard
-                  trip={this.state.trip}
                   favorites={this.state.favorites}
                   tripAttractions={this.state.tripAttractions}
                   tripRestaurants={this.state.tripRestaurants}
@@ -254,9 +275,7 @@ class TripPage extends React.Component {
               style={{
                 background: 'white',
                 border: '1px solid #F0F0F0',
-                height: 920,
-                // position: 'fixed',
-                // zIndex: 100
+                // maxHeight: '100%'
               }}>
               <FavoritesBar
                 favorites={this.state.favorites}
@@ -268,21 +287,6 @@ class TripPage extends React.Component {
           </Layout>
           <Footer />
         </Layout>
-        {/* <Sider
-          style={{
-            background: 'white',
-            border: '1px solid #F0F0F0',
-            height: '100vh',
-            // position: 'fixed',
-            // zIndex: 100
-          }}>
-          <FavoritesBar
-            favorites={this.state.favorites}
-            onClickFavorite={this.changeBigPOI}
-            onSave={this.saveTrip}
-            onDelete={this.deleteTrip}
-          />
-        </Sider> */}
       </Layout >
     );
   }

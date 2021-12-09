@@ -1,10 +1,18 @@
 import React from 'react';
 import { Menu } from 'antd';
 import { authenticateUser, getAllTrips } from '../fetcher'
+import '../style/style.css'
+
 
 const { SubMenu } = Menu;
 
-
+/**
+ * @name SideBar
+ * @description Left sidebar the displays website navigation
+ * 
+ * APPEARS IN:
+ * All pages except landing page
+ */
 class SideBar extends React.Component {
 
   constructor(props) {
@@ -19,6 +27,11 @@ class SideBar extends React.Component {
     this.authenticate = this.authenticate.bind(this)
   }
 
+  /**
+   * @description Since sidebar appears on all pages that user must be logged in to access,
+   * this function verifies that the username in localStorage is indeed logged in.
+   * Otherwise it redirects them back to the landing page.
+   */
   authenticate() {
     var username = localStorage.getItem("username")
     if (!username) {
@@ -32,7 +45,11 @@ class SideBar extends React.Component {
     }
   }
 
-
+  /**
+   * @description Callback function that redirects user to the page
+   * associated with the menu item.
+   * @param {ReactElement} menuItem
+   */
   onMenuClick(menuItem) {
     if (isNaN(menuItem.key)) {
       window.location = `/${menuItem.key}`
@@ -42,19 +59,21 @@ class SideBar extends React.Component {
   }
 
   componentDidMount() {
-
     this.authenticate()
 
     var username = localStorage.getItem("username")
+
+    // Fetch user trips from database
     getAllTrips(username).then(res => {
       this.setState({ trips: res.results })
       this.storeTrips(this.state.trips)
     })
 
   }
-
+  /**
+   * @description Store user trips in localStorage to be used throughout site
+   */
   storeTrips() {
-
     this.state.trips.map((trip) => {
       // console.log(trip)
       let tripDetails = {
@@ -80,7 +99,7 @@ class SideBar extends React.Component {
       <div>
         <Menu
           theme="light"
-          onClick={(menuItem) => this.onMenuClick(menuItem)}
+          onClick={this.onMenuClick}
           defaultOpenKeys={['NewTrip', 'MyTrips']}
           mode="inline"
           style={{
@@ -93,16 +112,16 @@ class SideBar extends React.Component {
           }}
         >
           <a href="/home">
-            <img src={`${process.env.PUBLIC_URL + "/logo-header.svg"}`} alt="" style={{ maxWidth: '100%', height: 'auto', padding: '10px', paddingTop: '15px', paddingBottom: '15px' }} />
+            <img className='sb-logo' src={`${process.env.PUBLIC_URL + "/logo-header.svg"}`} alt="" />
           </a>
-          <SubMenu key="NewTrip" title="New Trip" style={{ fontWeight: "bold", fontSize: 15, }}>
-            <Menu.Item key="quiz" style={{ fontWeight: "normal", fontSize: 15, }}>Trip Quiz </Menu.Item>
-            <Menu.Item key="createtrip" style={{ fontWeight: "normal", fontSize: 15, }} >Create Trip</Menu.Item>
+          <SubMenu className='sb-sm' key="NewTrip" title="New Trip" >
+            <Menu.Item className='sb-mi' key="quiz" >Trip Quiz </Menu.Item>
+            <Menu.Item className='sb-mi' key="createtrip" >Create Trip</Menu.Item>
           </SubMenu>
 
-          <SubMenu key="MyTrips" title="My Trips" style={{ fontWeight: "bold", fontSize: 15, }}>
+          <SubMenu className='sb-sm' key="MyTrips" title="My Trips" >
             {this.state.trips.map((trip) =>
-              <Menu.Item key={trip.tripID} style={{ fontWeight: "normal", fontSize: 15, }}>{trip.tripName}</Menu.Item>
+              <Menu.Item className='sb-mi' key={trip.tripID} >{trip.tripName}</Menu.Item>
             )}
           </SubMenu>
 

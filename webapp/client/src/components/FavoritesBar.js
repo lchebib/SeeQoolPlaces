@@ -1,19 +1,48 @@
 import React from 'react';
 import { Button, Row, Col, Space, Divider, Popconfirm, message } from 'antd';
+import '../style/style.css'
 
+
+/**
+ * @name FavoritesBar
+ * @description Right sidebar containing all favorite POIs for a trip,
+ * save trip button, and delete trip button.
+ * 
+ * PROPS
+ * @name favorites
+ * @description Array of POI objects
+ * 
+ * @name onClickFavorite
+ * @description Callback function when a favorite is clicked
+ * @param value POI object
+ * 
+ * @name onSave
+ * @description Callback functionwhen save trip button clicked
+ * 
+ * @name onSave
+ * @description Callback function when save trip button clicked
+ * 
+ * APPEARS IN
+ * TripPage
+ */
 class FavoritesBar extends React.Component {
 
   constructor(props) {
     super(props)
-
   }
 
   render() {
 
+    // Do not render component until favorites props ready
     if (!this.props.favorites) {
       return null
     }
 
+    /**
+     * @description Shortens name of favorites and appends "..." in case of overflow past width of button
+     * @param {String} name Name of favorite
+     * @return {String} Name of favorite, shortened if longer than 18 char
+     */
     const handleButtonName = (name) => {
       let shortName;
       if (name) {
@@ -25,6 +54,11 @@ class FavoritesBar extends React.Component {
       return name;
     }
 
+    /**
+     * @description Renders favorite button
+     * @param {Object} POI 
+     * @return {ReactElement} Button
+     */
     const favoriteButton = (POI) => {
       var color;
 
@@ -35,57 +69,74 @@ class FavoritesBar extends React.Component {
       } else {
         color = '#EC7878'
       }
-      return <Button onClick={() => { this.props.onClickFavorite(POI) }} shape='round' style={{ background: color, border: 'none', width: 170, textAlign: 'left', overflow: 'hidden', }}>{handleButtonName(POI.name)}</Button>
-
+      return (
+        <Button
+          onClick={() => { this.props.onClickFavorite(POI) }}
+          shape='round'
+          style={{
+            border: 'none',
+            width: 170,
+            textAlign: 'left',
+            background: color,
+            overflow: 'hidden'
+          }}>
+          {handleButtonName(POI.name)}
+        </Button>
+      )
     }
 
+    /**
+     * @description Callback function when trip saved.
+     * Renders notification to notify user trip has been saved
+     */
     const saveNotification = () => {
       message.success('Trip saved', 3);
     };
 
 
     return (
-      <div style={{
-        paddingTop: '15px',
-        width: '200px',
-        height: 900,
-
-      }}>
-        <Row align="top" justify="center" >
-          <div style={{ fontFamily: 'Work Sans', fontSize: 20, paddingBottom: 10 }}>Favorites</div>
-          <Col style={{ width: 170, overflow: 'auto', 'height': 700 }}>
-            <Space direction='vertical'>
-              {this.props.favorites.map((POI) =>
-                <div>
-                  {favoriteButton(POI)}
-                </div>
-              )}
-            </Space>
-          </Col>
+      <>
+        <Row align='top' justify='center' >
+          <span className="fb-header" >Favorites</span>
         </Row>
-
-        {/* UNCOMMENT TO IMPLEMENT FILTER BAR */}
-        {/* <Divider />
-        <Row align="top" justify="center" style={{ 'height': 'ADJUST HEIGHT TO LIKING' }}>
-
-          <Col style={{ width: '160px' }}>
-            <Space direction='vertical'>
-              <div style={{ fontFamily: 'Work Sans', fontSize: 20 }}>Filter</div>
-            </Space>
-          </Col>
-        </Row> */}
+        {/* <Row className='fb-container' align='top' justify='center'> */}
+        <Row className='fb-container1' align='top' justify='center'>
+          <Space direction='vertical' >
+            {this.props.favorites.map((POI) =>
+              <div>
+                {favoriteButton(POI)}
+              </div>
+            )}
+          </Space>
+        </Row>
         <Divider />
-        <Row align="top" justify="center" style={{ fontFamily: 'Work Sans' }}>
-          <Col style={{ width: 160 }}>
-            <Space direction='vertical'>
-              <Button onClick={() => { this.props.onSave(); saveNotification(); }} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', width: 160 }}>Save</Button>
-              <Popconfirm placement="left" title={'Are you sure to delete this trip?'} onConfirm={this.props.onDelete} okText="Yes" cancelText="No">
-                <Button shape='round' size='large' style={{ border: 'none', background: 'red', color: 'white', width: 160 }}>Delete Trip</Button>
-              </Popconfirm>
-            </Space>
-          </Col>
+        <Row className='fb-container2' align='middle' justify='center'>
+          <Space direction='vertical'>
+            <Button onClick={() => { this.props.onSave(); saveNotification(); }} shape='round' size='large'
+              style={{
+                border: 'none',
+                width: 170,
+                background: 'black',
+                color: 'white',
+              }}>
+              Save
+            </Button>
+            <Popconfirm placement="left" title={'Are you sure to delete this trip?'} onConfirm={this.props.onDelete} okText="Yes" cancelText="No">
+              <Button shape='round' size='large'
+                style={{
+                  border: 'none',
+                  width: 170,
+                  background: 'red',
+                  color: 'white',
+                }}
+              >
+                Delete Trip
+              </Button>
+            </Popconfirm>
+          </Space>
         </Row>
-      </div >
+        {/* </Row> */}
+      </ >
     );
   }
 }

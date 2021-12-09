@@ -293,8 +293,8 @@ function all_trips(req, res) {
 // Returns the list of all cities with at least one POI
 function all_cities(req, res) {
   var myQuery = `
-    SELECT DISTINCT state, city, population
-    FROM POI NATURAL JOIN City
+    SELECT DISTINCT state, city
+    FROM POI
     WHERE state IS NOT NULL AND city IS NOT NULL
     ORDER BY city  
   `
@@ -981,7 +981,7 @@ async function createPersonalityViews() {
       Family_Restaurant AS (
       SELECT pid
       FROM Restaurant
-      WHERE costHigh <= 2
+      WHERE costHigh <= 3
       ),
       Family_Trail AS (
       SELECT pid

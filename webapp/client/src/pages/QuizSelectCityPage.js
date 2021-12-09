@@ -100,7 +100,7 @@ class QuizSelectCityPage extends React.Component {
                     <br />
                     <br />
                   </div>
-                  <DestinationCascader onChange={this.onDestChange} style={{ width: '60%' }} />
+                  <DestinationCascader defaultValue={this.state.selectedDest} onChange={this.onDestChange} style={{ width: '60%' }} />
 
                   <br />
                   <br />

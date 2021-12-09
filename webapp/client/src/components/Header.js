@@ -2,8 +2,15 @@ import React from 'react';
 import { PageHeader, Avatar, Input, Space, Button, Row, Col } from 'antd';
 import { UserOutlined, SearchOutlined } from '@ant-design/icons';
 import { logout } from '../fetcher'
+import '../style/style.css'
 
-
+/**
+ * @name Header
+ * @description Website header, displays logged in user and logout button
+ * 
+ * APPEARS IN
+ * All pages except landing page
+ */
 class Header extends React.Component {
 
   constructor(props) {
@@ -13,22 +20,30 @@ class Header extends React.Component {
       username: localStorage.getItem("username"),
     }
 
-    this.onSearch = this.onSearch.bind(this)
+    // this.onSearch = this.onSearch.bind(this)
     this.onLogout = this.onLogout.bind(this)
   }
 
+  /**
+   * @description Callback function when user logs out.
+   * Logs out user by updating database, clearing localStorage, and redirecting user to landing page
+   */
   onLogout() {
-
     logout(this.state.username)
     localStorage.clear()
     window.location = `/`
   }
 
-  onSearch(searchString) {
-    if (searchString) {
-      window.location = `/search?string=${searchString}`
-    }
-  }
+  /**
+   * NOT IN USE
+   * @description Takes input string and redirects user to search page
+   * @param {String}
+   */
+  // onSearch(searchString) {
+  //   if (searchString) {
+  //     window.location = `/search?string=${searchString}`
+  //   }
+  // }
 
   render() {
 
@@ -39,6 +54,7 @@ class Header extends React.Component {
           background: 'white',
           borderBottom: '1px solid #eee',
         }}>
+          {/* <PageHeader className='header'> */}
           <Row align='middle' justify='space-between'>
             <Col span={8} offset={8} >
               {/* <Input
@@ -48,12 +64,18 @@ class Header extends React.Component {
                 style={{ borderRadius: '25px' }}
               /> */}
             </Col>
-
             <Col>
               <Space>
                 <Avatar size='medium' icon={<UserOutlined />} />
                 <span style={{ fontSize: '90%' }}>	{this.state.username} </span>
-                <Button onClick={this.onLogout} shape='round' style={{ background: 'black', color: 'white', border: 'none' }}>Logout</Button>
+                <Button onClick={this.onLogout} shape='round'
+                  style={{
+                    background: 'black',
+                    color: 'white',
+                    border: 'none'
+                  }}>
+                  Logout
+                </Button>
               </Space>
             </Col>
 

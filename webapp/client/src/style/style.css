@@ -1,0 +1,124 @@
+/**********************************************
+                SideBar
+***********************************************/
+
+.sb-logo {
+  max-width: 100%;
+  height: auto;
+  padding: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+/* .sb-m {
+  padding-top: 15px;
+  position: fixed;
+  width: 200px;
+  height: 100vh;
+  overflow: auto;
+  z-index: 100;
+  } */
+
+.sb-sm {
+  font-weight: bold;
+  font-size: 15px;
+  }
+
+.sb-mi {
+font-weight: normal;
+font-size: 15px;
+}
+
+/**********************************************
+                TabsCard
+***********************************************/
+
+/* .tc-poi- */
+
+/**********************************************
+                Scheduler
+***********************************************/
+  
+.sched-wrapper {
+font-family: Work Sans;
+height: 40vh;
+}
+
+.rbc-allday-cell {
+display: none;
+}
+
+.rbc-time-view .rbc-header {
+border-bottom: none;
+}
+
+/**********************************************
+              FavoritesBar
+***********************************************/
+
+.fb-container {
+height: 100%;
+padding-top: 15px;
+}
+
+.fb-header {
+font-family: Work Sans;
+font-size: 20px;
+padding: 10px;
+}
+
+.fb-container1 {
+width: 100%;
+overflow: auto;
+height: 78%;
+}
+
+.fb-container2 {
+width: 100%;
+height: 10%;
+font-family: Work Sans;
+}
+
+
+
+/**********************************************
+              LoadingPage
+***********************************************/
+/* The animation code */
+@keyframes float {
+0% {
+  transform: translatey(0px);
+}
+50% {
+  transform: translatey(-20px);
+}
+100% {
+  transform: translatey(0px);
+}
+}
+
+/* The element to apply the animation to */
+.balloon {
+width: 20vw;
+animation-name: float;
+animation-duration: 4s;
+animation-iteration-count: infinite;
+}
+
+
+/**********************************************
+              Header
+***********************************************/
+
+
+/**********************************************
+              Footer
+***********************************************/
+
+.footer {
+margin-top: 40px;
+text-align: center;
+color: #ddd;
+padding: 20px;
+border-top: 1px solid #eee;
+}

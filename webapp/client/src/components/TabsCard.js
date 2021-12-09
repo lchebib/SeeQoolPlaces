@@ -1,43 +1,72 @@
 import React from 'react';
 import { Row, Col, Card, Button, Radio, Rate, Pagination, Space, Form } from 'antd';
 
+
+/**
+ * @name TabsCard
+ * @description Renders a card containing POIs for a trip, 
+ * with tabs to change between categories. Also renders a larger card (bigPOI) displaying more information
+ * for the selected POI.
+ * 
+ * PROPS
+ * @name favorites
+ * @description Array of POI objects
+ * 
+ * @name tripAttractions
+ * @description Array of POI objects
+ * 
+ * @name tripTrails
+ * @description Array of POI objects
+ * 
+ * @name tripRestaurants
+ * @description Array of POI objects
+ * 
+ * @name bigPOI
+ * @description POI object to display in the larger card
+ * 
+ * @name onSchedule
+ * @description Callback function when add to schedule button is clicked
+ * @param {Object} POI
+ * 
+ * @name onAddFavorite
+ * @description Callback function when add to favorites button is clicked
+ * @param {Object} POI
+ * 
+ * @name onRemoveFavorite
+ * @description Callback function when remove from favorites button is clicked
+ * @param {Object} POI
+ * 
+ * @name onClickPOI
+ * @description Callback function when a small POI is clicked on
+ * @param {Object} POI
+ * 
+ * APPEARS IN:
+ * TripPage
+ */
+
 class TabsCard extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      currentTab: "trails",
+      currentTab: "trails", // Default tab starts with trails
       minValue: 0,
       currentPage: 1,
-      pageSize: 12,
-      keyArr: null
+      pageSize: 12, // Default POIs per page
+      keyArr: null // POIs to display
     };
 
     this.onChangePage = this.onChangePage.bind(this);
     this.onChangePOI = this.onChangePOI.bind(this);
     this.onChangeTab = this.onChangeTab.bind(this);
-    this.onSchedule = this.onSchedule.bind(this);
-    this.onAddFavorite = this.onAddFavorite.bind(this);
-    this.onRemoveFavorite = this.onRemoveFavorite.bind(this);
   }
 
   componentDidMount() {
+    // Load the POIs to display
     this.setKeyArr(this.state.currentTab);
-    // console.log(this.props.bigPOI);
   }
 
-  onSchedule() {
-    this.props.onSchedule(this.props.bigPOI);
-  }
-
-  onAddFavorite() {
-    this.props.onAddFavorite(this.props.bigPOI);
-  }
-
-  onRemoveFavorite() {
-    this.props.onRemoveFavorite(this.props.bigPOI);
-  }
 
   setKeyArr(key) {
     switch (key) {
@@ -61,6 +90,10 @@ class TabsCard extends React.Component {
     }
   }
 
+  /**
+   * @description Callback function that changes the category tab to the specified tab key 
+   * @param {ReactElement} key 
+   */
   onChangeTab(key) {
     this.setState({ currentTab: key });
     this.setState({ currentPage: 1 });
@@ -68,22 +101,37 @@ class TabsCard extends React.Component {
     this.onChangePage(1, this.state.pageSize);
   }
 
+  /**
+   * @description Callback function when a POI is clicked, calls this.props.onClickPOI
+   * @param {ReactElement} e 
+   */
   onChangePOI(e) {
     this.props.onClickPOI(e.target.value);
     // console.log(this.props.bigPOI);
   }
 
+  /**
+   * @description Callback function when user changes page in the card
+   * @param {int} page Page number
+   * @param {int} size Size of page
+   */
   onChangePage(page, size) {
     this.setState({ currentPage: page, pageSize: size, minValue: (page - 1) * size });
   }
 
   render() {
 
+    // Do not render until the keyArr has not been loaded with the POIs to display
     if (!this.state.keyArr) {
       return null
     }
 
 
+    /**
+     * @description Renders radio buttons of POIs in the tabs card
+     * @param {Object} POI
+     * @return {ReactElement} Radio button
+     */
     const renderRadio = (POI) => {
       if (POI.category === 'attractions') {
         return (
@@ -121,7 +169,7 @@ class TabsCard extends React.Component {
       else if (POI.category === 'trails') {
         return (
           <>
-            <Col span={7} style={{ height: '90%' }}>
+            <Col span={7} >
               <Card style={{
                 // backgroundImage: `url(${POI.photo})`,
                 backgroundImage: `url(${this.getBackgroundImage(POI)})`,
@@ -186,20 +234,33 @@ class TabsCard extends React.Component {
     }
 
 
-
+    /**
+     * @description Renders the favorites button on the bigPOI card. If POI is already a favorite, the button
+     * displays "Remove fromo Favorites". Otherwise it says "Add to Favorites"
+     * @param {Object} POI
+     * @return {ReactElement} Button
+     */
     const favoritesButton = (POI) => {
-      if (this.props.favorites.some(fav => fav.pid === POI.pid)) {
-        /* not compatible with some browsers */
-        return <Button type='primary' onClick={this.onRemoveFavorite} key={POI} shape='round' style={{ border: 'none', background: 'black', color: 'white' }}>Remove Favorite</Button>
+      if (this.props.favorites.some(fav => fav.pid === POI.pid)) { // Using "some" may not be compatible with some browsers
+        return <Button onClick={this.props.onRemoveFavorite} shape='round' style={{ border: 'none', background: 'black', color: 'white', width: 145 }}>Remove Favorite</Button>
       }
-      return <Button type='primary' onClick={this.onAddFavorite} key={POI} shape='round' style={{ border: 'none', background: 'black', color: 'white', width: 145 }}> Add Favorite</Button>
+      return <Button onClick={this.props.onAddFavorite} shape='round' style={{ border: 'none', background: 'black', color: 'white', width: 145 }}> Add Favorite</Button>
     }
 
-    const scheduleButton = (POI) => {
-      return <Button type='primary' onClick={this.onSchedule} key={POI} shape='round' style={{ border: 'none', background: 'black', color: 'white', width: 145 }}>Add Event</Button>
+    /**
+     * @description Renders the "Add to Schedule" button on the bigPOI card.
+     * @return {ReactElement} Button
+     */
+    const scheduleButton = () => {
+      return <Button onClick={this.props.onSchedule} shape='round' style={{ border: 'none', background: 'black', color: 'white', width: 145 }}>Add Event</Button>
     }
 
 
+    /**
+     * @description Splits comma-separated tags 
+     * @param {String} tags Comma-separated
+     * @return {String} Tags separated by •
+     */
     const handleTags = (tags) => {
       if (tags) {
         return "• " + tags.split(',').join(' • ')
@@ -270,149 +331,152 @@ class TabsCard extends React.Component {
     const renderBigPOI = (bigPOI) => {
       if (bigPOI.category === 'attractions') {
         return (
-          <Card >
-            <Space direction='vertical'>
-              <Row gutter={0, 5}>
-                <Col lg={24} xl={14} >
-                  <Space direction='vertical'>
-                    <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
-                      bigPOI.name}
-                    </div>
-                    <div >
-                      <Rate disabled allowHalf='true' value={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
-                      {/* {bigPOI.rating} rating */}
-                      {/* {bigPOI.num_reviews} reviews */}
-                      {handleNumReviews(bigPOI.num_reviews)}
-                    </div>
-                    <div>
-                      <span style={{ fontSize: '110%' }}>{bigPOI.tags.split(',').join(' • ')}</span>
-                    </div>
-                  </Space>
-                </Col>
-                <Col lg={24} xl={10} >
-                  <img src={(this.getBackgroundImage(bigPOI))} alt="POI" style={{ maxWidth: '100%' }} />
-                </Col>
-              </Row>
-              <Row align='middle' >
-                {handleDescription(bigPOI.description)}
-              </Row>
-              <Row align='middle' >
-                <Space wrap='true'>
+          <>
+            {/* <Card > */}
+            {/* <Space direction='vertical'> */}
+            <Row gutter={0, 5}>
+              <Col lg={24} xl={14} >
+                <Space direction='vertical'>
+                  <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
+                    bigPOI.name}
+                  </div>
                   <div >
-                    <span style={{ fontWeight: 'bold' }}>Suggested duration: </span>
-                    {handleSuggestedDuration(bigPOI.duration_high, bigPOI.duration_low)}
+                    <Rate disabled allowHalf='true' value={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
+                    {handleNumReviews(bigPOI.num_reviews)}
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '110%' }}>{bigPOI.tags.split(',').join(' • ')}</span>
                   </div>
                 </Space>
-              </Row>
-              <Row align='middle' justify='center' gutter={[20, 5]} style={{ fontFamily: 'Work Sans', marginTop: '15px' }}>
-                <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
-                  {scheduleButton(bigPOI)}
-                </Col>
-                <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
-                  {favoritesButton(bigPOI)}
-                </Col>
-              </Row>
-            </Space>
-          </Card >
+              </Col>
+              <Col lg={24} xl={10} >
+                <img src={(this.getBackgroundImage(bigPOI))} alt="POI" style={{ maxWidth: '100%' }} />
+              </Col>
+            </Row>
+            <Row align='middle' >
+              {handleDescription(bigPOI.description)}
+            </Row>
+            <Row align='middle' >
+              <Space wrap='true'>
+                <div >
+                  <span style={{ fontWeight: 'bold' }}>Suggested duration: </span>
+                  {handleSuggestedDuration(bigPOI.duration_high, bigPOI.duration_low)}
+                </div>
+              </Space>
+            </Row>
+            <Row align='middle' justify='center' gutter={[20, 5]} style={{ fontFamily: 'Work Sans', marginTop: '15px' }}>
+              <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
+                {scheduleButton()}
+              </Col>
+              <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
+                {favoritesButton(bigPOI)}
+              </Col>
+            </Row>
+            {/* </Space> */}
+            {/* </Card > */}
+          </>
         )
       } else if (bigPOI.category === 'trails') {
         return (
-          <Card >
-            <Space direction='vertical'>
-              <Row gutter={0, 5}>
-                <Col lg={24} xl={14} >
-                  <Space direction='vertical'>
-                    <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>
-                      {bigPOI.name}
-                    </div>
-                    <div>
-                      <Rate disabled allowHalf='true' value={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
-                      {/* {bigPOI.num_reviews} reviews */}
-                      {handleNumReviews(bigPOI.num_reviews)}
-                    </div>
-                  </Space>
-                </Col>
-                <Col lg={24} xl={10} >
-                  <img src={(this.getBackgroundImage(bigPOI))} alt="POI" style={{ maxWidth: '100%' }} />
-                </Col>
-              </Row>
-              <Row align='middle' >
-                {handleDescription(bigPOI.description)}
-              </Row>
-              <Row align='middle' >
-                <Space wrap='true'>
-                  <div >
-                    <span style={{ fontWeight: 'bold' }}>Route type: </span>
-                    {bigPOI.route_type}
+          <>
+            {/* <Card > */}
+            {/* <Space direction='vertical'> */}
+            <Row gutter={0, 5}>
+              <Col lg={24} xl={14} >
+                <Space direction='vertical'>
+                  <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>
+                    {bigPOI.name}
                   </div>
-                  <div >
-                    <span style={{ fontWeight: 'bold' }}>Difficulty: </span>
-                    {handleDifficulty(bigPOI.difficulty)}
-                  </div>
-                  <div >
-                    <span style={{ fontWeight: 'bold' }}>Length: </span>
-                    {bigPOI.length} km
-                  </div>
-                  <div >
-                    <span style={{ fontWeight: 'bold' }}>Suggested duration: </span>
-                    {handleSuggestedDuration(bigPOI.duration_high, bigPOI.duration_low)}
-                  </div>
-                  <div >
-                    <span style={{ fontWeight: 'bold' }}>Elevation gain </span>
-                    {bigPOI.high - bigPOI.low} m
+                  <div>
+                    <Rate disabled allowHalf='true' value={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
+                    {handleNumReviews(bigPOI.num_reviews)}
                   </div>
                 </Space>
-              </Row>
-              <Row align='middle' justify='center' gutter={[20, 5]} style={{ fontFamily: 'Work Sans', marginTop: '15px' }}>
-                <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
-                  {scheduleButton(bigPOI)}
-                </Col>
-                <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
-                  {favoritesButton(bigPOI)}
-                </Col>
-              </Row>
-            </Space>
-          </Card >
+              </Col>
+              <Col lg={24} xl={10} >
+                <img src={(this.getBackgroundImage(bigPOI))} alt="POI" style={{ maxWidth: '100%' }} />
+              </Col>
+            </Row>
+            <Row align='middle' >
+              {handleDescription(bigPOI.description)}
+            </Row>
+            <Row align='middle' >
+              <Space wrap='true'>
+                <div >
+                  <span style={{ fontWeight: 'bold' }}>Route type: </span>
+                  {bigPOI.route_type}
+                </div>
+                <div >
+                  <span style={{ fontWeight: 'bold' }}>Difficulty: </span>
+                  {handleDifficulty(bigPOI.difficulty)}
+                </div>
+                <div >
+                  <span style={{ fontWeight: 'bold' }}>Length: </span>
+                  {bigPOI.length} km
+                </div>
+                <div >
+                  <span style={{ fontWeight: 'bold' }}>Suggested duration: </span>
+                  {handleSuggestedDuration(bigPOI.duration_high, bigPOI.duration_low)}
+                </div>
+                <div >
+                  <span style={{ fontWeight: 'bold' }}>Elevation gain </span>
+                  {bigPOI.high - bigPOI.low} m
+                </div>
+              </Space>
+            </Row>
+            <Row align='middle' justify='center' gutter={[20, 5]} style={{ fontFamily: 'Work Sans', marginTop: '15px' }}>
+              <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
+                {scheduleButton()}
+              </Col>
+              <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
+                {favoritesButton(bigPOI)}
+              </Col>
+            </Row>
+            {/* </Space> */}
+            {/* </Card > */}
+          </>
         )
       } else {
         return (
-          <Card >
-            <Space direction='vertical'>
-              <Row >
-                <Space direction='vertical'>
-                  <Space wrap='true'>
-                    <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
-                      bigPOI.name}
-                    </div>
-                    <div >
-                      <Rate disabled allowHalf='true' value={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
-                      {/* {bigPOI.num_reviews} reviews */}
-                      {handleNumReviews(bigPOI.num_reviews)}
-                    </div>
-                  </Space>
-                  <Col span={24} >
-                    <div style={{ fontSize: '110%' }}>{bigPOI.subcategory} {handleTags(bigPOI.tags)}</div>
-                  </Col>
-                  <Col span={24} >
-                    <span style={{ fontWeight: 'bold' }}>Suggested duration: </span>
-                    {handleSuggestedDuration(bigPOI.duration_high, bigPOI.duration_low)}
-                  </Col>
+          <>
+            {/* <Card > */}
+            {/* <Space direction='vertical'> */}
+            <Row >
+              <Space direction='vertical'>
+                <Space wrap='true'>
+                  <div style={{ fontFamily: 'Work Sans', fontSize: '150%' }}>{
+                    bigPOI.name}
+                  </div>
+                  <div >
+                    <Rate disabled allowHalf='true' value={bigPOI.rating} style={{ color: '#006400', zoom: '0.75', transform: 'translateY(-1px)' }} /> &nbsp;
+                    {/* {bigPOI.num_reviews} reviews */}
+                    {handleNumReviews(bigPOI.num_reviews)}
+                  </div>
                 </Space>
                 <Col span={24} >
-                  <span style={{ fontWeight: 'bold' }}>Cost: </span>
-                  {handleRestaurantCost(bigPOI.costHigh, bigPOI.costLow)}
+                  <div style={{ fontSize: '110%' }}>{bigPOI.subcategory} {handleTags(bigPOI.tags)}</div>
                 </Col>
-              </Row>
-              <Row align='middle' justify='center' gutter={[20, 5]} style={{ fontFamily: 'Work Sans', marginTop: '15px' }}>
-                <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
-                  {scheduleButton(bigPOI)}
+                <Col span={24} >
+                  <span style={{ fontWeight: 'bold' }}>Suggested duration: </span>
+                  {handleSuggestedDuration(bigPOI.duration_high, bigPOI.duration_low)}
                 </Col>
-                <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
-                  {favoritesButton(bigPOI)}
-                </Col>
-              </Row>
-            </Space >
-          </Card >
+              </Space>
+              <Col span={24} >
+                <span style={{ fontWeight: 'bold' }}>Cost: </span>
+                {handleRestaurantCost(bigPOI.costHigh, bigPOI.costLow)}
+              </Col>
+            </Row>
+            <Row align='middle' justify='center' gutter={[20, 5]} style={{ fontFamily: 'Work Sans', marginTop: '15px' }}>
+              <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
+                {scheduleButton()}
+              </Col>
+              <Col lg={{ flex: 24 }} xl={{ flex: 12 }}>
+                {favoritesButton(bigPOI)}
+              </Col>
+            </Row>
+            {/* </Space > */}
+            {/* </Card > */}
+          </>
         )
       }
     }
@@ -435,14 +499,13 @@ class TabsCard extends React.Component {
 
 
     return (
-      <Row >
-        <Col span={14} >
+      <Row style={{ width: '100%' }}>
+        <Col span={14} style={{ height: '100%', width: '100%' }} >
           <Card
-            style={{ fontFamily: 'Work Sans' }}
+            style={{ fontFamily: 'Work Sans', height: '100%', width: '100%' }}
             tabList={tabListNoTitle}
-            onTabChange={key => {
-              this.onChangeTab(key);
-            }}>
+            onTabChange={key => { this.onChangeTab(key) }}
+          >
             <Row style={{ fontFamily: 'Work Sans', marginBottom: '20px' }}>
               <Pagination
                 current={this.state.currentPage}
@@ -475,8 +538,10 @@ class TabsCard extends React.Component {
             </Radio.Group >
           </Card>
         </Col >
-        <Col span={10}>
-          {renderBigPOI(this.props.bigPOI)}
+        <Col span={10} style={{ height: '100%', width: '100%' }}>
+          <Card style={{ height: '100%', width: '100%' }}>
+            {renderBigPOI(this.props.bigPOI)}
+          </Card>
         </Col >
       </Row>
     );
