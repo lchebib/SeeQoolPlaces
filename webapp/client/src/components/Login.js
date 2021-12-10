@@ -1,8 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, Alert, Space, Row, Col } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { signUp, login } from '../fetcher'
 
+// const layout = {
+//   labelCol: {
+//     span: 8,
+//   },
+//   wrapperCol: {
+//     span: 36,
+//   },
+// };
+
+// const tailLayout = {
+//   wrapperCol: {
+//     offset: 12,
+//     span: 24,
+//   },
+// };
 
 /**
  * @name Login
@@ -15,6 +30,8 @@ const Login = () => {
   const [form] = Form.useForm()
   const [, forceUpdate] = useState({}) // To disable submit button at the beginning.
   const [submitType, setSubmitType] = useState(0)
+  const [loginState, setLoginState] = useState(0)
+  const [signUpState, setSignUpState] = useState(0)
 
   useEffect(() => {
     forceUpdate({})
@@ -38,7 +55,8 @@ const Login = () => {
         if (res.results === true) {
           onLogin(values.username, values.password)
         } else {
-          window.location = '/failed'
+          setSignUpState(signUpState + 1)
+          // window.location = '/failed'
         }
       })
       console.log('Sign up')
@@ -59,16 +77,54 @@ const Login = () => {
         localStorage.setItem('username', username)
         window.location = '/home'
       } else {
-        window.location = '/failed'
+        setLoginState(loginState + 1)
+        // window.location = '/failed'
+        // invalidLogin('login error');
       }
     })
+  }
+
+  /**
+  * @description detects if there was an error by checking loginState and signUpState
+  * @return alert message with instructions for user on how to fix error
+  */
+  const invalidLogin = (submitType) => {
+
+    var errorMessage;
+    if (submitType === 0 && loginState > 0) {
+      errorMessage = 'The username or password you entered is incorrect. Try entering the correct credentials!';
+      // setLoginState(0);
+    } else if (submitType === 1 && signUpState > 0) {
+      errorMessage = 'The username you chose is already taken. Try something more unique!';
+      // setSignUpState(0);
+    } else {
+      return;
+    }
+    form.resetFields();
+    console.log(errorMessage);
+    var invalidUserMsg =
+      <>
+        <p>{errorMessage}</p>
+      </>
+
+    return (
+      <div>
+        <Alert
+          message="There's a problem with your login credentials:"
+          description={errorMessage}
+          type="error"
+          showIcon
+        />
+      </div>
+
+    )
   }
 
 
   return (
     <Form
       form={form}
-      name='horizontal_login'
+      name='horizontal-login'
       layout='inline'
       onFinish={onFinish}
     >
@@ -120,8 +176,10 @@ const Login = () => {
             Log in
           </Button>
         )}
+
       </Form.Item>
       <Form.Item shouldUpdate validateStatus={'Error'}>
+
         {() => (
           <Button
             onClick={() => { setSubmitType(1) }}
@@ -139,8 +197,13 @@ const Login = () => {
           </Button>
         )}
       </Form.Item>
+      <div>
+        {invalidLogin(submitType)}
+      </div>
     </Form>
+
   )
 }
+
 
 export default Login
