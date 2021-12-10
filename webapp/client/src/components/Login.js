@@ -122,85 +122,96 @@ const Login = () => {
 
 
   return (
-    <Form
-      form={form}
-      name='horizontal-login'
-      layout='inline'
-      onFinish={onFinish}
-    >
-      <Form.Item
-        name='username'
-        rules={[
-          {
-            required: true,
-            message: 'Please input your username!'
-          }
-        ]}
-      >
-        <Input
-          prefix={<UserOutlined />}
-          placeholder='Username'
-          style={{ borderRadius: '25px' }}
+    <>
+      <Space direction='vertical'>
+        <Row>
+          <Col span={24}>
+            <Form
 
-        />
-      </Form.Item>
-      <Form.Item
-        name='password'
-        rules={[
-          {
-            required: true,
-            message: 'Please input your password!'
-          }
-        ]}
-      >
-        <Input
-          prefix={<LockOutlined />}
-          type='password'
-          placeholder='Password'
-          style={{ borderRadius: '25px' }}
-        />
-      </Form.Item>
-      <Form.Item shouldUpdate validateStatus={'Error'}>
-        {() => (
-          <Button
-            onClick={() => { setSubmitType(0) }}
-            type='primary'
-            htmlType='submit'
-            disabled={
-              !form.isFieldsTouched(true) ||
-              !!form.getFieldsError().filter(({ errors }) => errors.length)
-                .length
-            }
-            shape='round'
-          >
-            Log in
-          </Button>
-        )}
+              form={form}
+              name='horizontal-login'
+              layout='inline'
+              onFinish={onFinish}
+            >
+              <Form.Item
+                name='username'
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your username!'
+                  }
+                ]}
+              >
+                <Input
+                  prefix={<UserOutlined />}
+                  placeholder='Username'
+                  style={{ borderRadius: '25px' }}
 
-      </Form.Item>
-      <Form.Item shouldUpdate validateStatus={'Error'}>
+                />
+              </Form.Item>
+              <Form.Item
+                name='password'
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your password!'
+                  }
+                ]}
+              >
+                <Input
+                  prefix={<LockOutlined />}
+                  type='password'
+                  placeholder='Password'
+                  style={{ borderRadius: '25px' }}
+                />
+              </Form.Item>
+              <Form.Item shouldUpdate validateStatus={'Error'}>
+                {() => (
+                  <Button
+                    onClick={() => { setSubmitType(0) }}
+                    type='primary'
+                    htmlType='submit'
+                    disabled={
+                      !form.isFieldsTouched(true) ||
+                      !!form.getFieldsError().filter(({ errors }) => errors.length)
+                        .length
+                    }
+                    shape='round'
+                  >
+                    Log in
+                  </Button>
+                )}
 
-        {() => (
-          <Button
-            onClick={() => { setSubmitType(1) }}
-            type='primary'
-            danger
-            htmlType='submit'
-            disabled={
-              !form.isFieldsTouched(true) ||
-              !!form.getFieldsError().filter(({ errors }) => errors.length)
-                .length
-            }
-            shape='round'
-          >
-            Sign up
-          </Button>
-        )}
-      </Form.Item>
-      <div>
-        {invalidLogin(submitType)}
-      </div>
-    </Form>
+              </Form.Item>
+              <Form.Item shouldUpdate validateStatus={'Error'}>
+
+                {() => (
+                  <Button
+                    onClick={() => { setSubmitType(1) }}
+                    type='primary'
+                    danger
+                    htmlType='submit'
+                    disabled={
+                      !form.isFieldsTouched(true) ||
+                      !!form.getFieldsError().filter(({ errors }) => errors.length)
+                        .length
+                    }
+                    shape='round'
+                  >
+                    Sign up
+                  </Button>
+                )}
+              </Form.Item>
+            </Form>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24} >
+            {invalidLogin(submitType)}
+          </Col>
+        </Row>
+      </Space>
+    </>
 
   )
 }

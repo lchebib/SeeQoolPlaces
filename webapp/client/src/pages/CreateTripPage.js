@@ -19,7 +19,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import DestinationCascader from '../components/DestinationCascader';
 import { newTrip, getTripRestaurants, getTripAttractions, getTripTrails, getQuizCities, getPopulation, postDeleteTrip } from '../fetcher'
-import '../style/animation.css'
+import '../style/style.css'
 
 
 const { Content } = Layout;
