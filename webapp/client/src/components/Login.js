@@ -37,6 +37,8 @@ const Login = () => {
         console.log(res.results)
         if (res.results === true) {
           onLogin(values.username, values.password)
+        } else {
+          window.location = '/failed'
         }
       })
       console.log('Sign up')
