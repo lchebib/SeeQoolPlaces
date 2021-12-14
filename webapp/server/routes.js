@@ -177,7 +177,7 @@ async function login(req, res) {
 
 
 // Log out user
-function logout(req, res) {
+async function logout(req, res) {
   var username = req.query.username
   var clientIP = req.socket.remoteAddress
 
@@ -269,7 +269,7 @@ function logout(req, res) {
 // ********************************************
 
 // Return a random city, and a photo of an attraction or hike
-function random_city(req, res) {
+async function random_city(req, res) {
   // top 24 'random' cities that we we select from database to show on landing page
   // BC ideas from here: https://www.planetware.com/canada/best-cities-in-british-columbia-cdn-1-284.htm
   // CA ideas from here: https://www.planetware.com/california/best-places-to-visit-in-california-us-ca-138.htm
@@ -311,7 +311,7 @@ function random_city(req, res) {
 }
 
 // Return names of existing user-made trips to be displayed in sidebar
-function all_trips(req, res) {
+async function all_trips(req, res) {
   var username = req.query.username
 
 
@@ -339,7 +339,7 @@ function all_trips(req, res) {
 // ********************************************
 
 // Returns the list of all cities with at least one POI
-function all_cities(req, res) {
+async function all_cities(req, res) {
   var myQuery = `
     SELECT DISTINCT state, city
     FROM POI
@@ -360,7 +360,7 @@ function all_cities(req, res) {
 }
 
 // Returns the top 3 cities based on target city size and travel personalities
-function quiz_cities(req, res) {
+async function quiz_cities(req, res) {
   console.log(req.query)
   var population = req.query.population
   var CoolCat = parseInt(req.query.p0) === 1
@@ -413,7 +413,7 @@ function quiz_cities(req, res) {
 // ********************************************
 
 // Creates new trip in the database, filters POIs based on city, state, and personalities, and returns unique tripID.
-function new_trip(req, res) {
+async function new_trip(req, res) {
 
   console.log(req.query)
 
@@ -502,7 +502,7 @@ function new_trip(req, res) {
 }
 
 // Retrieve filtered POIs based on tripID
-function retrieve_trip(req, res) {
+async function retrieve_trip(req, res) {
   var tripID = req.query.tripID
   var username = req.query.username
 
@@ -567,7 +567,7 @@ function retrieve_trip(req, res) {
 }
 
 // Returns the attractions from filtered POIs
-function trip_attractions(req, res) {
+async function trip_attractions(req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
   var viewName = 'Trip_' + tripID.toString()
 
@@ -589,7 +589,7 @@ function trip_attractions(req, res) {
 }
 
 // Returns the restaurants from filtered POIs
-function trip_restaurants(req, res) {
+async function trip_restaurants(req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
   var viewName = 'Trip_' + tripID.toString()
 
@@ -611,7 +611,7 @@ function trip_restaurants(req, res) {
 }
 
 // Returns the trails from filtered POIs
-function trip_trails(req, res) {
+async function trip_trails(req, res) {
 
   const tripID = req.query.tripID ? req.query.tripID : 0
   var viewName = 'Trip_' + tripID.toString()
@@ -634,7 +634,7 @@ function trip_trails(req, res) {
 }
 
 // Returns the trip Favorited POIs
-function trip_favorites(req, res) {
+async function trip_favorites(req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
 
   var trailResults = []
@@ -699,7 +699,7 @@ function trip_favorites(req, res) {
 }
 
 // Returns the trip Events
-function trip_events(req, res) {
+async function trip_events(req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
 
   var myQuery = `
@@ -721,7 +721,7 @@ function trip_events(req, res) {
 }
 
 // Save trip Favorites and Events
-function save_trip(req, res) {
+async function save_trip(req, res) {
   var tripID = req.query.tripID ? req.query.tripID : 0
   var favorites = JSON.parse(req.query.favorites)
   var events = JSON.parse(req.query.events)
@@ -817,7 +817,7 @@ function save_trip(req, res) {
 }
 
 // Update trip details
-function update_trip(req, res) {
+async function update_trip(req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
   const tripName = req.query.tripName ? req.query.tripName : ''
   const city = req.query.city ? req.query.city : ''
@@ -844,23 +844,37 @@ function update_trip(req, res) {
 }
 
 // Deletes trip given tripID
-function delete_trip(req, res) {
+async function delete_trip(req, res) {
   const tripID = req.query.tripID ? req.query.tripID : 0
   console.log('TripID to delete: ' + tripID.toString())
 
-  var myQuery = `
+  var myQuery1 = `
     DELETE FROM TripProfile
     WHERE tripID = ${tripID};  
   `
-  console.log(myQuery)
+  console.log(myQuery1)
 
-  connection.query(myQuery, function (error, results, fields) {
+  var tripView = `Trip_${tripID}`
+  var myQuery2 = `
+    DROP VIEW IF EXISTS ${tripView};
+  `
+  console.log(myQuery2)
+
+  connection.query(myQuery1, function (error, results, fields) {
     if (error) {
       console.log(error)
       res.json({ error: error })
     } else if (results) {
       console.log('Deleted Trip ID ' + tripID.toString())
-      res.json({ results: true })
+      connection.query(myQuery2, function (error, results, fields) {
+        if (error) {
+          console.log(error)
+          res.json({ error: error })
+        } else if (results) {
+          console.log('Deleted Trip ID ' + tripID.toString())
+          res.json({ results: true })
+        }
+      })
     }
   })
 }
@@ -906,7 +920,7 @@ function delete_trip(req, res) {
 // ********************************************
 
 // Creates views of filtered POIs based on travel personality type
-async function createPersonalityViews() {
+function createPersonalityViews() {
   // Case 1: Cool Cat
   var CoolCat = `
     CREATE OR REPLACE VIEW CoolCat AS
@@ -1226,7 +1240,7 @@ function generateFilteredPOIs(tripID) {
   })
 }
 
-function population(req, res) {
+async function population(req, res) {
   console.log(req.query)
   var city = req.query.city
   var state = req.query.state
@@ -1253,7 +1267,7 @@ function population(req, res) {
 //             Authenticate
 // ********************************************
 
-function test(req, res) {
+async function test(req, res) {
   var username = req.query.username
   var clientIP = req.socket.remoteAddress
   // console.log('Username: ' + username.toString())
@@ -1268,7 +1282,7 @@ function test(req, res) {
   }
 }
 
-function authenticate_user(req, res) {
+async function authenticate_user(req, res) {
   var username = req.query.username
   var clientIP = req.socket.remoteAddress
 
@@ -1294,7 +1308,7 @@ function authenticate_user(req, res) {
   })
 }
 
-function authenticate_trip(req, res) {
+async function authenticate_trip(req, res) {
   var username = req.query.username
   var tripID = req.query.tripID
 

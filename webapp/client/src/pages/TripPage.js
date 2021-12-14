@@ -37,55 +37,56 @@ class TripPage extends React.Component {
     this.changeBigPOI = this.changeBigPOI.bind(this)
     this.saveTrip = this.saveTrip.bind(this)
     this.deleteTrip = this.deleteTrip.bind(this)
-    this.authenticate = this.authenticate.bind(this)
   }
 
-  authenticate(tripID) {
+  componentDidMount() {
+    var tripID = window.location.href.split('=').length > 1 ? window.location.href.split('=')[1] : -1
     var username = localStorage.getItem("username")
+
+
     if (!username) {
       window.location = '/failed';
     }
 
     if (tripID < 0) {
       window.location = '/failed?redirect=home';
-    } else {
-      authenticateTrip(username, tripID).then(res => {
-        if (res.results == false) {
-          window.location = '/failed?redirect=home';
-        }
-      })
     }
-    console.log("success")
-  }
 
-  componentDidMount() {
+    authenticateTrip(username, tripID).then(res => {
+      if (res.results == false) {
+        window.location = '/failed?redirect=home';
+      } else {
+        var trip = JSON.parse(localStorage.getItem(tripID))
+        this.setState({ trip: trip })
 
-    var tripID = window.location.href.split('=').length > 1 ? window.location.href.split('=')[1] : -1
-    this.authenticate(tripID)
-
-    var trip = JSON.parse(localStorage.getItem(tripID))
-    this.setState({ trip: trip })
-
-    getTripTrails(tripID).then(res => {
-      this.setState({ tripTrails: res.results })
-      this.setState({ bigPOI: res.results[0] })
-      // console.log(res.results)
-    }).then(getTripAttractions(tripID).then(res => {
-      this.setState({ tripAttractions: res.results })
-      if (!this.state.bigPOI) {
-        this.setState({ bigPOI: res.results[0] })
+        getTripTrails(tripID).then(res => {
+          this.setState({ tripTrails: res.results })
+          this.setState({ bigPOI: res.results[0] })
+          // console.log(res.results)
+        }).then(getTripAttractions(tripID).then(res => {
+          this.setState({ tripAttractions: res.results })
+          if (!this.state.bigPOI) {
+            this.setState({ bigPOI: res.results[0] })
+          }
+          // console.log(res.results)
+        })).then(getTripRestaurants(tripID).then(res => {
+          this.setState({ tripRestaurants: res.results })
+          if (!this.state.bigPOI) {
+            this.setState({ bigPOI: res.results[0] })
+          }
+          // console.log(res.results)
+        }))
       }
-      // console.log(res.results)
-    })).then(getTripRestaurants(tripID).then(res => {
-      this.setState({ tripRestaurants: res.results })
-      if (!this.state.bigPOI) {
-        this.setState({ bigPOI: res.results[0] })
-      }
-      // console.log(res.results)
-    })).then(getTripFavorites(tripID).then(res => {
+    })
+
+
+
+    getTripFavorites(tripID).then(res => {
       this.setState({ favorites: res.results })
       // console.log(res.results)
-    })).then(getTripEvents(tripID).then(res => {
+    })
+
+    getTripEvents(tripID).then(res => {
       var events = res.results
       events.forEach((event) => {
         event.allDay = false
@@ -94,9 +95,7 @@ class TripPage extends React.Component {
       })
       this.setState({ events: events })
       // console.log(res.results)
-    }))
-
-
+    })
   }
 
 
@@ -166,7 +165,7 @@ class TripPage extends React.Component {
   }
 
   render() {
-
+    console.log(this.state)
 
     if (!this.state.trip ||
       !this.state.bigPOI ||
@@ -212,24 +211,6 @@ class TripPage extends React.Component {
       return startMonth + "/" + startDay + "/" + startYear + " to " + endMonth + "/" + endDay + "/" + endYear;
 
     }
-    // if (!this.state.tripTrails || !this.state.tripAttractions || !this.state.tripRestaurants) {
-    //   return null
-    // }
-
-    // if (!this.state.bigPOI) {
-    //   return null
-    // }
-
-    // if (!this.state.trip) {
-    //   return null
-    // }
-
-    // if (!this.state.events) {
-    //   return null
-    // }
-
-    // console.log(this.state.favorites)
-    // console.log(this.state.events)
 
 
     return (
