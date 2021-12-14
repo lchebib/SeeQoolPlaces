@@ -31,14 +31,16 @@ class LandingPage extends React.Component {
   render() {
 
     return (
-      <>
-        <Row align='middle' justify='center' style={{ paddingTop: 200, paddingBottom: 100 }}>
-          <img src={(process.env.PUBLIC_URL + "/login_logo.svg")} alt="See Qool Places Logo" style={{ width: '50vw' }} />
+      <div style={{ minWidth: '800px' }}>
+        {/* <Row align='middle' justify='center' style={{ height: '100vh', border: '1px solid black' }}> */}
+        <Row align='middle' justify='center' style={{ marginTop: '18vh', marginBottom: '40px' }}>
+          <img src={(process.env.PUBLIC_URL + "/login_logo.svg")} alt="See Qool Places Logo" style={{ width: '90vmin', minWidth: '600px' }} />
         </Row >
-        <Row align='middle' justify='center'>
+        <Row align='middle' justify='center' >
           <Login />
         </Row>
-      </>
+        {/* </Row> */}
+      </div>
     );
   }
 }
