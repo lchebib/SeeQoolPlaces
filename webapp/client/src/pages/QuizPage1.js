@@ -31,14 +31,34 @@ const answers = [
 ];
 
 
-const descriptions =
+
+
+const all_personalities =
 {
-  coolCat: "Your ideal night involves seeing your favorite band perform live or hitting up some local breweries. Also, you've probably worked as a barista at some point in life.",
-  adventurer: "You have an adventurous spirit and love to get lost and explore whether its a bustling city or the middle of the woods. ",
-  entertainer: "You enjoy the finer things in life and your bucket list includes a 3-Michelin star restaurant.",
-  family: "You want to spend quality time with loved ones. ",
-  enthusiast: "You tend to go with the flow, and you're up for anything that sounds fun.",
-  investigator: "You get to know a city by the stories of its past. You're just happy when you're learning. "
+  coolCat: {
+    name: "Cool Cat",
+    description: "Your ideal night involves seeing your favorite band perform live or hitting up some local breweries. Also, you've probably worked as a barista at some point in life."
+  },
+  adventurer: {
+    name: "Adventurer",
+    description: "You have an adventurous spirit and love to get lost and explore whether its a bustling city or the middle of the woods."
+  },
+  entertainer: {
+    name: "Entertainer",
+    description: "You enjoy the finer things in life and your bucket list includes a 3-Michelin star restaurant."
+  },
+  family: {
+    name: "Family",
+    description: "You want to spend quality time with loved ones. "
+  },
+  enthusiast: {
+    name: "Enthusiast",
+    description: "You tend to go with the flow, and you're up for anything that sounds fun."
+  },
+  investigator: {
+    name: "Investigator",
+    description: "You get to know a city by the stories of its past. You're just happy when you're learning."
+  }
 };
 
 function scrollToBottom() {
@@ -48,17 +68,6 @@ function scrollToBottom() {
 function scrollToTop() {
   scroll.scrollToTop();
 }
-
-
-// function tempStateChanger(arr) {
-
-//   if (arr[0] === 'CA') {
-//     arr[0] = 'California';
-//   } else {
-//     arr[0] = 'British Columbia';
-//   }
-//   return arr;
-// }
 
 class QuizPage1 extends React.Component {
 
@@ -70,6 +79,7 @@ class QuizPage1 extends React.Component {
       personalityScore: { coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
       quizResults: { population: 0, coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 0, investigator: 0 },
       description: "",
+      personalities: [],
       renderResults: false,
       destResults: [],
       selectedDest: [],
@@ -150,14 +160,16 @@ class QuizPage1 extends React.Component {
     for (const key in this.state.personalityScore) {
       if (this.state.personalityScore[key] >= 5) {
         this.state.quizResults[key] = 1;
-        this.state.description += descriptions[key];
+        this.state.description += all_personalities[key].description + " ";
+        this.state.personalities.push(all_personalities[key].name)
         numPersonalities += 1;
       }
     }
 
     if (numPersonalities === 0 || numPersonalities === 6) {
       this.state.quizResults = { population: this.state.populationScore, coolCat: 0, adventurer: 0, entertainer: 0, family: 0, enthusiast: 1, investigator: 0 }
-      this.state.description = descriptions.enthusiast
+      this.state.description = all_personalities.enthusiast.description
+      this.state.personalities.push(all_personalities.enthusiast.name)
     }
 
     // Get quiz cities
@@ -185,7 +197,6 @@ class QuizPage1 extends React.Component {
   setSelectedDest(e) {
     var index = parseInt(e.target.value);
     var destObj = this.state.destResults[index];
-    // this.state.selectedDest = tempStateChanger([destObj.state, destObj.city]);
     this.state.selectedDest = [destObj.state, destObj.city];
     this.setState({ buttonStatus: true });
   }
@@ -208,47 +219,53 @@ class QuizPage1 extends React.Component {
 
     const enableButton = () => {
       if (this.state.buttonStatus === true) {
-        return <Button onClick={this.clickNextPage} type='primary' shape='round' size='large' style={{ margin: '20px', border: 'none', background: 'black', color: 'white', width: '12vw', height: '4vw', fontSize: '2vw' }}>Next</Button>
+        return <Button onClick={this.clickNextPage} shape='round' size='large' style={{ border: 'none', background: 'black', color: 'white', zoom: '150%', width: '100px' }}>Next</Button>
       }
-      return <Button disabled type='primary' shape='round' size='large' style={{ margin: '20px', border: 'none', width: '12vw', height: '4vw', fontSize: '2vw' }}>Next</Button>
+      return <Button disabled shape='round' size='large' style={{ border: 'none', zoom: '150%', width: '100px' }}>Next</Button>
+
     }
 
     const renderResults = () => {
       if (this.state.renderResults === true) {
         return (
-          <Row type="flex" style={{ alignItems: 'center', justifyContent: 'center' }}>
+          <Row type="flex" align='middle' justify='center'>
             <Col>
               <Card ref='res' style={{
                 backgroundImage: 'linear-gradient(#ff0080, #ff4000, #ff0080)',
+                maxWidth: '750px',
                 padding: '10px',
                 borderRadius: '3px',
-                maxWidth: '52vw',
               }}>
-                <div style={{ fontSize: '4vw', color: 'white' }}>Your results are in! </div>
+                <div style={{ fontSize: '50px', color: 'white' }}>Your results are in! </div>
                 <br />
-                <div style={{ fontSize: '3vw', }}> From what we've gathered, we think... </div>
-                <br />
-                <br />
-                <div style={{ fontSize: '2vw', fontFamily: 'sans-serif bold' }}> {this.state.description} </div>
+                <div style={{ fontSize: '40px', }}> From what we've gathered, we think... </div>
                 <br />
                 <br />
-                <div style={{ fontSize: '3vw', }}> Your perfect cities are... </div>
+                <div style={{ fontSize: '30px', fontFamily: 'sans-serif' }}> {this.state.personalities.join(', ')} </div>
+                <br />
+                <br />
+                <div style={{ fontSize: '30px', fontFamily: 'sans-serif' }}> {this.state.description} </div>
+                <br />
+                <br />
+                <div style={{ fontSize: '40px', }}> Your perfect cities are... </div>
                 <br />
                 <Radio.Group buttonStyle="solid" onChange={(e) => this.setSelectedDest(e)} style={{ marginBottom: 50 }}>
-                  <Radio.Button value="0" style={{ padding: '2vh', borderRadius: '3px', marginTop: '20px', width: '80%', height: '8vh', fontSize: '2vw', fontFamily: 'sans-serif bold', border: 'none' }}>
+                  <Radio.Button value="0" style={{ padding: '5%', width: '80%', height: '5%', fontSize: '30px' }}>
                     {this.state.destResults[0].city}, {this.state.destResults[0].state}
                   </Radio.Button>
-                  <Radio.Button value="1" style={{ padding: '2vh', borderRadius: '3px', marginTop: '20px', width: '80%', height: '8vh', fontSize: '2vw', fontFamily: 'sans-serif bold', border: 'none' }}>
+                  <Radio.Button value="1" style={{ marginTop: '20px', padding: '5%', width: '80%', height: '5%', fontSize: '30px' }}>
                     {this.state.destResults[1].city}, {this.state.destResults[1].state}
                   </Radio.Button>
-                  <Radio.Button value="2" style={{ padding: '2vh', borderRadius: '3px', marginTop: '20px', width: '80%', height: '8vh', fontSize: '2vw', fontFamily: 'sans-serif bold', border: 'none' }}>
+                  <Radio.Button value="2" style={{ marginTop: '20px', padding: '5%', width: '80%', height: '5%', fontSize: '30px' }}>
                     {this.state.destResults[2].city}, {this.state.destResults[2].state}
                   </Radio.Button>
                 </Radio.Group>
                 <br />
                 {enableButton()}
                 <br />
-                <Button onClick={this.retakeQuiz} type='primary' shape='round' size='large' style={{ margin: '20px', border: 'none', background: '#5c1b4d' }}>Retake Quiz</Button>
+                <br />
+                <br />
+                <Button onClick={this.retakeQuiz} danger shape='round' size='large' >Retake Quiz</Button>
               </Card >
             </Col>
           </Row>
@@ -257,15 +274,15 @@ class QuizPage1 extends React.Component {
     }
 
     return (
-      <Layout>
+      <Layout >
         <SideBar />
-        <Layout className='layout' style={{ background: 'white', marginLeft: 200 }}>
+        <Layout style={{ background: 'white', marginLeft: 200, minWidth: '800px' }}>
           <Header />
-          <Content style={{ margin: '24px 24px 0', overflow: 'initial', textAlign: 'center', fontFamily: 'Work Sans', alignItems: 'center' }}>
+          <Content style={{ margin: '24px 24px 0', overflow: 'initial', textAlign: 'center', fontFamily: 'Work Sans' }}>
 
             <Row align='middle' justify='center'>
               <Col>
-                <div style={{ fontSize: '5vw', }}>On this trip, I want to... </div>
+                <div style={{ fontSize: '50px', }}>On this trip, I want to... </div>
 
                 <BuzzFeedQuiz
                   byline={true}
