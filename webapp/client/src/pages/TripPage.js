@@ -55,6 +55,7 @@ class TripPage extends React.Component {
         }
       })
     }
+    console.log("success")
   }
 
   componentDidMount() {

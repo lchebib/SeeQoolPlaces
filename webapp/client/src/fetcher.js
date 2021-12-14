@@ -129,13 +129,24 @@ const getPopulation = async (city, state) => {
 
 const authenticateTrip = async (username, tripID) => {
   var res = await fetch(
-    `http://${config.server_host}:${config.server_port}/authenticate/trip?username=${username}&tripID=${tripID}`,
+    `http://${config.server_host}:${config.server_port}/retrieve_trip?username=${username}&tripID=${tripID}`,
     {
       method: 'GET',
     }
   )
   return res.json()
 }
+
+// const authenticateTrip = async (username, tripID) => {
+//   var res = await fetch(
+//     `http://${config.server_host}:${config.server_port}/authenticate/trip?username=${username}&tripID=${tripID}`,
+//     {
+//       method: 'GET',
+//     }
+//   )
+//   return res.json()
+// }
+
 
 const getTripAttractions = async (tripID) => {
   var res = await fetch(
@@ -227,5 +238,6 @@ export {
   getTripFavorites,
   authenticateTrip,
   authenticateUser,
-  getPopulation
+  getPopulation,
+  // getTrip
 }

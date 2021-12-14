@@ -177,7 +177,7 @@ async function login(req, res) {
 
 
 // Log out user
-function logout (req, res) {
+function logout(req, res) {
   var username = req.query.username
   var clientIP = req.socket.remoteAddress
 
@@ -210,9 +210,9 @@ function logout (req, res) {
             } else if (results) {
               console.log(
                 'Logged out user ' +
-                  username.toString() +
-                  ' from ' +
-                  clientIP.toString()
+                username.toString() +
+                ' from ' +
+                clientIP.toString()
               )
             }
           })
@@ -504,12 +504,13 @@ function new_trip(req, res) {
 // Retrieve filtered POIs based on tripID
 function retrieve_trip(req, res) {
   var tripID = req.query.tripID
+  var username = req.query.username
 
   // retrieve trip profile
   myQuery = `
     SELECT *
     FROM TripProfile
-    WHERE tripID = ${tripID};
+    WHERE username = '${username}' AND tripID=${tripID};
   `
   console.log(myQuery)
 
@@ -519,7 +520,7 @@ function retrieve_trip(req, res) {
       res.json({ error: error })
     } else if (results) {
       if (results.length > 0) {
-        console.log('Retrieved trip profile for Trip ' + tripID.toString())
+        console.log(`Retrieved trip profile ${tripID} for user ${username}`)
 
         // generate filtered POIs
         createPersonalityViews()
@@ -558,7 +559,7 @@ function retrieve_trip(req, res) {
           }
         })
       } else {
-        console.log('Trip does not exist')
+        console.log('Trip does not exist for user')
         res.json({ results: false })
       }
     }
