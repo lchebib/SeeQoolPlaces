@@ -175,15 +175,17 @@ async function login(req, res) {
   })
 }
 
+
 // Log out user
-async function logout(req, res) {
+function logout (req, res) {
   var username = req.query.username
   var clientIP = req.socket.remoteAddress
 
+  // get a list of all client IPs that are logged in with this username
   var myQuery = `
-    SELECT *
+    SELECT clientIP
     FROM LoggedIn
-    WHERE username = '${username}' AND clientIP = '${clientIP}'; 
+    WHERE username = '${username}'; 
   `
   console.log(myQuery)
 
@@ -192,29 +194,75 @@ async function logout(req, res) {
       console.log(error)
       res.json({ error: error })
     } else if (results) {
-      if (results.length > 0) {
-        var myQuery = `
-          DELETE FROM LoggedIn
-          WHERE username = '${username}' AND clientIP = '${clientIP}'; 
-      `
-        console.log(myQuery)
+      // check if the current client IP exists in the list --> if so, delete corresponding row in LoggedIn
+      for (let loggedIn of results) {
+        if (loggedIn.clientIP === clientIP) {
+          myQuery = `
+            DELETE FROM LoggedIn
+            WHERE username = '${username}' AND clientIP = '${clientIP}'; 
+          `
+          console.log(myQuery)
 
-        connection.query(myQuery, function (error, results, fields) {
-          if (error) {
-            console.log(error)
-            res.json({ error: error })
-          } else if (results) {
-            console.log('Logged out user ' + username.toString())
-            res.json({ results: true })
+          connection.query(myQuery, function (error, results, fields) {
+            if (error) {
+              console.log(error)
+              res.json({ error: error })
+            } else if (results) {
+              console.log(
+                'Logged out user ' +
+                  username.toString() +
+                  ' from ' +
+                  clientIP.toString()
+              )
+            }
+          })
+
+          // if only one client IP was logged in to username,
+          // get all corresponding TripIDs and delete associated trip VIEWs
+          if (results.length === 1) {
+            myQuery = `
+              SELECT tripID
+              FROM TripProfile
+              WHERE username = '${username}'; 
+            `
+            console.log(myQuery)
+
+            connection.query(myQuery, function (error, results, fields) {
+              if (error) {
+                console.log(error)
+                res.json({ error: error })
+              } else if (results) {
+                for (let trip of results) {
+                  var tripView = 'Trip_' + trip.tripID.toString()
+
+                  myQuery = `
+                    DROP VIEW IF EXISTS ${tripView};
+                  `
+                  console.log(myQuery)
+
+                  connection.query(myQuery, function (error, results, fields) {
+                    if (error) {
+                      console.log(error)
+                      res.json({ error: error })
+                    } else if (results) {
+                      // console.log('Dropped VIEW ' + tripView)
+                    }
+                  })
+                }
+              }
+            })
           }
-        })
-      } else {
-        console.log('User was not logged in')
-        res.json({ results: true })
+        }
+
+        // exit the for-loop
+        break
       }
     }
   })
+
+  res.json({ results: true })
 }
+
 
 // ********************************************
 //             Home Page Routes
@@ -376,8 +424,6 @@ function new_trip(req, res) {
   var state = req.query.state
   var startDate = req.query.startDate
   var endDate = req.query.endDate
-  // var startDate = parseDate(req.query.startDate)
-  // var endDate = parseDate(req.query.endDate)
   var CoolCat = parseInt(req.query.p0) === 1
   var Adventurer = parseInt(req.query.p1) === 1
   var Entertainer = parseInt(req.query.p2) === 1
