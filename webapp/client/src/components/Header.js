@@ -1,6 +1,6 @@
 import React from 'react';
-import { PageHeader, Avatar, Input, Space, Button, Row, Col } from 'antd';
-import { UserOutlined, SearchOutlined } from '@ant-design/icons';
+import { PageHeader, Avatar, Space, Button, Row, Col } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import { logout } from '../fetcher'
 import '../style/style.css'
 

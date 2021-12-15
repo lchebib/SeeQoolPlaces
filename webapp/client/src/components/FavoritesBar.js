@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Row, Col, Space, Divider, Popconfirm, message } from 'antd';
+import { Button, Row, Space, Divider, Popconfirm, message } from 'antd';
 import '../style/style.css'
 
 
@@ -26,10 +26,6 @@ import '../style/style.css'
  * TripPage
  */
 class FavoritesBar extends React.Component {
-
-  constructor(props) {
-    super(props)
-  }
 
   render() {
 

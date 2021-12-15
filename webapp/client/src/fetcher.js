@@ -88,7 +88,7 @@ const getAllCities = async () => {
 
 const getQuizCities = async (population, p0, p1, p2, p3, p4, p5) => {
   var res = await fetch(
-    `http://${config.server_host}:${config.server_port}/quizCities?population=${population}&p0=${p0}&p1=${p1}&p2=${p2}&p3=${p3}&p4=${p4}&p5=${p5}`,
+    `http://${config.server_host}:${config.server_port}/quiz_cities?population=${population}&p0=${p0}&p1=${p1}&p2=${p2}&p3=${p3}&p4=${p4}&p5=${p5}`,
     {
       method: 'GET'
     }
@@ -136,16 +136,6 @@ const authenticateTrip = async (username, tripID) => {
   )
   return res.json()
 }
-
-// const authenticateTrip = async (username, tripID) => {
-//   var res = await fetch(
-//     `http://${config.server_host}:${config.server_port}/authenticate/trip?username=${username}&tripID=${tripID}`,
-//     {
-//       method: 'GET',
-//     }
-//   )
-//   return res.json()
-// }
 
 
 const getTripAttractions = async (tripID) => {
@@ -239,5 +229,4 @@ export {
   authenticateTrip,
   authenticateUser,
   getPopulation,
-  // getTrip
 }

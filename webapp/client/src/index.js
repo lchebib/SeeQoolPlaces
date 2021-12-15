@@ -11,9 +11,8 @@ import CreateTripPage from './pages/CreateTripPage'
 import TripPage from './pages/TripPage'
 import AuthenticationFailed from './pages/AuthenticationFailed'
 import 'antd/dist/antd.css'
-import './index.less'
 
-console.warn = console.error = () => {}
+console.warn = console.error = () => { }
 
 ReactDOM.render(
   <div>

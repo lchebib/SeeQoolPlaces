@@ -18,9 +18,6 @@ app.use(cors({
 // Route 1 - register as GET 
 app.get('/hello', routes.hello)
 
-// Route 6 - register as GET 
-app.get('/test', routes.test)
-
 
 // ********************************************
 //             User Account Routes
@@ -30,11 +27,6 @@ app.get('/test', routes.test)
 // requires: username and password --> /add_user?username=<username>&password=<password> (no quotations)
 // returns true if successful; false if username already exists
 app.get('/add_user', routes.add_user)
-
-// Log in user
-// requires: none --> /auto_login
-// returns username if client IP is already logged in; false otherwise
-app.get('/auto_login', routes.auto_login)
 
 // Log in user
 // requires: username and password --> /login?username=<username>&password=<password> (no quotations)
@@ -77,10 +69,10 @@ app.get('/trips', routes.all_trips)
 // returns [{state, city}], ordered by city
 app.get('/cities/', routes.all_cities)
 
-// Top 3 Cities based on quiz results
+// Top 3 cities based on quiz results
 // requires population and personalities --> /quiz_cities?population=1&p0=0&p1=1&...&p5=0 (population=[0,3], [0,1] for false/true)
 // returns [{city, state}]
-app.get('/quizCities', routes.quiz_cities)
+app.get('/quiz_cities', routes.quiz_cities)
 
 
 // ********************************************
@@ -98,8 +90,8 @@ app.get('/new_trip', routes.new_trip)
 // returns {population (int)}
 app.get('/population', routes.population)
 
-// Retrieve stored trip
-// requires tripID --> /retrieve_trip?tripID=3
+// Authenticate user has a trip with this tripID, and create a view for the trip containing the pids of its recommended POIs
+// requires tripID --> /retrieve_trip?trip?username=string&tripID=int
 // returns true if successful; false otherwise
 app.get('/retrieve_trip', routes.retrieve_trip)
 
@@ -142,11 +134,6 @@ app.get('/trip/update_trip', routes.update_trip)
 // requires tripID --> /delete_trip?tripID=2
 // always returns true
 app.get('/delete_trip', routes.delete_trip)
-
-// Authenticate user has a trip with this tripID
-// requires username,tripID --> /authenticate/trip?username=string&tripID=int
-// returns true if user has trip, else returns false
-app.get('/authenticate/trip', routes.authenticate_trip)
 
 app.listen(config.server_port, () => {
   console.log(`Server running at http://${config.server_host}:${config.server_port}/`);

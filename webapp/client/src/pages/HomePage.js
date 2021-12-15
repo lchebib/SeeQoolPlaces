@@ -73,7 +73,6 @@ class HomePage extends React.Component {
                     margin: '10px',
                     backgroundImage: `linear-gradient(rgba(80, 80, 80, 0.3),
                     rgba(80, 80, 80, 0.3)), url(${process.env.PUBLIC_URL + "/travel.jpg"})`,
-                    // opacity: '0.8',
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
@@ -84,7 +83,6 @@ class HomePage extends React.Component {
                     bottom: '0px',
                     left: '0px',
                     border: 'none',
-                    // boxShadow: '1px 1px 5px #D3D3D3'
                   }} />
                   <Card style={{
                     margin: '10px',
@@ -108,7 +106,6 @@ class HomePage extends React.Component {
                     margin: '10px',
                     backgroundImage: `linear-gradient(rgba(80, 80, 80, 0.3),
                     rgba(80, 80, 80, 0.3)), url(${this.state.randomCity.photo})`,
-                    // opacity: '1',
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
@@ -119,7 +116,6 @@ class HomePage extends React.Component {
                     bottom: '0px',
                     left: '0px',
                     border: 'none',
-                    // boxShadow: '1px 1px 5px #D3D3D3'
                   }} />
                   <Card style={{
                     margin: '10px',

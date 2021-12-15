@@ -1,7 +1,6 @@
 const config = require('./config.json')
 const mysql = require('mysql')
 const e = require('express')
-const { all } = require('./server')
 
 const connection = mysql.createConnection({
   host: config.rds_host,
@@ -70,41 +69,6 @@ async function add_user(req, res) {
   })
 }
 
-// Auto log in user
-async function auto_login(req, res) {
-  var clientIP = req.socket.remoteAddress
-
-  // check if user is already logged in
-  var myQuery = `
-    SELECT *
-    FROM LoggedIn
-    WHERE clientIP = '${clientIP}';
-  `
-  console.log(myQuery)
-
-  connection.query(myQuery, function (error, results, fields) {
-    if (error) {
-      console.log('Error in auto login')
-      console.log(error)
-      res.json({ results: false })
-      // res.json({ error: error })
-    } else if (results) {
-      // user already logged in --> return username
-      if (results.length > 0) {
-        console.log(
-          'Client IP is already logged in as ' + results[0].username.toString()
-        )
-        res.json({ results: results[0].username })
-      }
-      // user not yet logged in --> return false
-      else {
-        console.log('Client IP not logged in')
-        res.json({ results: false })
-      }
-    }
-  })
-}
-
 // Manually log in user
 async function login(req, res) {
   var username = req.query.username
@@ -157,7 +121,6 @@ async function login(req, res) {
                 if (error) {
                   console.log(error)
                   res.json({ results: false })
-                  // res.json({ error: error })
                 } else if (results) {
                   console.log('Logged in user ' + username.toString())
                   res.json({ results: true })
@@ -166,7 +129,6 @@ async function login(req, res) {
             } else {
               console.log('Wrong username and/or password')
               res.json({ results: false })
-              // res.redirect('http://localhost:3000/failed')
             }
           }
         })
@@ -391,6 +353,7 @@ async function quiz_cities(req, res) {
     JOIN personalityPID ON (POI.pid = personalityPID.pid)
     WHERE POI.city IS NOT NULL AND POI.state IS NOT NULL
     GROUP BY POI.city
+    HAVING COUNT(POI.pid) >= 10
     ORDER BY COUNT(POI.pid) DESC
     LIMIT 3
     `
@@ -879,41 +842,6 @@ async function delete_trip(req, res) {
   })
 }
 
-// // ********************************************
-// //             Parse Date / Time
-// // ********************************************
-
-// // Convert date received from CreateTripPage into a db-compatible format
-// function parseDate(rawDate) {
-//   dateValues = rawDate.split(' ')
-//   // console.log('Date Values: ')
-//   // console.log(dateValues)
-
-//   // format e.g. Sun Dec 12 2021 20:10:22 GMT 0900
-//   formattedDate =
-//     dateValues[3].toString() +
-//     '-' +
-//     parseMonth(dateValues[1].toString()) +
-//     '-' +
-//     dateValues[2].toString()
-//   // console.log("Formatted date = " + formattedDate)
-
-//   return formattedDate
-// }
-
-// // Converts written month into its int equivalent
-// function parseMonth(month) {
-//   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
-//   var monthIndex = months.indexOf(month) + 1
-
-//   if (monthIndex < 10) {
-//     return '0' + monthIndex.toString()
-//   }
-//   else {
-//     return monthIndex.toString()
-//   }
-// }
 
 // ********************************************
 //             Filter POIs
@@ -1267,21 +1195,6 @@ async function population(req, res) {
 //             Authenticate
 // ********************************************
 
-async function test(req, res) {
-  var username = req.query.username
-  var clientIP = req.socket.remoteAddress
-  // console.log('Username: ' + username.toString())
-  // console.log('Client IP: ' + clientIP.toString())
-
-  // TODO: make this function work...
-
-  if (authenticateUser(username, clientIP) == true) {
-    res.send('Logged In!!')
-  } else {
-    res.redirect('http://localhost:3000/failed')
-  }
-}
-
 async function authenticate_user(req, res) {
   var username = req.query.username
   var clientIP = req.socket.remoteAddress
@@ -1308,36 +1221,8 @@ async function authenticate_user(req, res) {
   })
 }
 
-async function authenticate_trip(req, res) {
-  var username = req.query.username
-  var tripID = req.query.tripID
-
-  var myQuery = `
-  SELECT *
-  FROM TripProfile
-  WHERE username = '${username}' AND tripID=${tripID};
-`
-  console.log(myQuery)
-
-  connection.query(myQuery, function (error, results, fields) {
-    if (results) {
-      if (results.length > 0) {
-        console.log(`Authenticated trip ${tripID}`)
-        res.json({ results: true })
-      } else {
-        console.log(`User does NOT have trip with tripID ${tripID}`)
-        res.json({ results: false })
-      }
-    } else {
-      console.log(error)
-    }
-  })
-}
-
-
 module.exports = {
   add_user,
-  auto_login,
   login,
   logout,
   hello,
@@ -1355,8 +1240,6 @@ module.exports = {
   save_trip,
   update_trip,
   delete_trip,
-  test,
-  authenticate_trip,
   authenticate_user,
   population
 }

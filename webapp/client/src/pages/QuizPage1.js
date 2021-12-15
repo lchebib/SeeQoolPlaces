@@ -250,13 +250,13 @@ class QuizPage1 extends React.Component {
                 <div style={{ fontSize: '40px', }}> Your perfect cities are... </div>
                 <br />
                 <Radio.Group buttonStyle="solid" onChange={(e) => this.setSelectedDest(e)} style={{ marginBottom: 50 }}>
-                  <Radio.Button value="0" style={{ padding: '5%', width: '80%', height: '5%', fontSize: '30px' }}>
+                  <Radio.Button value="0" style={{ padding: '5%', width: '80%', height: '5%', fontSize: '30px', border: 'none' }}>
                     {this.state.destResults[0].city}, {this.state.destResults[0].state}
                   </Radio.Button>
-                  <Radio.Button value="1" style={{ marginTop: '20px', padding: '5%', width: '80%', height: '5%', fontSize: '30px' }}>
+                  <Radio.Button value="1" style={{ marginTop: '20px', padding: '5%', width: '80%', height: '5%', fontSize: '30px', border: 'none' }}>
                     {this.state.destResults[1].city}, {this.state.destResults[1].state}
                   </Radio.Button>
-                  <Radio.Button value="2" style={{ marginTop: '20px', padding: '5%', width: '80%', height: '5%', fontSize: '30px' }}>
+                  <Radio.Button value="2" style={{ marginTop: '20px', padding: '5%', width: '80%', height: '5%', fontSize: '30px', border: 'none' }}>
                     {this.state.destResults[2].city}, {this.state.destResults[2].state}
                   </Radio.Button>
                 </Radio.Group>

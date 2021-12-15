@@ -1,15 +1,11 @@
 import React from 'react';
-import { Row, Col } from 'antd';
+import { Row } from 'antd';
 import Login from '../components/Login';
 import { authenticateUser } from '../fetcher';
 
 
 
 class LandingPage extends React.Component {
-
-  constructor(props) {
-    super(props)
-  }
 
   componentDidMount() {
     var username = localStorage.getItem("username")

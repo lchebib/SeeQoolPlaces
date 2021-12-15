@@ -3,22 +3,6 @@ import { Form, Input, Button, Alert, Space, Row, Col } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { signUp, login } from '../fetcher'
 
-// const layout = {
-//   labelCol: {
-//     span: 8,
-//   },
-//   wrapperCol: {
-//     span: 36,
-//   },
-// };
-
-// const tailLayout = {
-//   wrapperCol: {
-//     offset: 12,
-//     span: 24,
-//   },
-// };
-
 /**
  * @name Login
  * @description Login form
@@ -102,10 +86,6 @@ const Login = () => {
     }
     form.resetFields();
     console.log(errorMessage);
-    var invalidUserMsg =
-      <>
-        <p>{errorMessage}</p>
-      </>
 
     return (
       <div>

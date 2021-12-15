@@ -74,7 +74,7 @@ class SideBar extends React.Component {
    * @description Store user trips in localStorage to be used throughout site
    */
   storeTrips() {
-    this.state.trips.map((trip) => {
+    this.state.trips.forEach((trip) => {
       // console.log(trip)
       let tripDetails = {
         tripID: trip.tripID,

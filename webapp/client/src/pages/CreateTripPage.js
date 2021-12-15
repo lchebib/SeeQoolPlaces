@@ -9,7 +9,6 @@ import {
   Checkbox,
   DatePicker,
   Alert,
-  Spin,
   Space
 } from 'antd';
 
@@ -267,12 +266,6 @@ class CreateTripPage extends React.Component {
                 <Button size='small' shape='round' onClick={() => this.onDestChange([option2.state, option2.city])} style={{ border: 'none' }}>
                   {option2.city}, {option2.state}
                 </Button>
-                {/* {this.state.quizCities.map((dest) => {
-                  // { console.log(dest) }
-                  <Button size='small' shape='round' onClick={() => this.setState({ selectedDest: [dest.state, dest.city] })} style={{ border: 'none' }}>
-                    {dest.city, dest.state}
-                  </Button>
-                })} */}
               </Space>
             </Row>
           </>
@@ -342,7 +335,6 @@ class CreateTripPage extends React.Component {
                     <Form.Item
                       name="name"
                       label="Trip Name"
-                      // validateStatus={this.state.tripNameValidateStatus.errorMsg}
                       rules={[
                         {
                           required: true,
