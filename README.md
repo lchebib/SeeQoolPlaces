@@ -17,7 +17,6 @@ For a list of client dependencies, see package.json in the client directory.
 - [re](https://pypi.org/project/regex/)
 
 ### Data cleaning dependencies - Python
-- [FileIO](https://pypi.org/project/FileIO/) 
 - [csv](https://docs.python.org/3/library/csv.html)
 - [mysql.connector](https://dev.mysql.com/doc/connector-python/en/)
 - [pandas](https://pandas.pydata.org/docs/)
